@@ -1,0 +1,27 @@
+[package]
+name = "handshake"
+version = "0.1.0"
+authors = ["Your Name <your.email@example.com>"]
+edition = "2018"
+
+[dependencies]
+s2n-tls = { path = "../../../bindings/rust/s2n-tls", features = ["testing"] }
+bytes = { version = "1", optional = true }
+errno = { version = "0.3" }
+libc = "0.2"
+crabgrind = "0.1"
+criterion = { version = "0.3", features = ["html_reports"] }
+iai = { git = "https://github.com/sigaloid/iai", rev = "d56a597" }
+
+[[bin]]
+name = "perf_bench"
+path = "benches/perf_bench.rs"
+
+[[bench]]
+name = "criterion_bench"
+harness = false
+
+
+[[bench]]
+name = "iai_bench"
+harness = false
