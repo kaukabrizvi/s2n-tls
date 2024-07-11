@@ -1,8 +1,0 @@
-[package]
-name = "main_project"
-version = "0.1.0"
-authors = ["Your Name <your.email@example.com>"]
-edition = "2021"
-
-[lib]
-path = "lib.rs"
