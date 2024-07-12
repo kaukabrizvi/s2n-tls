@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Metadata
 --------------------------------------------------------------------------------
-Invocation:       /usr/bin/cg_annotate cachegrind.out.138692
+Invocation:       /usr/bin/cg_annotate cachegrind.out.192297
 Command:          target/debug/data_transfer
 Events recorded:  Ir
 Events shown:     Ir
@@ -14,15 +14,15 @@ Annotation:       on
 --------------------------------------------------------------------------------
 Ir_____________________ 
 
-16,290,278,430 (100.0%)  PROGRAM TOTALS
+16,280,055,578 (100.0%)  PROGRAM TOTALS
 
 --------------------------------------------------------------------------------
 -- File:function summary
 --------------------------------------------------------------------------------
   Ir__________________________  file:function
 
-< 4,762,642,234 (29.2%, 29.2%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c:
-  2,920,989,380 (17.9%)           s2n_stuffer_validate
+< 4,762,641,276 (29.3%, 29.3%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c:
+  2,920,988,782 (17.9%)           s2n_stuffer_validate
     358,613,676  (2.2%)           s2n_stuffer_reserve_space
     356,516,520  (2.2%)           s2n_stuffer_skip_write
     207,967,970  (1.3%)           s2n_stuffer_write_bytes
@@ -38,29 +38,29 @@ Ir_____________________
      31,457,340  (0.2%)           s2n_stuffer_resize_if_empty
      26,913,502  (0.2%)           s2n_stuffer_erase_and_read
      24,466,820  (0.2%)           s2n_stuffer_copy_impl
-     23,069,076  (0.1%)           s2n_stuffer_free
+     23,068,716  (0.1%)           s2n_stuffer_free
      22,369,664  (0.1%)           s2n_stuffer_raw_write
      22,369,664  (0.1%)           s2n_stuffer_raw_read
 
-< 4,366,658,396 (26.8%, 56.0%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c:
-  4,144,353,962 (25.4%)           s2n_blob_validate
+< 4,366,628,318 (26.8%, 56.1%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c:
+  4,144,329,782 (25.5%)           s2n_blob_validate
     188,044,988  (1.2%)           s2n_blob_init
      34,253,548  (0.2%)           s2n_blob_slice
 
-< 1,588,601,772  (9.8%, 65.8%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_result.c:s2n_result_is_ok
+< 1,588,595,670  (9.8%, 65.8%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_result.c:s2n_result_is_ok
 
-<   628,447,940  (3.9%, 69.7%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h:
+<   628,447,748  (3.9%, 69.7%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h:
     229,289,056  (1.4%)           OPENSSL_memcpy
     106,255,904  (0.7%)           CRYPTO_load_word_le
      89,478,656  (0.5%)           CRYPTO_bswap4
      39,146,912  (0.2%)           CRYPTO_store_word_le
-     33,554,688  (0.2%)           OPENSSL_memset
+     33,554,496  (0.2%)           OPENSSL_memset
      33,204,970  (0.2%)           CRYPTO_bswap8
      25,165,872  (0.2%)           buffers_alias
      25,165,872  (0.2%)           CRYPTO_store_u64_be
      25,165,872  (0.2%)           CRYPTO_store_u32_be
 
-<   422,926,460  (2.6%, 72.2%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c:
+<   422,926,460  (2.6%, 72.3%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c:
     109,052,112  (0.7%)           aws_lc_0_19_0_CRYPTO_gcm128_aad
      82,138,610  (0.5%)           aws_lc_0_19_0_CRYPTO_gcm128_encrypt_ctr32
      82,138,610  (0.5%)           aws_lc_0_19_0_CRYPTO_gcm128_decrypt_ctr32
@@ -75,11 +75,11 @@ Ir_____________________
      23,767,768  (0.1%)           s2n_record_write_mac
      22,020,138  (0.1%)           s2n_record_write_protocol_version
 
-<   335,197,012  (2.1%, 76.7%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:
-    335,196,451  (2.1%)           __memcpy_avx_unaligned_erms
+<   335,196,929  (2.1%, 76.7%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:
+    335,196,387  (2.1%)           __memcpy_avx_unaligned_erms
 
-<   294,650,506  (1.8%, 78.5%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs:
-     89,478,672  (0.5%)           core::ub_checks::is_aligned_and_not_null
+<   294,650,435  (1.8%, 78.5%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs:
+     89,478,656  (0.5%)           core::ub_checks::is_aligned_and_not_null
      73,400,460  (0.5%)           core::slice::raw::from_raw_parts::precondition_check
      31,457,340  (0.2%)           core::slice::raw::from_raw_parts_mut::precondition_check
      24,117,294  (0.1%)           core::intrinsics::copy_nonoverlapping::precondition_check
@@ -92,9 +92,9 @@ Ir_____________________
      33,554,496  (0.2%)           s2n_recv_buffer_in
      20,622,034  (0.1%)           s2n_recv_in_init
 
-<   188,744,040  (1.2%, 81.1%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read_aead.c:s2n_record_parse_aead
+<   188,744,040  (1.2%, 81.2%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read_aead.c:s2n_record_parse_aead
 
-<   165,676,046  (1.0%, 82.1%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_connection.c:
+<   165,675,324  (1.0%, 82.2%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_connection.c:
      58,021,316  (0.4%)           s2n_connection_check_io_status
      35,651,652  (0.2%)           s2n_connection_recv_stuffer
      20,971,560  (0.1%)           s2n_connection_send_stuffer
@@ -105,71 +105,70 @@ Ir_____________________
      18,175,352  (0.1%)           s2n_sendv_with_offset_total_size
      17,126,774  (0.1%)           s2n_sendv_with_offset
 
-<   153,441,914  (0.9%, 84.0%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read.c:
+<   153,441,914  (0.9%, 84.1%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read.c:
      55,924,160  (0.3%)           s2n_record_header_parse
      44,389,802  (0.3%)           s2n_record_parse
      23,767,768  (0.1%)           s2n_tls13_parse_record_type
      16,777,248  (0.1%)           s2n_record_wipe
 
-<   148,548,550  (0.9%, 84.9%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c:s2n_ensure_memmove_trace
+<   148,548,550  (0.9%, 85.0%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c:s2n_ensure_memmove_trace
 
-<   145,403,840  (0.9%, 85.8%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/num/uint_macros.rs:
-    111,848,340  (0.7%)           core::ub_checks::is_aligned_and_not_null
+<   145,402,826  (0.9%, 85.9%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/num/uint_macros.rs:
+    111,848,320  (0.7%)           core::ub_checks::is_aligned_and_not_null
      18,874,404  (0.1%)           core::ub_checks::is_nonoverlapping::runtime
 
-<   138,062,914  (0.8%, 86.7%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/index.rs:
-     88,080,678  (0.5%)           core::slice::index::range
+<   138,062,770  (0.8%, 86.7%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/index.rs:
+     88,080,552  (0.5%)           core::slice::index::range
      17,476,300  (0.1%)           <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index_mut
 
-<   114,994,087  (0.7%, 87.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/e_aes.c:
+<   114,994,059  (0.7%, 87.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/e_aes.c:
      34,952,600  (0.2%)           aead_aes_gcm_seal_scatter_impl
      30,758,288  (0.2%)           aead_aes_gcm_open_gather_impl
      23,418,247  (0.1%)           aead_aes_gcm_tls13_seal_scatter
 
-<   107,304,640  (0.7%, 88.0%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/mod.rs:
-     37,748,862  (0.2%)           alloc::collections::vec_deque::VecDeque<T,A>::slice_ranges
+<   107,304,482  (0.7%, 88.1%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/mod.rs:
+     37,748,808  (0.2%)           alloc::collections::vec_deque::VecDeque<T,A>::slice_ranges
      22,369,664  (0.1%)           alloc::collections::vec_deque::VecDeque<T,A>::to_physical_idx
      21,670,612  (0.1%)           alloc::collections::vec_deque::VecDeque<T,A>::as_slices
 
-<    98,216,806  (0.6%, 88.6%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c:
+<    98,216,806  (0.6%, 88.7%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c:
      34,603,074  (0.2%)           s2n_stuffer_write_network_order
      27,962,080  (0.2%)           s2n_stuffer_read_uint16
      17,825,826  (0.1%)           s2n_stuffer_read_uint8
 
-<    93,045,156  (0.6%, 89.2%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_sequence.c:
+<    93,045,156  (0.6%, 89.3%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_sequence.c:
      66,409,940  (0.4%)           s2n_sequence_number_to_uint64
      26,635,216  (0.2%)           s2n_increment_sequence_number
 
-<    91,226,542  (0.6%, 89.8%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c:
+<    91,226,286  (0.6%, 89.8%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c:
      27,263,028  (0.2%)           aws_lc_0_19_0_EVP_AEAD_CTX_seal
      24,466,820  (0.2%)           aws_lc_0_19_0_EVP_AEAD_CTX_open
      23,068,716  (0.1%)           check_alias
      16,427,722  (0.1%)           aws_lc_0_19_0_EVP_AEAD_CTX_open_gather
 
-<    88,080,552  (0.5%, 90.3%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/ghash-x86_64.S:
+<    88,080,552  (0.5%, 90.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/ghash-x86_64.S:
      85,983,396  (0.5%)           aws_lc_0_19_0_gcm_gmult_clmul
 
-<    86,863,490  (0.5%, 90.8%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/mem.c:
-     84,934,818  (0.5%)           aws_lc_0_19_0_CRYPTO_memcmp
+<    84,934,818  (0.5%, 90.9%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/mem.c:aws_lc_0_19_0_CRYPTO_memcmp
 
 <    83,886,240  (0.5%, 91.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/aes/../modes/internal.h:CRYPTO_xor16
 
-<    79,691,928  (0.5%, 91.8%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/aesni-x86_64.S:aws_lc_0_19_0_aes_hw_encrypt
+<    79,691,928  (0.5%, 91.9%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/aesni-x86_64.S:aws_lc_0_19_0_aes_hw_encrypt
 
-<    73,400,490  (0.5%, 92.3%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cell.rs:
+<    73,400,464  (0.5%, 92.3%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cell.rs:
      36,700,230  (0.2%)           core::cell::RefCell<T>::try_borrow_mut
      19,922,982  (0.1%)           core::cell::RefCell<T>::borrow_mut
 
-<    66,211,718  (0.4%, 92.7%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms
+<    65,710,925  (0.4%, 92.7%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms
 
-<    64,662,321  (0.4%, 93.1%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ptr/const_ptr.rs:
-     50,331,753  (0.3%)           core::ub_checks::is_aligned_and_not_null
+<    64,662,310  (0.4%, 93.1%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ptr/const_ptr.rs:
+     50,331,744  (0.3%)           core::ub_checks::is_aligned_and_not_null
 
 <    60,817,524  (0.4%, 93.5%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_early_data_io.c:
      19,573,456  (0.1%)           s2n_is_early_data_io
      19,573,456  (0.1%)           s2n_early_data_record_bytes
 
-<    60,467,998  (0.4%, 93.8%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_aead_cipher_aes_gcm.c:
+<    60,467,998  (0.4%, 93.9%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_aead_cipher_aes_gcm.c:
      30,408,762  (0.2%)           s2n_aead_cipher_aes_gcm_decrypt
      30,059,236  (0.2%)           s2n_aead_cipher_aes_gcm_encrypt
 
@@ -177,7 +176,7 @@ Ir_____________________
      40,545,016  (0.2%)           s2n_tls::testing::TestPair::recv_cb
      16,777,248  (0.1%)           s2n_tls::testing::TestPair::send_cb
 
-<    54,875,610  (0.3%, 94.5%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/mod.rs:
+<    54,875,582  (0.3%, 94.6%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/mod.rs:
      21,670,612  (0.1%)           core::slice::<impl [T]>::split_at_unchecked
 
 <    54,176,530  (0.3%, 94.9%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/std/src/io/impls.rs:
@@ -189,7 +188,7 @@ Ir_____________________
 <    44,739,328  (0.3%, 95.5%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/drain.rs:
      30,758,288  (0.2%)           <<alloc::collections::vec_deque::drain::Drain<T,A> as core::ops::drop::Drop>::drop::DropGuard<T,A> as core::ops::drop::Drop>::drop
 
-<    41,944,372  (0.3%, 95.7%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/result.rs:
+<    41,943,125  (0.3%, 95.8%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/result.rs:
      22,369,664  (0.1%)           core::result::Result<T,E>::map_err
 
 <    40,894,542  (0.3%, 96.0%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_handshake_io.c:
@@ -199,81 +198,81 @@ Ir_____________________
      19,223,930  (0.1%)           s2n_key_update_send
      18,175,352  (0.1%)           s2n_check_record_limit
 
-<    34,952,611  (0.2%, 96.4%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cmp.rs:
-     18,874,404  (0.1%)           core::cmp::min_by
+<    35,651,658  (0.2%, 96.5%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cmp.rs:
+     19,573,456  (0.1%)           core::cmp::min_by
 
-<    34,603,074  (0.2%, 96.6%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/raw.rs:
+<    34,603,074  (0.2%, 96.7%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/raw.rs:
      17,126,774  (0.1%)           core::slice::raw::from_raw_parts::precondition_check
 
-<    30,059,468  (0.2%, 96.8%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls/src/error.rs:
+<    30,059,236  (0.2%, 96.9%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls/src/error.rs:
      20,272,508  (0.1%)           <T as s2n_tls::error::Pollable>::into_poll
 
 <    29,360,184  (0.2%, 97.0%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_post_handshake.c:
      17,825,826  (0.1%)           s2n_post_handshake_send
 
-<    29,010,698  (0.2%, 97.2%)  /home/ubuntu/proj/s2n/tests/regression/src/bin/data_transfer.rs:
-     28,311,646  (0.2%)           data_transfer::main
+<    28,661,146  (0.2%, 97.2%)  /home/ubuntu/proj/s2n/tests/regression/src/bin/data_transfer.rs:
+     27,962,094  (0.2%)           data_transfer::main
 
-<    27,327,096  (0.2%, 97.3%)  ???:
-     27,326,637  (0.2%)           ???
+<    27,263,861  (0.2%, 97.4%)  ???:
+     27,263,475  (0.2%)           ???
 
 <    24,466,820  (0.2%, 97.5%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_atomic.c:s2n_atomic_flag_test
 
-<    20,971,600  (0.1%, 97.6%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/intrinsics.rs:
+<    20,971,582  (0.1%, 97.7%)  /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/intrinsics.rs:
      18,874,404  (0.1%)           core::intrinsics::copy_nonoverlapping::precondition_check
 
-<    18,874,404  (0.1%, 97.7%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_quic_support.c:s2n_connection_is_quic_enabled
+<    18,874,404  (0.1%, 97.8%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_quic_support.c:s2n_connection_is_quic_enabled
 
 --------------------------------------------------------------------------------
 -- Function:file summary
 --------------------------------------------------------------------------------
   Ir__________________________  function:file
 
-> 4,144,353,962 (25.4%, 25.4%)  s2n_blob_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
+> 4,144,329,782 (25.5%, 25.5%)  s2n_blob_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
 
-> 2,920,989,380 (17.9%, 43.4%)  s2n_stuffer_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+> 2,920,988,782 (17.9%, 43.4%)  s2n_stuffer_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
-> 1,588,601,772  (9.8%, 53.1%)  s2n_result_is_ok:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_result.c
+> 1,588,595,670  (9.8%, 53.2%)  s2n_result_is_ok:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_result.c
 
->   358,613,676  (2.2%, 55.3%)  s2n_stuffer_reserve_space:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>   358,613,676  (2.2%, 55.4%)  s2n_stuffer_reserve_space:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >   356,516,520  (2.2%, 57.5%)  s2n_stuffer_skip_write:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->   335,196,451  (2.1%, 59.6%)  __memcpy_avx_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
+>   335,196,387  (2.1%, 59.6%)  __memcpy_avx_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
 
 >   266,338,812  (1.6%, 61.2%)  s2n_record_writev:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
 
->   251,658,765  (1.5%, 62.8%)  core::ub_checks::is_aligned_and_not_null:
-    111,848,340  (0.7%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/num/uint_macros.rs
-     89,478,672  (0.5%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs
-     50,331,753  (0.3%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ptr/const_ptr.rs
+>   251,658,720  (1.5%, 62.8%)  core::ub_checks::is_aligned_and_not_null:
+    111,848,320  (0.7%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/num/uint_macros.rs
+     89,478,656  (0.5%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs
+     50,331,744  (0.3%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ptr/const_ptr.rs
 
 >   229,289,056  (1.4%, 64.2%)  OPENSSL_memcpy:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->   207,967,970  (1.3%, 65.4%)  s2n_stuffer_write_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>   207,967,970  (1.3%, 65.5%)  s2n_stuffer_write_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >   190,841,196  (1.2%, 66.6%)  s2n_stuffer_skip_read:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >   188,744,040  (1.2%, 67.8%)  s2n_record_parse_aead:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read_aead.c
 
->   188,044,988  (1.2%, 68.9%)  s2n_blob_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
+>   188,044,988  (1.2%, 69.0%)  s2n_blob_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
 
 >   159,034,330  (1.0%, 69.9%)  s2n_stuffer_read_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->   148,548,550  (0.9%, 70.8%)  s2n_ensure_memmove_trace:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c
+>   148,548,550  (0.9%, 70.9%)  s2n_ensure_memmove_trace:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c
 
 >   109,052,112  (0.7%, 71.5%)  aws_lc_0_19_0_CRYPTO_gcm128_aad:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
 
->   106,255,904  (0.7%, 72.1%)  CRYPTO_load_word_le:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>   106,255,904  (0.7%, 72.2%)  CRYPTO_load_word_le:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->    95,770,260  (0.6%, 72.7%)  core::slice::index::range:
-     88,080,678  (0.5%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/index.rs
+>    95,770,124  (0.6%, 72.8%)  core::slice::index::range:
+     88,080,552  (0.5%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/index.rs
 
 >    92,973,916  (0.6%, 73.3%)  core::slice::raw::from_raw_parts::precondition_check:
      73,400,460  (0.5%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs
      17,126,774  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/raw.rs
 
->    89,478,656  (0.5%, 73.8%)  CRYPTO_bswap4:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>    89,478,656  (0.5%, 73.9%)  CRYPTO_bswap4:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
 >    85,983,396  (0.5%, 74.4%)  aws_lc_0_19_0_gcm_gmult_clmul:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/ghash-x86_64.S
 
@@ -281,39 +280,39 @@ Ir_____________________
 
 >    83,886,240  (0.5%, 75.4%)  CRYPTO_xor16:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/aes/../modes/internal.h
 
->    82,138,610  (0.5%, 75.9%)  aws_lc_0_19_0_CRYPTO_gcm128_encrypt_ctr32:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
+>    82,138,610  (0.5%, 76.0%)  aws_lc_0_19_0_CRYPTO_gcm128_encrypt_ctr32:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
 
->    82,138,610  (0.5%, 76.4%)  aws_lc_0_19_0_CRYPTO_gcm128_decrypt_ctr32:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
+>    82,138,610  (0.5%, 76.5%)  aws_lc_0_19_0_CRYPTO_gcm128_decrypt_ctr32:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
 
 >    79,691,928  (0.5%, 76.9%)  aws_lc_0_19_0_aes_hw_encrypt:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/aesni-x86_64.S
 
->    72,351,882  (0.4%, 77.3%)  s2n_stuffer_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    72,351,882  (0.4%, 77.4%)  s2n_stuffer_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >    72,351,882  (0.4%, 77.8%)  s2n_read_full_record:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
 
->    69,206,148  (0.4%, 78.2%)  s2n_stuffer_wipe:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    69,206,148  (0.4%, 78.3%)  s2n_stuffer_wipe:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    67,458,518  (0.4%, 78.6%)  s2n_sendv_with_offset_impl:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
+>    67,458,518  (0.4%, 78.7%)  s2n_sendv_with_offset_impl:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
 
->    66,409,940  (0.4%, 79.0%)  s2n_sequence_number_to_uint64:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_sequence.c
+>    66,409,940  (0.4%, 79.1%)  s2n_sequence_number_to_uint64:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_sequence.c
 
->    66,211,718  (0.4%, 79.4%)  __memset_avx2_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S
+>    65,710,925  (0.4%, 79.5%)  __memset_avx2_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S
 
 >    58,720,368  (0.4%, 79.8%)  s2n_stuffer_rewrite:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >    58,021,316  (0.4%, 80.2%)  s2n_connection_check_io_status:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_connection.c
 
->    57,322,264  (0.4%, 80.5%)  s2n_stuffer_wipe_n:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    57,322,264  (0.4%, 80.6%)  s2n_stuffer_wipe_n:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >    55,924,160  (0.3%, 80.9%)  s2n_record_header_parse:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read.c
 
 >    55,225,108  (0.3%, 81.2%)  s2n_recv_impl:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
 
->    52,428,900  (0.3%, 81.5%)  s2n_tls13_aead_aad_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_aead.c
+>    52,428,900  (0.3%, 81.6%)  s2n_tls13_aead_aad_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_aead.c
 
->    52,428,900  (0.3%, 81.8%)  s2n_stuffer_reread:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    52,428,900  (0.3%, 81.9%)  s2n_stuffer_reread:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    51,030,796  (0.3%, 82.1%)  std::io::impls::<impl std::io::Read for &[u8]>::read:
+>    51,030,796  (0.3%, 82.2%)  std::io::impls::<impl std::io::Read for &[u8]>::read:
      27,263,028  (0.2%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/std/src/io/impls.rs
 
 >    51,030,796  (0.3%, 82.5%)  aws_lc_0_19_0_CRYPTO_gcm128_setiv:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
@@ -327,31 +326,31 @@ Ir_____________________
      19,223,930  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs
      18,874,404  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/num/uint_macros.rs
 
->    46,836,484  (0.3%, 83.6%)  std::io::impls::<impl std::io::Read for alloc::collections::vec_deque::VecDeque<u8,A>>::read:
+>    46,836,484  (0.3%, 83.7%)  std::io::impls::<impl std::io::Read for alloc::collections::vec_deque::VecDeque<u8,A>>::read:
      23,068,716  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/std/src/io/impls.rs
 
->    45,438,380  (0.3%, 83.9%)  s2n_read_in_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
+>    45,438,380  (0.3%, 84.0%)  s2n_read_in_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
 
->    44,389,802  (0.3%, 84.2%)  s2n_record_parse:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read.c
+>    44,389,802  (0.3%, 84.3%)  s2n_record_parse:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read.c
 
 >    42,991,698  (0.3%, 84.5%)  core::intrinsics::copy_nonoverlapping::precondition_check:
      24,117,294  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs
      18,874,404  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/intrinsics.rs
 
->    41,943,120  (0.3%, 84.7%)  s2n_stuffer_writev_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    41,943,120  (0.3%, 84.8%)  s2n_stuffer_writev_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >    40,545,016  (0.2%, 85.0%)  s2n_tls::testing::TestPair::recv_cb:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls/src/testing.rs
 
->    39,845,964  (0.2%, 85.2%)  core::slice::raw::from_raw_parts_mut::precondition_check:
+>    39,845,964  (0.2%, 85.3%)  core::slice::raw::from_raw_parts_mut::precondition_check:
      31,457,340  (0.2%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/ub_checks.rs
 
->    39,146,966  (0.2%, 85.5%)  alloc::collections::vec_deque::VecDeque<T,A>::slice_ranges:
-     37,748,862  (0.2%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/mod.rs
-
->    39,146,912  (0.2%, 85.7%)  core::slice::<impl [T]>::split_at_unchecked:
+>    39,146,912  (0.2%, 85.5%)  core::slice::<impl [T]>::split_at_unchecked:
      21,670,612  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/mod.rs
 
->    39,146,912  (0.2%, 85.9%)  CRYPTO_store_word_le:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>    39,146,912  (0.2%, 85.7%)  alloc::collections::vec_deque::VecDeque<T,A>::slice_ranges:
+     37,748,808  (0.2%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/mod.rs
+
+>    39,146,912  (0.2%, 86.0%)  CRYPTO_store_word_le:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
 >    35,651,652  (0.2%, 86.2%)  s2n_stuffer_rewind_read:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
@@ -359,30 +358,29 @@ Ir_____________________
 
 >    34,952,600  (0.2%, 86.6%)  aead_aes_gcm_seal_scatter_impl:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/e_aes.c
 
->    34,603,074  (0.2%, 86.8%)  s2n_stuffer_write_network_order:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c
+>    34,603,074  (0.2%, 86.9%)  s2n_stuffer_write_network_order:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c
 
->    34,253,548  (0.2%, 87.0%)  s2n_blob_slice:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
+>    34,253,548  (0.2%, 87.1%)  s2n_blob_slice:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
 
->    34,253,548  (0.2%, 87.2%)  <<alloc::collections::vec_deque::drain::Drain<T,A> as core::ops::drop::Drop>::drop::DropGuard<T,A> as core::ops::drop::Drop>::drop:
+>    34,253,548  (0.2%, 87.3%)  <<alloc::collections::vec_deque::drain::Drain<T,A> as core::ops::drop::Drop>::drop::DropGuard<T,A> as core::ops::drop::Drop>::drop:
      30,758,288  (0.2%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/drain.rs
 
->    34,042,464  (0.2%, 87.4%)  OPENSSL_memset:
-     33,554,688  (0.2%)           /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>    33,554,496  (0.2%, 87.5%)  s2n_recv_buffer_in:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
 
->    33,554,496  (0.2%, 87.6%)  s2n_recv_buffer_in:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
+>    33,554,496  (0.2%, 87.7%)  s2n_flush:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
 
->    33,554,496  (0.2%, 87.8%)  s2n_flush:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
+>    33,554,496  (0.2%, 87.9%)  OPENSSL_memset:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->    33,204,970  (0.2%, 88.0%)  CRYPTO_bswap8:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>    33,204,970  (0.2%, 88.1%)  CRYPTO_bswap8:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->    31,457,340  (0.2%, 88.2%)  s2n_stuffer_resize_if_empty:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    31,457,340  (0.2%, 88.3%)  s2n_stuffer_resize_if_empty:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    30,758,288  (0.2%, 88.4%)  alloc::collections::vec_deque::VecDeque<T,A>::to_physical_idx:
+>    30,758,288  (0.2%, 88.5%)  alloc::collections::vec_deque::VecDeque<T,A>::to_physical_idx:
      22,369,664  (0.1%)           /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/mod.rs
 
->    30,758,288  (0.2%, 88.6%)  aead_aes_gcm_open_gather_impl:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/e_aes.c
+>    30,758,288  (0.2%, 88.7%)  aead_aes_gcm_open_gather_impl:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/e_aes.c
 
->    30,408,762  (0.2%, 88.8%)  s2n_aead_cipher_aes_gcm_decrypt:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_aead_cipher_aes_gcm.c
+>    30,408,762  (0.2%, 88.9%)  s2n_aead_cipher_aes_gcm_decrypt:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_aead_cipher_aes_gcm.c
 
 >    30,059,236  (0.2%, 89.0%)  s2n_aead_cipher_aes_gcm_encrypt:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_aead_cipher_aes_gcm.c
 
@@ -391,85 +389,84 @@ Ir_____________________
 
 >    29,360,184  (0.2%, 89.4%)  s2n_record_max_write_payload_size:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
 
->    29,360,184  (0.2%, 89.5%)  s2n_conn_get_current_message_type:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_handshake_io.c
+>    29,360,184  (0.2%, 89.6%)  s2n_conn_get_current_message_type:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_handshake_io.c
 
->    28,311,657  (0.2%, 89.7%)  data_transfer::main:
-     28,311,646  (0.2%)           /home/ubuntu/proj/s2n/tests/regression/src/bin/data_transfer.rs
+>    27,962,094  (0.2%, 89.8%)  data_transfer::main:/home/ubuntu/proj/s2n/tests/regression/src/bin/data_transfer.rs
 
 >    27,962,080  (0.2%, 89.9%)  s2n_stuffer_read_uint16:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c
 
->    27,326,637  (0.2%, 90.0%)  ???:???
+>    27,263,475  (0.2%, 90.1%)  ???:???
 
->    27,263,028  (0.2%, 90.2%)  aws_lc_0_19_0_EVP_AEAD_CTX_seal:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c
+>    27,263,028  (0.2%, 90.3%)  aws_lc_0_19_0_EVP_AEAD_CTX_seal:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c
 
 >    26,913,502  (0.2%, 90.4%)  s2n_stuffer_erase_and_read:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    26,635,216  (0.2%, 90.5%)  s2n_increment_sequence_number:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_sequence.c
+>    26,635,216  (0.2%, 90.6%)  s2n_increment_sequence_number:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/crypto/s2n_sequence.c
 
->    25,864,924  (0.2%, 90.7%)  s2n_tls_record_overhead:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
+>    25,864,924  (0.2%, 90.8%)  s2n_tls_record_overhead:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
 
 >    25,165,872  (0.2%, 90.9%)  buffers_alias:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->    25,165,872  (0.2%, 91.0%)  CRYPTO_store_u64_be:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>    25,165,872  (0.2%, 91.1%)  CRYPTO_store_u64_be:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
 >    25,165,872  (0.2%, 91.2%)  CRYPTO_store_u32_be:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->    24,466,820  (0.2%, 91.3%)  s2n_stuffer_copy_impl:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    24,466,820  (0.2%, 91.4%)  s2n_stuffer_copy_impl:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
 >    24,466,820  (0.2%, 91.5%)  s2n_atomic_flag_test:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_atomic.c
 
->    24,466,820  (0.2%, 91.6%)  aws_lc_0_19_0_EVP_AEAD_CTX_open:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c
+>    24,466,820  (0.2%, 91.7%)  aws_lc_0_19_0_EVP_AEAD_CTX_open:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c
 
 >    23,767,768  (0.1%, 91.8%)  s2n_tls13_parse_record_type:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_read.c
 
->    23,767,768  (0.1%, 91.9%)  s2n_record_write_mac:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
+>    23,767,768  (0.1%, 92.0%)  s2n_record_write_mac:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
 
 >    23,418,247  (0.1%, 92.1%)  aead_aes_gcm_tls13_seal_scatter:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/e_aes.c
 
->    23,069,076  (0.1%, 92.2%)  s2n_stuffer_free:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    23,068,716  (0.1%, 92.2%)  s2n_stuffer_free:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    23,068,716  (0.1%, 92.3%)  check_alias:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c
+>    23,068,716  (0.1%, 92.4%)  check_alias:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/cipher/aead.c
 
 >    22,369,664  (0.1%, 92.5%)  s2n_stuffer_raw_write:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    22,369,664  (0.1%, 92.6%)  s2n_stuffer_raw_read:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
+>    22,369,664  (0.1%, 92.7%)  s2n_stuffer_raw_read:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    22,369,664  (0.1%, 92.7%)  core::result::Result<T,E>::map_err:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/result.rs
+>    22,369,664  (0.1%, 92.8%)  core::result::Result<T,E>::map_err:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/result.rs
 
 >    22,020,138  (0.1%, 92.9%)  s2n_record_write_protocol_version:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_record_write.c
 
->    20,971,560  (0.1%, 93.0%)  s2n_connection_send_stuffer:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_connection.c
+>    20,971,560  (0.1%, 93.1%)  s2n_connection_send_stuffer:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_connection.c
 
->    20,622,034  (0.1%, 93.1%)  s2n_recv_in_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
+>    20,622,034  (0.1%, 93.2%)  s2n_recv_in_init:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_recv.c
 
 >    20,272,508  (0.1%, 93.3%)  <T as s2n_tls::error::Pollable>::into_poll:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls/src/error.rs
 
 >    19,922,982  (0.1%, 93.4%)  core::cell::RefCell<T>::borrow_mut:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cell.rs
 
->    19,573,456  (0.1%, 93.5%)  s2n_is_early_data_io:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_early_data_io.c
+>    19,573,456  (0.1%, 93.6%)  s2n_is_early_data_io:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_early_data_io.c
 
->    19,573,456  (0.1%, 93.6%)  s2n_early_data_record_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_early_data_io.c
+>    19,573,456  (0.1%, 93.7%)  s2n_early_data_record_bytes:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_early_data_io.c
 
->    19,223,930  (0.1%, 93.7%)  s2n_key_update_send:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_key_update.c
+>    19,573,456  (0.1%, 93.8%)  core::cmp::min_by:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cmp.rs
 
->    18,874,404  (0.1%, 93.9%)  s2n_tls::testing::TestPair::send_cb:
+>    19,223,930  (0.1%, 93.9%)  s2n_key_update_send:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_key_update.c
+
+>    18,874,404  (0.1%, 94.0%)  s2n_tls::testing::TestPair::send_cb:
      16,777,248  (0.1%)           /home/ubuntu/proj/s2n/bindings/rust/s2n-tls/src/testing.rs
 
->    18,874,404  (0.1%, 94.0%)  s2n_connection_is_quic_enabled:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_quic_support.c
+>    18,874,404  (0.1%, 94.1%)  s2n_connection_is_quic_enabled:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_quic_support.c
 
->    18,874,404  (0.1%, 94.1%)  core::cmp::min_by:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/cmp.rs
+>    18,175,352  (0.1%, 94.3%)  s2n_sendv_with_offset_total_size:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
 
->    18,175,352  (0.1%, 94.2%)  s2n_sendv_with_offset_total_size:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
+>    18,175,352  (0.1%, 94.4%)  s2n_check_record_limit:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_key_update.c
 
->    18,175,352  (0.1%, 94.3%)  s2n_check_record_limit:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_key_update.c
+>    17,825,826  (0.1%, 94.5%)  s2n_stuffer_read_uint8:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c
 
->    17,825,826  (0.1%, 94.4%)  s2n_stuffer_read_uint8:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_network_order.c
+>    17,825,826  (0.1%, 94.6%)  s2n_post_handshake_send:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_post_handshake.c
 
->    17,825,826  (0.1%, 94.5%)  s2n_post_handshake_send:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_post_handshake.c
+>    17,476,300  (0.1%, 94.7%)  aws_lc_0_19_0_CRYPTO_gcm128_tag:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
 
->    17,476,300  (0.1%, 94.6%)  aws_lc_0_19_0_CRYPTO_gcm128_tag:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/modes/gcm.c
-
->    17,476,300  (0.1%, 94.7%)  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index_mut:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/index.rs
+>    17,476,300  (0.1%, 94.8%)  <core::ops::range::Range<usize> as core::slice::index::SliceIndex<[T]>>::index_mut:/rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/core/src/slice/index.rs
 
 >    17,126,774  (0.1%, 94.9%)  s2n_sendv_with_offset:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/tls/s2n_send.c
 
@@ -573,13 +570,13 @@ Ir_______________
          .           return memmove(dst, src, n);
          .         }
          .         
-12,583,008 (0.1%)  static inline void *OPENSSL_memset(void *dst, int c, size_t n) {
- 4,194,336 (0.0%)    if (n == 0) {
+12,582,936 (0.1%)  static inline void *OPENSSL_memset(void *dst, int c, size_t n) {
+ 4,194,312 (0.0%)    if (n == 0) {
          .             return dst;
          .           }
          .         
-12,583,008 (0.1%)    return memset(dst, c, n);
- 4,194,336 (0.0%)  }
+12,582,936 (0.1%)    return memset(dst, c, n);
+ 4,194,312 (0.0%)  }
          .         
          .         
          .         // Loads and stores.
@@ -724,47 +721,11 @@ Ir_______________
 --------------------------------------------------------------------------------
 Ir_______________ 
 
--- line 50 ----------------------------------------
-         .           if (EVP_AEAD_CTX_init(ctx, aead, key, key_len, tag_len, NULL)) {
-         .             return ctx;
+-- line 107 ----------------------------------------
          .           }
-         .         
-         .           EVP_AEAD_CTX_free(ctx);
-         .           return NULL;
+         .           ctx->aead->cleanup(ctx);
+         .           ctx->aead = NULL;
          .         }
-         .         
-        40 (0.0%)  void EVP_AEAD_CTX_free(EVP_AEAD_CTX *ctx) {
-        16 (0.0%)    if (ctx == NULL) {
-         .             return;
-         .           }
-        24 (0.0%)    EVP_AEAD_CTX_cleanup(ctx);
-        32 (0.0%)    OPENSSL_free(ctx);
-        16 (0.0%)  }
-         .         
-         .         int EVP_AEAD_CTX_init(EVP_AEAD_CTX *ctx, const EVP_AEAD *aead,
-         .                               const uint8_t *key, size_t key_len, size_t tag_len,
-         .                               ENGINE *impl) {
-         .           if (!aead->init) {
-         .             OPENSSL_PUT_ERROR(CIPHER, CIPHER_R_NO_DIRECTION_SET);
-         .             ctx->aead = NULL;
-         .             return 0;
--- line 72 ----------------------------------------
--- line 96 ----------------------------------------
-         .         
-         .           if (!ok) {
-         .             ctx->aead = NULL;
-         .           }
-         .         
-         .           return ok;
-         .         }
-         .         
-        40 (0.0%)  void EVP_AEAD_CTX_cleanup(EVP_AEAD_CTX *ctx) {
-        32 (0.0%)    if (ctx->aead == NULL) {
-         4 (0.0%)      return;
-         .           }
-        24 (0.0%)    ctx->aead->cleanup(ctx);
-        12 (0.0%)    ctx->aead = NULL;
-        16 (0.0%)  }
          .         
          .         // check_alias returns 1 if |out| is compatible with |in| and 0 otherwise. If
          .         // |in| and |out| alias, we require that |in| == |out|.
@@ -914,16 +875,10 @@ Ir_______________
 --------------------------------------------------------------------------------
 Ir______________ 
 
--- line 1127 ----------------------------------------
-        .                                       requested_tag_len)) {
-        .             return 0;
-        .           }
-        .         
-        .           ctx->tag_len = actual_tag_len;
-        .           return 1;
+-- line 1133 ----------------------------------------
         .         }
         .         
-       28 (0.0%)  static void aead_aes_gcm_cleanup(EVP_AEAD_CTX *ctx) {}
+        .         static void aead_aes_gcm_cleanup(EVP_AEAD_CTX *ctx) {}
         .         
         .         static int aead_aes_gcm_seal_scatter_impl(
         .             const struct aead_aes_gcm_ctx *gcm_ctx, uint8_t *out, uint8_t *out_tag,
@@ -1535,114 +1490,6 @@ Ir_______________
 --------------------------------------------------------------------------------
 Ir_______________ 
 
--- line 78 ----------------------------------------
-         .         OPENSSL_STATIC_ASSERT(OPENSSL_MALLOC_PREFIX >= sizeof(size_t),
-         .                               size_t_too_large)
-         .         
-         .         #if defined(OPENSSL_ASAN)
-         .         void __asan_poison_memory_region(const volatile void *addr, size_t size);
-         .         void __asan_unpoison_memory_region(const volatile void *addr, size_t size);
-         .         #else
-         .         static void __asan_poison_memory_region(const void *addr, size_t size) {}
-   241,536 (0.0%)  static void __asan_unpoison_memory_region(const void *addr, size_t size) {}
-         .         #endif
-         .         
-         .         // Windows doesn't really support weak symbols as of May 2019, and Clang on
-         .         // Windows will emit strong symbols instead. See
-         .         // https://bugs.llvm.org/show_bug.cgi?id=37598
-         .         #if defined(__ELF__) && defined(__GNUC__)
-         .         #define WEAK_SYMBOL_FUNC(rettype, name, args) \
-         .           rettype name args __attribute__((weak));
--- line 94 ----------------------------------------
--- line 214 ----------------------------------------
-         .           if (size != 0 && num > SIZE_MAX / size) {
-         .             OPENSSL_PUT_ERROR(CRYPTO, ERR_R_OVERFLOW);
-         .             return NULL;
-         .           }
-         .         
-         .           return OPENSSL_zalloc(num * size);
-         .         }
-         .         
-   194,440 (0.0%)  void OPENSSL_free(void *orig_ptr) {
-    77,776 (0.0%)    if (orig_ptr == NULL) {
-     8,696 (0.0%)      return;
-         .           }
-    90,576 (0.0%)    if (free_impl != NULL) {
-         .             assert(OPENSSL_memory_alloc == NULL);
-         .             assert(OPENSSL_memory_realloc == NULL);
-         .             assert(OPENSSL_memory_free == NULL);
-         .             assert(OPENSSL_memory_get_size == NULL);
-         .             assert(malloc_impl != NULL);
-         .             assert(realloc_impl != NULL);
-         .             free_impl(orig_ptr, AWSLC_FILE, AWSLC_LINE);
-         .             return;
-         .           }
-         .         
-    90,576 (0.0%)    if (OPENSSL_memory_free != NULL) {
-         .             OPENSSL_memory_free(orig_ptr);
-         .             return;
-         .           }
-         .         
-    90,576 (0.0%)    void *ptr = ((uint8_t *)orig_ptr) - OPENSSL_MALLOC_PREFIX;
-   120,768 (0.0%)    __asan_unpoison_memory_region(ptr, OPENSSL_MALLOC_PREFIX);
-         .         
-    90,576 (0.0%)    size_t size = *(size_t *)ptr;
-   181,152 (0.0%)    OPENSSL_cleanse(ptr, size + OPENSSL_MALLOC_PREFIX);
-         .         
-         .         // ASan knows to intercept malloc and free, but not sdallocx.
-         .         #if defined(OPENSSL_ASAN)
-         .           (void)sdallocx;
-         .           free(ptr);
-         .           (void) sdallocx;
-         .         #else
-    90,576 (0.0%)    if (sdallocx) {
-         .             sdallocx(ptr, size + OPENSSL_MALLOC_PREFIX, 0 /* flags */);
-         .           } else {
-   120,768 (0.0%)      free(ptr);
-         .           }
-         .         #endif
-    77,776 (0.0%)  }
-         .         
-         .         void *OPENSSL_realloc(void *orig_ptr, size_t new_size) {
-         .           if (orig_ptr == NULL) {
-         .             return OPENSSL_malloc(new_size);
-         .           }
-         .           if (realloc_impl != NULL) {
-         .             assert(OPENSSL_memory_alloc == NULL);
-         .             assert(OPENSSL_memory_realloc == NULL);
--- line 268 ----------------------------------------
--- line 299 ----------------------------------------
-         .           }
-         .         
-         .           memcpy(ret, orig_ptr, to_copy);
-         .           OPENSSL_free(orig_ptr);
-         .         
-         .           return ret;
-         .         }
-         .         
-   181,152 (0.0%)  void OPENSSL_cleanse(void *ptr, size_t len) {
-         .         #if defined(OPENSSL_WINDOWS)
-         .           SecureZeroMemory(ptr, len);
-         .         #else
-   150,960 (0.0%)    OPENSSL_memset(ptr, 0, len);
-         .         
-         .         #if !defined(OPENSSL_NO_ASM)
-         .           /* As best as we can tell, this is sufficient to break any optimisations that
-         .              might try to eliminate "superfluous" memsets. If there's an easy way to
-         .              detect memset_s, it would be better to use that. */
-    30,192 (0.0%)    __asm__ __volatile__("" : : "r"(ptr) : "memory");
-         .         #endif
-         .         #endif  // !OPENSSL_NO_ASM
-    90,576 (0.0%)  }
-         .         
-         .         void OPENSSL_clear_free(void *ptr, size_t unused) { OPENSSL_free(ptr); }
-         .         
-         .         int CRYPTO_secure_malloc_init(size_t size, size_t min_size) { return 0; }
-         .         
-         .         int CRYPTO_secure_malloc_initialized(void) { return 0; }
-         .         
-         .         size_t CRYPTO_secure_used(void) { return 0; }
--- line 328 ----------------------------------------
 -- line 330 ----------------------------------------
          .         void *OPENSSL_secure_malloc(size_t size) { return OPENSSL_malloc(size); }
          .         
@@ -1932,21 +1779,21 @@ Ir________________
           .         #include "utils/s2n_safety.h"
           .         
           .         S2N_RESULT s2n_stuffer_validate(const struct s2n_stuffer *stuffer)
-308,281,992 (1.9%)  {
+308,281,932 (1.9%)  {
           .             /**
           .              * Note that we do not assert any properties on the tainted field,
           .              * as any boolean value in that field is valid.
           .              */
-102,760,664 (0.6%)      RESULT_ENSURE_REF(stuffer);
-411,042,656 (2.5%)      RESULT_GUARD(s2n_blob_validate(&stuffer->blob));
-506,113,776 (3.1%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(stuffer->growable, stuffer->alloced), S2N_ERR_SAFETY);
+102,760,644 (0.6%)      RESULT_ENSURE_REF(stuffer);
+411,042,576 (2.5%)      RESULT_GUARD(s2n_blob_validate(&stuffer->blob));
+506,113,648 (3.1%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(stuffer->growable, stuffer->alloced), S2N_ERR_SAFETY);
           .         
           .             /* <= is valid because we can have a fully written/read stuffer */
-462,422,988 (2.8%)      RESULT_DEBUG_ENSURE(stuffer->high_water_mark <= stuffer->blob.size, S2N_ERR_SAFETY);
-462,422,988 (2.8%)      RESULT_DEBUG_ENSURE(stuffer->write_cursor <= stuffer->high_water_mark, S2N_ERR_SAFETY);
-462,422,988 (2.8%)      RESULT_DEBUG_ENSURE(stuffer->read_cursor <= stuffer->write_cursor, S2N_ERR_SAFETY);
- 51,380,332 (0.3%)      return S2N_RESULT_OK;
-154,140,996 (0.9%)  }
+462,422,898 (2.8%)      RESULT_DEBUG_ENSURE(stuffer->high_water_mark <= stuffer->blob.size, S2N_ERR_SAFETY);
+462,422,898 (2.8%)      RESULT_DEBUG_ENSURE(stuffer->write_cursor <= stuffer->high_water_mark, S2N_ERR_SAFETY);
+462,422,898 (2.8%)      RESULT_DEBUG_ENSURE(stuffer->read_cursor <= stuffer->write_cursor, S2N_ERR_SAFETY);
+ 51,380,322 (0.3%)      return S2N_RESULT_OK;
+154,140,966 (0.9%)  }
           .         
           .         S2N_RESULT s2n_stuffer_reservation_validate(const struct s2n_stuffer_reservation *reservation)
           .         {
@@ -1996,14 +1843,14 @@ Ir________________
           .         }
           .         
           .         int s2n_stuffer_free(struct s2n_stuffer *stuffer)
-  3,495,310 (0.0%)  {
- 10,485,930 (0.1%)      POSIX_PRECONDITION(s2n_stuffer_validate(stuffer));
-  3,495,310 (0.0%)      if (stuffer->alloced) {
-         30 (0.0%)          POSIX_GUARD(s2n_free(&stuffer->blob));
+  3,495,260 (0.0%)  {
+ 10,485,780 (0.1%)      POSIX_PRECONDITION(s2n_stuffer_validate(stuffer));
+  3,495,260 (0.0%)      if (stuffer->alloced) {
+          .                 POSIX_GUARD(s2n_free(&stuffer->blob));
           .             }
-  3,495,310 (0.0%)      *stuffer = (struct s2n_stuffer){ 0 };
-    699,062 (0.0%)      return S2N_SUCCESS;
-  1,398,124 (0.0%)  }
+  3,495,260 (0.0%)      *stuffer = (struct s2n_stuffer){ 0 };
+    699,052 (0.0%)      return S2N_SUCCESS;
+  1,398,104 (0.0%)  }
           .         
           .         int s2n_stuffer_free_without_wipe(struct s2n_stuffer *stuffer)
           .         {
@@ -2474,161 +2321,6 @@ Ir______________
 --------------------------------------------------------------------------------
 Ir_______________ 
 
--- line 125 ----------------------------------------
-         .             conn->max_outgoing_fragment_length = S2N_DEFAULT_FRAGMENT_LENGTH;
-         .             conn->handshake.end_of_messages = APPLICATION_DATA;
-         .             s2n_connection_set_config(conn, config);
-         .         
-         .             return 0;
-         .         }
-         .         
-         .         S2N_RESULT s2n_connection_wipe_all_keyshares(struct s2n_connection *conn)
-        12 (0.0%)  {
-         4 (0.0%)      RESULT_ENSURE_REF(conn);
-         .         
-        12 (0.0%)      RESULT_GUARD_POSIX(s2n_ecc_evp_params_free(&conn->kex_params.server_ecc_evp_params));
-        12 (0.0%)      RESULT_GUARD_POSIX(s2n_ecc_evp_params_free(&conn->kex_params.client_ecc_evp_params));
-         .         
-        12 (0.0%)      RESULT_GUARD_POSIX(s2n_kem_group_free(&conn->kex_params.server_kem_group_params));
-        12 (0.0%)      RESULT_GUARD_POSIX(s2n_kem_group_free(&conn->kex_params.client_kem_group_params));
-         .         
-         2 (0.0%)      return S2N_RESULT_OK;
-         6 (0.0%)  }
-         .         
-         .         static int s2n_connection_wipe_keys(struct s2n_connection *conn)
-        10 (0.0%)  {
-         .             /* Free any server key received (we may not have completed a
-         .              * handshake, so this may not have been free'd yet) */
-        12 (0.0%)      POSIX_GUARD(s2n_pkey_free(&conn->handshake_params.server_public_key));
-        12 (0.0%)      POSIX_GUARD(s2n_pkey_zero_init(&conn->handshake_params.server_public_key));
-        12 (0.0%)      POSIX_GUARD(s2n_pkey_free(&conn->handshake_params.client_public_key));
-        12 (0.0%)      POSIX_GUARD(s2n_pkey_zero_init(&conn->handshake_params.client_public_key));
-         8 (0.0%)      s2n_x509_validator_wipe(&conn->x509_validator);
-        12 (0.0%)      POSIX_GUARD(s2n_dh_params_free(&conn->kex_params.server_dh_params));
-        16 (0.0%)      POSIX_GUARD_RESULT(s2n_connection_wipe_all_keyshares(conn));
-        12 (0.0%)      POSIX_GUARD(s2n_kem_free(&conn->kex_params.kem_params));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->handshake_params.client_cert_chain));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->ct_response));
-         .         
-         2 (0.0%)      return 0;
-         4 (0.0%)  }
-         .         
-         .         static int s2n_connection_free_managed_recv_io(struct s2n_connection *conn)
-        12 (0.0%)  {
-         4 (0.0%)      POSIX_ENSURE_REF(conn);
-         .         
-        10 (0.0%)      if (conn->managed_recv_io) {
-         .                 POSIX_GUARD(s2n_free_object((uint8_t **) &conn->recv_io_context, sizeof(struct s2n_socket_read_io_context)));
-         .                 conn->managed_recv_io = false;
-         .                 conn->recv = NULL;
-         .             }
-         2 (0.0%)      return S2N_SUCCESS;
-         6 (0.0%)  }
-         .         
-         .         static int s2n_connection_free_managed_send_io(struct s2n_connection *conn)
-        12 (0.0%)  {
-         4 (0.0%)      POSIX_ENSURE_REF(conn);
-         .         
-        10 (0.0%)      if (conn->managed_send_io) {
-         .                 POSIX_GUARD(s2n_free_object((uint8_t **) &conn->send_io_context, sizeof(struct s2n_socket_write_io_context)));
-         .                 conn->managed_send_io = false;
-         .                 conn->send = NULL;
-         .             }
-         2 (0.0%)      return S2N_SUCCESS;
-         6 (0.0%)  }
-         .         
-         .         static int s2n_connection_free_managed_io(struct s2n_connection *conn)
-        10 (0.0%)  {
-        10 (0.0%)      POSIX_GUARD(s2n_connection_free_managed_recv_io(conn));
-        10 (0.0%)      POSIX_GUARD(s2n_connection_free_managed_send_io(conn));
-         2 (0.0%)      return S2N_SUCCESS;
-         4 (0.0%)  }
-         .         
-         .         static int s2n_connection_wipe_io(struct s2n_connection *conn)
-         .         {
-         .             if (s2n_connection_is_managed_corked(conn) && conn->recv) {
-         .                 POSIX_GUARD(s2n_socket_read_restore(conn));
-         .             }
-         .             if (s2n_connection_is_managed_corked(conn) && conn->send) {
-         .                 POSIX_GUARD(s2n_socket_write_restore(conn));
--- line 200 ----------------------------------------
--- line 242 ----------------------------------------
-         .         {
-         .             RESULT_ENSURE_REF(conn);
-         .             RESULT_GUARD_POSIX(s2n_connection_free(*conn));
-         .             *conn = NULL;
-         .             return S2N_RESULT_OK;
-         .         }
-         .         
-         .         int s2n_connection_free(struct s2n_connection *conn)
-        10 (0.0%)  {
-        10 (0.0%)      POSIX_GUARD(s2n_connection_wipe_keys(conn));
-        18 (0.0%)      POSIX_GUARD_RESULT(s2n_psk_parameters_wipe(&conn->psk_params));
-         .         
-        16 (0.0%)      POSIX_GUARD_RESULT(s2n_prf_free(conn));
-        18 (0.0%)      POSIX_GUARD_RESULT(s2n_handshake_hashes_free(&conn->handshake.hashes));
-         .         
-        10 (0.0%)      POSIX_GUARD(s2n_connection_free_managed_io(conn));
-         .         
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->client_ticket));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->status_response));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->our_quic_transport_parameters));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->peer_quic_transport_parameters));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->server_early_data_context));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->tls13_ticket_fields.session_secret));
-        12 (0.0%)      POSIX_GUARD(s2n_stuffer_free(&conn->buffer_in));
-        12 (0.0%)      POSIX_GUARD(s2n_stuffer_free(&conn->in));
-        12 (0.0%)      POSIX_GUARD(s2n_stuffer_free(&conn->out));
-        12 (0.0%)      POSIX_GUARD(s2n_stuffer_free(&conn->handshake.io));
-        12 (0.0%)      POSIX_GUARD(s2n_stuffer_free(&conn->post_handshake.in));
-         8 (0.0%)      s2n_x509_validator_wipe(&conn->x509_validator);
-        12 (0.0%)      POSIX_GUARD(s2n_client_hello_free_raw_message(&conn->client_hello));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->application_protocols_overridden));
-        12 (0.0%)      POSIX_GUARD(s2n_free(&conn->cookie));
-        18 (0.0%)      POSIX_GUARD_RESULT(s2n_crypto_parameters_free(&conn->initial));
-        18 (0.0%)      POSIX_GUARD_RESULT(s2n_crypto_parameters_free(&conn->secure));
-        12 (0.0%)      POSIX_GUARD(s2n_free_object((uint8_t **) &conn, sizeof(struct s2n_connection)));
-         .         
-         2 (0.0%)      return 0;
-         4 (0.0%)  }
-         .         
-         .         int s2n_connection_set_config(struct s2n_connection *conn, struct s2n_config *config)
-         .         {
-         .             POSIX_ENSURE_REF(conn);
-         .             POSIX_ENSURE_REF(config);
-         .         
-         .             if (conn->config == config) {
-         .                 return 0;
--- line 287 ----------------------------------------
--- line 384 ----------------------------------------
-         .             POSIX_ENSURE(conn->mode == S2N_SERVER, S2N_ERR_INVALID_STATE);
-         .             POSIX_ENSURE(!(conn->handshake.client_hello_received), S2N_ERR_INVALID_STATE);
-         .         
-         .             conn->server_name_used = 1;
-         .             return S2N_SUCCESS;
-         .         }
-         .         
-         .         int s2n_connection_set_ctx(struct s2n_connection *conn, void *ctx)
-        14 (0.0%)  {
-         4 (0.0%)      POSIX_ENSURE_REF(conn);
-         .         
-         6 (0.0%)      conn->context = ctx;
-         2 (0.0%)      return S2N_SUCCESS;
-         6 (0.0%)  }
-         .         
-         .         void *s2n_connection_get_ctx(struct s2n_connection *conn)
-         8 (0.0%)  {
-         4 (0.0%)      return conn->context;
-         4 (0.0%)  }
-         .         
-         .         int s2n_connection_release_buffers(struct s2n_connection *conn)
-         .         {
-         .             POSIX_ENSURE_REF(conn);
-         .             POSIX_PRECONDITION(s2n_stuffer_validate(&conn->out));
-         .             POSIX_PRECONDITION(s2n_stuffer_validate(&conn->in));
-         .         
-         .             POSIX_ENSURE(s2n_stuffer_is_consumed(&conn->out), S2N_ERR_STUFFER_HAS_UNPROCESSED_DATA);
--- line 410 ----------------------------------------
 -- line 1256 ----------------------------------------
          .                     r = nanosleep(&sleep_time, &sleep_time);
          .                 } while (r != 0);
@@ -2756,27 +2448,13 @@ Ir_______________
          .             POSIX_ENSURE_REF(cert_chain_and_key);
          .             POSIX_ENSURE_REF(cert_chain_and_key->cert_chain);
 -- line 1487 ----------------------------------------
--- line 1645 ----------------------------------------
+-- line 1659 ----------------------------------------
+         .             }
+         .         
+         .             *config = conn->config;
          .         
          .             return S2N_SUCCESS;
          .         }
-         .         
-         .         /*
-         .          * Gets the config set on the connection.
-         .          */
-         .         int s2n_connection_get_config(struct s2n_connection *conn, struct s2n_config **config)
-        14 (0.0%)  {
-         4 (0.0%)      POSIX_ENSURE_REF(conn);
-         4 (0.0%)      POSIX_ENSURE_REF(config);
-         .         
-        12 (0.0%)      if (s2n_fetch_default_config() == conn->config) {
-         .                 POSIX_BAIL(S2N_ERR_NULL);
-         .             }
-         .         
-         8 (0.0%)      *config = conn->config;
-         .         
-         2 (0.0%)      return S2N_SUCCESS;
-         6 (0.0%)  }
          .         
          .         S2N_RESULT s2n_connection_dynamic_free_out_buffer(struct s2n_connection *conn)
  2,097,156 (0.0%)  {
@@ -4608,16 +4286,16 @@ Ir________________
           .         #include "utils/s2n_safety.h"
           .         
           .         S2N_RESULT s2n_blob_validate(const struct s2n_blob *b)
-346,032,600 (2.1%)  {
-115,344,200 (0.7%)      RESULT_ENSURE_REF(b);
-415,939,195 (2.6%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->data == NULL, b->size == 0), S2N_ERR_SAFETY);
-415,939,195 (2.6%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->data == NULL, b->allocated == 0), S2N_ERR_SAFETY);
-789,233,273 (4.8%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->growable == 0, b->allocated == 0), S2N_ERR_SAFETY);
-558,895,949 (3.4%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->growable != 0, b->size <= b->allocated), S2N_ERR_SAFETY);
-479,552,927 (2.9%)      RESULT_DEBUG_ENSURE(S2N_MEM_IS_READABLE(b->data, b->allocated), S2N_ERR_SAFETY);
-792,728,223 (4.9%)      RESULT_DEBUG_ENSURE(S2N_MEM_IS_READABLE(b->data, b->size), S2N_ERR_SAFETY);
- 57,672,100 (0.4%)      return S2N_RESULT_OK;
-173,016,300 (1.1%)  }
+346,030,740 (2.1%)  {
+115,343,580 (0.7%)      RESULT_ENSURE_REF(b);
+415,935,940 (2.6%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->data == NULL, b->size == 0), S2N_ERR_SAFETY);
+415,935,940 (2.6%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->data == NULL, b->allocated == 0), S2N_ERR_SAFETY);
+789,229,708 (4.8%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->growable == 0, b->allocated == 0), S2N_ERR_SAFETY);
+558,892,074 (3.4%)      RESULT_DEBUG_ENSURE(S2N_IMPLIES(b->growable != 0, b->size <= b->allocated), S2N_ERR_SAFETY);
+479,549,672 (2.9%)      RESULT_DEBUG_ENSURE(S2N_MEM_IS_READABLE(b->data, b->allocated), S2N_ERR_SAFETY);
+792,724,968 (4.9%)      RESULT_DEBUG_ENSURE(S2N_MEM_IS_READABLE(b->data, b->size), S2N_ERR_SAFETY);
+ 57,671,790 (0.4%)      return S2N_RESULT_OK;
+173,015,370 (1.1%)  }
           .         
           .         int s2n_blob_init(struct s2n_blob *b, uint8_t *data, uint32_t size)
  33,554,496 (0.2%)  {
@@ -4629,12 +4307,12 @@ Ir________________
  12,582,936 (0.1%)  }
           .         
           .         int s2n_blob_zero(struct s2n_blob *b)
-        624 (0.0%)  {
-      1,560 (0.0%)      POSIX_PRECONDITION(s2n_blob_validate(b));
-      1,738 (0.0%)      POSIX_CHECKED_MEMSET(b->data, 0, MAX(b->allocated, b->size));
-      1,560 (0.0%)      POSIX_POSTCONDITION(s2n_blob_validate(b));
-        104 (0.0%)      return S2N_SUCCESS;
-        312 (0.0%)  }
+          .         {
+          .             POSIX_PRECONDITION(s2n_blob_validate(b));
+          .             POSIX_CHECKED_MEMSET(b->data, 0, MAX(b->allocated, b->size));
+          .             POSIX_POSTCONDITION(s2n_blob_validate(b));
+          .             return S2N_SUCCESS;
+          .         }
           .         
           .         int s2n_blob_slice(const struct s2n_blob *b, struct s2n_blob *slice, uint32_t offset, uint32_t size)
   4,194,312 (0.0%)  {
@@ -4700,9 +4378,9 @@ Ir________________
           .         
           .         /* returns true when the result is S2N_RESULT_OK */
           .         inline bool s2n_result_is_ok(s2n_result result)
-706,045,232 (4.3%)  {
-529,533,924 (3.3%)      return result.__error_signal == S2N_SUCCESS;
-353,022,616 (2.2%)  }
+706,042,520 (4.3%)  {
+529,531,890 (3.3%)      return result.__error_signal == S2N_SUCCESS;
+353,021,260 (2.2%)  }
           .         
           .         /* returns true when the result is S2N_RESULT_ERROR */
           .         inline bool s2n_result_is_error(s2n_result result)
@@ -4718,24 +4396,12 @@ Ir________________
 --------------------------------------------------------------------------------
 Ir______________ 
 
-1,398,147 (0.0%)  <unknown (line 0)>
+1,398,104 (0.0%)  <unknown (line 0)>
 
--- line 59 ----------------------------------------
-        .             type Output;
-        .         
-        .             fn into_result(self) -> Result<Self::Output, Error>;
-        .         }
-        .         
-        .         impl Fallible for s2n_status_code::Type {
-        .             type Output = s2n_status_code::Type;
-        .         
-       65 (0.0%)      fn into_result(self) -> Result<Self::Output, Error> {
-       26 (0.0%)          if self >= s2n_status_code::SUCCESS {
-       26 (0.0%)              Ok(self)
-        .                 } else {
+-- line 71 ----------------------------------------
         .                     Err(Error::capture())
         .                 }
-       26 (0.0%)      }
+        .             }
         .         }
         .         
         .         impl Fallible for isize {
@@ -4755,31 +4421,6 @@ Ir______________
         .             ///
         .             /// If a method that returns an unsigned int is fallible,
 -- line 91 ----------------------------------------
--- line 104 ----------------------------------------
-        .                     Err(Error::capture())
-        .                 }
-        .             }
-        .         }
-        .         
-        .         impl<T> Fallible for *mut T {
-        .             type Output = NonNull<T>;
-        .         
-       14 (0.0%)      fn into_result(self) -> Result<Self::Output, Error> {
-       24 (0.0%)          if let Some(value) = NonNull::new(self) {
-        4 (0.0%)              Ok(value)
-        .                 } else {
-        .                     Err(Error::capture())
-        .                 }
-        4 (0.0%)      }
-        .         }
-        .         
-        .         impl<T> Fallible for *const T {
-        .             type Output = *const T;
-        .         
-        .             fn into_result(self) -> Result<Self::Output, Error> {
-        .                 if !self.is_null() {
-        .                     Ok(self)
--- line 126 ----------------------------------------
 -- line 134 ----------------------------------------
         .             type Output;
         .         
@@ -4813,7 +4454,7 @@ Ir_______________
 
  6,640,994 (0.0%)  <unknown (line 0)>
 
--- line 481 ----------------------------------------
+-- line 273 ----------------------------------------
          .                         (_, Poll::Ready(Err(e))) => return Err(e),
          .                         // or an error on the client, then return the error
          .                         (Poll::Ready(Err(e)), _) => return Err(e),
@@ -4860,23 +4501,30 @@ Ir_______________
 --------------------------------------------------------------------------------
 Ir______________ 
 
-5,242,892 (0.0%)  <unknown (line 0)>
+5,242,890 (0.0%)  <unknown (line 0)>
 
         .         use crabgrind as cg;
+        .         use s2n_tls::security;
+        .         use s2n_tls::testing::TestPair;
         .         
         .         const DATA_CHUNK: &[u8] = &[3, 1, 4]; // The data chunk to be sent
         .         const ONE_MB: usize = 1_048_576; // 1 MB in bytes
         .         
-        1 (0.0%)  fn main() {
+        1 (0.0%)  fn main() -> Result<(), Box<dyn std::error::Error>> {
         1 (0.0%)      cg::cachegrind::stop_instrumentation();
-        .             let config = s2n_tls::testing::build_config(&s2n_tls::security::DEFAULT_TLS13).unwrap();
-        .             // create a pair (client + server) which uses that config
-        .             let mut pair = s2n_tls::testing::TestPair::from_config(&config);
-        .             // assert a successful handshake
+        .             
+        .             let config = s2n_tls::testing::build_config(&security::DEFAULT_TLS13).expect("Failed to build config");
+        .             
+        .             // Create a pair (client + server) which uses that config
+        .             let mut pair = TestPair::from_config(&config);
+        .             
+        .             // Assert a successful handshake
         .             assert!(pair.handshake().is_ok());
-        .             // we can also do IO using the poll_* functions
-        .             // this data is sent using the shared data buffers owned by the harness
+        .             
+        .             // We can also do IO using the poll_* functions
+        .             // This data is sent using the shared data buffers owned by the harness
         1 (0.0%)      cg::cachegrind::start_instrumentation();
+        .             
         1 (0.0%)      let mut total_bytes_sent = 0;
         7 (0.0%)      let mut buffer = vec![0u8; DATA_CHUNK.len()]; // Buffer to receive data
         .         
@@ -4893,11 +4541,15 @@ Ir______________
         .                 }
         .         
         .                 // Verify that the received data matches the sent data
-9,087,676 (0.1%)          assert_eq!(DATA_CHUNK, &buffer[..DATA_CHUNK.len()]);
+8,738,150 (0.1%)          assert_eq!(DATA_CHUNK, &buffer[..DATA_CHUNK.len()]);
         .             }
         .         
-       13 (0.0%)      println!("Transferred {} bytes successfully.", total_bytes_sent);
-       12 (0.0%)  }
+        1 (0.0%)      cg::cachegrind::stop_instrumentation();
+        .             
+        .             println!("Transferred {} bytes successfully.", total_bytes_sent);
+        .             
+        .             Ok(())
+        .         }
 
 --------------------------------------------------------------------------------
 -- Annotated source file: /rustc/129f3b9964af4d4a709d1383930ade12dfe7c081/library/alloc/src/collections/vec_deque/drain.rs
@@ -4982,10 +4634,10 @@ Unannotated because one or more of these original files are unreadable:
 --------------------------------------------------------------------------------
 Ir____________________ 
 
-14,369,654,236 (88.2%)    annotated: files known & above threshold & readable, line numbers known
-    13,282,033  (0.1%)    annotated: files known & above threshold & readable, line numbers unknown
+14,367,337,489 (88.3%)    annotated: files known & above threshold & readable, line numbers known
+    13,281,988  (0.1%)    annotated: files known & above threshold & readable, line numbers unknown
              0          unannotated: files known & above threshold & two or more non-identical
- 1,511,156,566  (9.3%)  unannotated: files known & above threshold & unreadable 
-   368,858,499  (2.3%)  unannotated: files known & below threshold
-    27,327,096  (0.2%)  unannotated: files unknown
+ 1,511,352,020  (9.3%)  unannotated: files known & above threshold & unreadable 
+   360,820,220  (2.2%)  unannotated: files known & below threshold
+    27,263,861  (0.2%)  unannotated: files unknown
 

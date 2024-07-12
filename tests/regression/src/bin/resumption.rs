@@ -61,6 +61,7 @@ fn validate_session_ticket(conn: &Connection) -> Result<(), Box<dyn Error>> {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    cg::cachegrind::stop_instrumentation();
     let keypair = CertKeyPair::default();
 
     // Initialize config for server with a ticket key

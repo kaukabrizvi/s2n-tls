@@ -39,6 +39,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         assert_eq!(DATA_CHUNK, &buffer[..DATA_CHUNK.len()]);
     }
 
+    cg::cachegrind::stop_instrumentation();
+    
     println!("Transferred {} bytes successfully.", total_bytes_sent);
     
     Ok(())

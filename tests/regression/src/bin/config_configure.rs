@@ -12,6 +12,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let builder = configure_config(builder, &security::DEFAULT_TLS13)?;
     
     let _config = builder.build().expect("Failed to build config");
+
+    cg::cachegrind::stop_instrumentation();
     
     Ok(())
 }
