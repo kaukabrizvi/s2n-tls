@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Metadata
 --------------------------------------------------------------------------------
-Invocation:       /usr/bin/cg_annotate cachegrind.out.190954
+Invocation:       /usr/bin/cg_annotate cachegrind.out.resumption
 Command:          target/debug/resumption
 Events recorded:  Ir
 Events shown:     Ir
@@ -14,30 +14,30 @@ Annotation:       on
 --------------------------------------------------------------------------------
 Ir______________ 
 
-464,726 (100.0%)  PROGRAM TOTALS
+464,099 (100.0%)  PROGRAM TOTALS
 
 --------------------------------------------------------------------------------
 -- File:function summary
 --------------------------------------------------------------------------------
   Ir____________________  file:function
 
-< 103,336 (22.2%, 22.2%)  ./elf/./elf/dl-lookup.c:
+< 103,336 (22.3%, 22.3%)  ./elf/./elf/dl-lookup.c:
    66,934 (14.4%)           do_lookup_x
    21,732  (4.7%)           _dl_lookup_symbol_x
    14,670  (3.2%)           check_match
 
-<  74,120 (15.9%, 38.2%)  ./elf/../sysdeps/x86_64/dl-machine.h:
-   74,054 (15.9%)           _dl_relocate_object
+<  74,120 (16.0%, 38.2%)  ./elf/../sysdeps/x86_64/dl-machine.h:
+   74,054 (16.0%)           _dl_relocate_object
 
-<  50,890 (11.0%, 49.1%)  ./elf/./elf/do-rel.h:
-   50,834 (10.9%)           _dl_relocate_object
+<  50,890 (11.0%, 49.2%)  ./elf/./elf/do-rel.h:
+   50,834 (11.0%)           _dl_relocate_object
 
-<  48,846 (10.5%, 59.6%)  ./stdio-common/./stdio-common/vfscanf-internal.c:__vfscanf_internal
+<  48,846 (10.5%, 59.7%)  ./stdio-common/./stdio-common/vfscanf-internal.c:__vfscanf_internal
 
-<  23,530  (5.1%, 64.7%)  ./stdlib/../stdlib/strtol_l.c:____strtoul_l_internal
+<  23,530  (5.1%, 64.8%)  ./stdlib/../stdlib/strtol_l.c:____strtoul_l_internal
 
-<  23,175  (5.0%, 69.7%)  ./elf/./elf/dl-tunables.c:
-   22,033  (4.7%)           __GI___tunables_init
+<  22,653  (4.9%, 69.7%)  ./elf/./elf/dl-tunables.c:
+   21,511  (4.6%)           __GI___tunables_init
       862  (0.2%)           __tunable_get_val
 
 <  22,238  (4.8%, 74.5%)  ./elf/./elf/dl-reloc.c:_dl_relocate_object
@@ -47,7 +47,7 @@ Ir______________
 
 <  18,874  (4.1%, 82.8%)  ./elf/../sysdeps/generic/dl-new-hash.h:_dl_lookup_symbol_x
 
-<   8,126  (1.7%, 84.6%)  ./elf/./elf/dl-version.c:
+<   8,126  (1.8%, 84.6%)  ./elf/./elf/dl-version.c:
     8,041  (1.7%)           _dl_check_map_versions
 
 <   8,007  (1.7%, 86.3%)  ./libio/./libio/genops.c:
@@ -70,8 +70,8 @@ Ir______________
 
 <   3,449  (0.7%, 89.8%)  ./libio/./libio/iogetdelim.c:getdelim
 
-<   2,614  (0.6%, 90.4%)  ./elf/./elf/dl-tunables.h:
-    2,589  (0.6%)           __GI___tunables_init
+<   2,557  (0.6%, 90.4%)  ./elf/./elf/dl-tunables.h:
+    2,532  (0.5%)           __GI___tunables_init
 
 <   2,385  (0.5%, 90.9%)  ./elf/./elf/dl-cache.c:
     1,707  (0.4%)           _dl_cache_libcmp
@@ -130,7 +130,7 @@ Ir______________
 
 <     540  (0.1%, 96.5%)  ./stdio-common/./stdio-common/printf-parse.h:__vfscanf_internal
 
-<     502  (0.1%, 96.6%)  ./string/../sysdeps/x86_64/multiarch/../multiarch/strlen-sse2.S:strlen
+<     502  (0.1%, 96.7%)  ./string/../sysdeps/x86_64/multiarch/../multiarch/strlen-sse2.S:strlen
 
 <     487  (0.1%, 96.8%)  ./string/../sysdeps/x86_64/multiarch/../multiarch/memset-vec-unaligned-erms.S:memset
 
@@ -139,29 +139,29 @@ Ir______________
 --------------------------------------------------------------------------------
   Ir____________________  function:file
 
-> 147,853 (31.8%, 31.8%)  _dl_relocate_object:
-   74,054 (15.9%)           ./elf/../sysdeps/x86_64/dl-machine.h
-   50,834 (10.9%)           ./elf/./elf/do-rel.h
+> 147,853 (31.9%, 31.9%)  _dl_relocate_object:
+   74,054 (16.0%)           ./elf/../sysdeps/x86_64/dl-machine.h
+   50,834 (11.0%)           ./elf/./elf/do-rel.h
    22,238  (4.8%)           ./elf/./elf/dl-reloc.c
       727  (0.2%)           ./elf/../sysdeps/generic/ldsodefs.h
 
->  68,824 (14.8%, 46.6%)  do_lookup_x:
+>  68,824 (14.8%, 46.7%)  do_lookup_x:
    66,934 (14.4%)           ./elf/./elf/dl-lookup.c
     1,050  (0.2%)           ./elf/../sysdeps/generic/ldsodefs.h
       840  (0.2%)           ./elf/../sysdeps/generic/dl-protected.h
 
->  50,421 (10.8%, 57.5%)  __vfscanf_internal:
+>  50,421 (10.9%, 57.6%)  __vfscanf_internal:
    48,846 (10.5%)           ./stdio-common/./stdio-common/vfscanf-internal.c
       990  (0.2%)           ./stdio-common/../include/scratch_buffer.h
       540  (0.1%)           ./stdio-common/./stdio-common/printf-parse.h
 
->  40,606  (8.7%, 66.2%)  _dl_lookup_symbol_x:
+>  40,606  (8.7%, 66.3%)  _dl_lookup_symbol_x:
    21,732  (4.7%)           ./elf/./elf/dl-lookup.c
    18,874  (4.1%)           ./elf/../sysdeps/generic/dl-new-hash.h
 
->  24,622  (5.3%, 71.5%)  __GI___tunables_init:
-   22,033  (4.7%)           ./elf/./elf/dl-tunables.c
-    2,589  (0.6%)           ./elf/./elf/dl-tunables.h
+>  24,043  (5.2%, 71.5%)  __GI___tunables_init:
+   21,511  (4.6%)           ./elf/./elf/dl-tunables.c
+    2,532  (0.5%)           ./elf/./elf/dl-tunables.h
 
 >  23,530  (5.1%, 76.6%)  ____strtoul_l_internal:./stdlib/../stdlib/strtol_l.c
 
@@ -499,7 +499,7 @@ Ir_____________
       0            annotated: files known & above threshold & readable, line numbers known
       0            annotated: files known & above threshold & readable, line numbers unknown
       0          unannotated: files known & above threshold & two or more non-identical
-449,635 (96.8%)  unannotated: files known & above threshold & unreadable 
- 14,251  (3.1%)  unannotated: files known & below threshold
-    840  (0.2%)  unannotated: files unknown
+449,056 (96.8%)  unannotated: files known & above threshold & unreadable 
+ 14,205  (3.1%)  unannotated: files known & below threshold
+    838  (0.2%)  unannotated: files unknown
 

@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Metadata
 --------------------------------------------------------------------------------
-Invocation:       /usr/bin/cg_annotate cachegrind.out.192297
+Invocation:       /usr/bin/cg_annotate cachegrind.out.data_transfer
 Command:          target/debug/data_transfer
 Events recorded:  Ir
 Events shown:     Ir

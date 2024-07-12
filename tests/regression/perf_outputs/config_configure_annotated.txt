@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Metadata
 --------------------------------------------------------------------------------
-Invocation:       /usr/bin/cg_annotate cachegrind.out.192535
+Invocation:       /usr/bin/cg_annotate cachegrind.out.config_configure
 Command:          target/debug/config_configure
 Events recorded:  Ir
 Events shown:     Ir

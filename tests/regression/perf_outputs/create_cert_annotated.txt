@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Metadata
 --------------------------------------------------------------------------------
-Invocation:       /usr/bin/cg_annotate cachegrind.out.144312
+Invocation:       /usr/bin/cg_annotate cachegrind.out.create_cert
 Command:          target/debug/create_cert
 Events recorded:  Ir
 Events shown:     Ir
@@ -14,7 +14,7 @@ Annotation:       on
 --------------------------------------------------------------------------------
 Ir__________________ 
 
-154,967,248 (100.0%)  PROGRAM TOTALS
+154,965,096 (100.0%)  PROGRAM TOTALS
 
 --------------------------------------------------------------------------------
 -- File:function summary
@@ -26,34 +26,34 @@ Ir__________________
   15,699,024 (10.1%)           mul4x_internal
    1,114,840  (0.7%)           __bn_post4x_internal
 
-< 28,964,663 (18.7%, 65.6%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h:
-  11,547,690  (7.5%)           constant_time_select_w
-   8,798,240  (5.7%)           value_barrier_w
-   3,062,976  (2.0%)           constant_time_select_int
-   1,626,305  (1.0%)           constant_time_lt_w
-   1,340,850  (0.9%)           constant_time_is_zero_w
-   1,340,080  (0.9%)           constant_time_msb_w
-   1,052,293  (0.7%)           constant_time_eq_w
+< 28,915,943 (18.7%, 65.5%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h:
+  11,537,022  (7.4%)           constant_time_select_w
+   8,790,112  (5.7%)           value_barrier_w
+   3,054,848  (2.0%)           constant_time_select_int
+   1,621,868  (1.0%)           constant_time_lt_w
+   1,337,392  (0.9%)           constant_time_is_zero_w
+   1,336,524  (0.9%)           constant_time_msb_w
+   1,049,422  (0.7%)           constant_time_eq_w
 
-< 13,659,473  (8.8%, 74.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c:
-   9,759,036  (6.3%)           aws_lc_0_19_0_bn_rshift1_words
-   3,005,463  (1.9%)           aws_lc_0_19_0_bn_rshift_words
-     303,186  (0.2%)           aws_lc_0_19_0_bn_is_bit_set_words
-     233,220  (0.2%)           aws_lc_0_19_0_BN_is_bit_set
-     225,498  (0.1%)           aws_lc_0_19_0_BN_rshift1
+< 13,737,234  (8.9%, 74.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c:
+   9,840,564  (6.4%)           aws_lc_0_19_0_bn_rshift1_words
+   2,997,332  (1.9%)           aws_lc_0_19_0_bn_rshift_words
+     303,602  (0.2%)           aws_lc_0_19_0_bn_is_bit_set_words
+     233,540  (0.2%)           aws_lc_0_19_0_BN_is_bit_set
+     227,448  (0.1%)           aws_lc_0_19_0_BN_rshift1
 
-< 10,820,287  (7.0%, 81.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c:
+< 10,816,458  (7.0%, 81.4%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c:
    8,461,816  (5.5%)           aws_lc_0_19_0_bn_select_words
-   1,298,663  (0.8%)           aws_lc_0_19_0_bn_fits_in_words
-     486,225  (0.3%)           aws_lc_0_19_0_bn_minimal_width
-     296,992  (0.2%)           aws_lc_0_19_0_bn_set_minimal_width
-     266,503  (0.2%)           aws_lc_0_19_0_bn_wexpand
+   1,296,662  (0.8%)           aws_lc_0_19_0_bn_fits_in_words
+     484,579  (0.3%)           aws_lc_0_19_0_bn_minimal_width
+     296,637  (0.2%)           aws_lc_0_19_0_bn_set_minimal_width
+     266,309  (0.2%)           aws_lc_0_19_0_bn_wexpand
 
-<  8,753,652  (5.6%, 87.0%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c:
-   4,849,844  (3.1%)           aws_lc_0_19_0_bn_add_words
-   3,149,314  (2.0%)           aws_lc_0_19_0_bn_sub_words
+<  8,734,881  (5.6%, 87.0%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c:
+   4,830,893  (3.1%)           aws_lc_0_19_0_bn_add_words
+   3,148,123  (2.0%)           aws_lc_0_19_0_bn_sub_words
      514,080  (0.3%)           aws_lc_0_19_0_bn_mul_add_words
-     182,364  (0.1%)           aws_lc_0_19_0_bn_mul_words
+     183,735  (0.1%)           aws_lc_0_19_0_bn_mul_words
 
 <  4,747,996  (3.1%, 90.1%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c:
    2,949,394  (1.9%)           s2n_stuffer_validate
@@ -61,38 +61,38 @@ Ir__________________
      520,020  (0.3%)           s2n_stuffer_skip_write
      468,018  (0.3%)           s2n_stuffer_reserve_space
 
-<  4,490,372  (2.9%, 93.0%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/cmp.c:
-   4,295,162  (2.8%)           bn_cmp_words_consttime
+<  4,479,093  (2.9%, 93.0%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/cmp.c:
+   4,283,566  (2.8%)           bn_cmp_words_consttime
 
 <  3,767,963  (2.4%, 95.4%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c:
    3,761,010  (2.4%)           s2n_blob_validate
 
 <  1,424,466  (0.9%, 96.3%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_result.c:s2n_result_is_ok
 
-<  1,121,446  (0.7%, 97.1%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/div.c:
+<  1,121,885  (0.7%, 97.1%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/div.c:
      776,197  (0.5%)           aws_lc_0_19_0_bn_div_consttime
      325,080  (0.2%)           aws_lc_0_19_0_bn_reduce_once_in_place
 
-<    887,736  (0.6%, 97.6%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/x86_64-mont.S:
+<    887,754  (0.6%, 97.6%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/x86_64-mont.S:
      837,276  (0.5%)           bn_mul4x_mont
 
-<    823,808  (0.5%, 98.2%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/add.c:
-     458,140  (0.3%)           aws_lc_0_19_0_bn_uadd_consttime
-     181,690  (0.1%)           aws_lc_0_19_0_bn_usub_consttime
+<    811,854  (0.5%, 98.2%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/add.c:
+     448,063  (0.3%)           aws_lc_0_19_0_bn_uadd_consttime
+     181,050  (0.1%)           aws_lc_0_19_0_bn_usub_consttime
 
 <    323,127  (0.2%, 98.4%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_base64.c:
      217,557  (0.1%)           s2n_stuffer_read_base64
 
-<    308,170  (0.2%, 98.6%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/gcd.c:
-     308,090  (0.2%)           aws_lc_0_19_0_BN_mod_inverse_odd
+<    307,961  (0.2%, 98.6%)  /home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/gcd.c:
+     307,881  (0.2%)           aws_lc_0_19_0_BN_mod_inverse_odd
 
-<    290,169  (0.2%, 98.8%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_pem.c:
+<    290,169  (0.2%, 98.7%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_pem.c:
      288,970  (0.2%)           s2n_stuffer_pem_read_contents
 
 <    216,900  (0.1%, 98.9%)  /home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c:s2n_ensure_memmove_trace
 
-<    169,627  (0.1%, 99.0%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:
-     169,085  (0.1%)           __memcpy_avx_unaligned_erms
+<    170,214  (0.1%, 99.0%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:
+     169,672  (0.1%)           __memcpy_avx_unaligned_erms
 
 --------------------------------------------------------------------------------
 -- Function:file summary
@@ -103,41 +103,41 @@ Ir__________________
 
 > 15,699,024 (10.1%, 46.1%)  mul4x_internal:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/x86_64-mont5.S
 
-> 11,547,690  (7.5%, 53.6%)  constant_time_select_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+> 11,537,022  (7.4%, 53.6%)  constant_time_select_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->  9,759,036  (6.3%, 59.9%)  aws_lc_0_19_0_bn_rshift1_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
+>  9,840,564  (6.4%, 59.9%)  aws_lc_0_19_0_bn_rshift1_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
 
->  8,798,240  (5.7%, 65.5%)  value_barrier_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>  8,790,112  (5.7%, 65.6%)  value_barrier_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
 >  8,461,816  (5.5%, 71.0%)  aws_lc_0_19_0_bn_select_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
 
->  4,849,844  (3.1%, 74.1%)  aws_lc_0_19_0_bn_add_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
+>  4,830,893  (3.1%, 74.2%)  aws_lc_0_19_0_bn_add_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
 
->  4,295,162  (2.8%, 76.9%)  bn_cmp_words_consttime:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/cmp.c
+>  4,283,566  (2.8%, 76.9%)  bn_cmp_words_consttime:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/cmp.c
 
->  3,761,010  (2.4%, 79.3%)  s2n_blob_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
+>  3,761,010  (2.4%, 79.4%)  s2n_blob_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_blob.c
 
->  3,149,314  (2.0%, 81.4%)  aws_lc_0_19_0_bn_sub_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
+>  3,148,123  (2.0%, 81.4%)  aws_lc_0_19_0_bn_sub_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
 
->  3,062,976  (2.0%, 83.3%)  constant_time_select_int:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>  3,054,848  (2.0%, 83.4%)  constant_time_select_int:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->  3,005,463  (1.9%, 85.3%)  aws_lc_0_19_0_bn_rshift_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
+>  2,997,332  (1.9%, 85.3%)  aws_lc_0_19_0_bn_rshift_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
 
 >  2,949,394  (1.9%, 87.2%)  s2n_stuffer_validate:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->  1,626,305  (1.0%, 88.2%)  constant_time_lt_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>  1,621,868  (1.0%, 88.2%)  constant_time_lt_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
 >  1,424,466  (0.9%, 89.2%)  s2n_result_is_ok:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_result.c
 
->  1,340,850  (0.9%, 90.0%)  constant_time_is_zero_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>  1,337,392  (0.9%, 90.0%)  constant_time_is_zero_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->  1,340,080  (0.9%, 90.9%)  constant_time_msb_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>  1,336,524  (0.9%, 90.9%)  constant_time_msb_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
->  1,298,663  (0.8%, 91.7%)  aws_lc_0_19_0_bn_fits_in_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
+>  1,296,662  (0.8%, 91.7%)  aws_lc_0_19_0_bn_fits_in_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
 
 >  1,114,840  (0.7%, 92.4%)  __bn_post4x_internal:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/x86_64-mont5.S
 
->  1,052,293  (0.7%, 93.1%)  constant_time_eq_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
+>  1,049,422  (0.7%, 93.1%)  constant_time_eq_w:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/../internal.h
 
 >    837,276  (0.5%, 93.7%)  bn_mul4x_mont:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/generated-src/linux-x86_64/crypto/fipsmodule/x86_64-mont.S
 
@@ -149,37 +149,37 @@ Ir__________________
 
 >    514,080  (0.3%, 95.2%)  aws_lc_0_19_0_bn_mul_add_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
 
->    486,225  (0.3%, 95.5%)  aws_lc_0_19_0_bn_minimal_width:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
+>    484,579  (0.3%, 95.5%)  aws_lc_0_19_0_bn_minimal_width:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
 
 >    468,018  (0.3%, 95.8%)  s2n_stuffer_reserve_space:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer.c
 
->    458,140  (0.3%, 96.1%)  aws_lc_0_19_0_bn_uadd_consttime:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/add.c
+>    448,063  (0.3%, 96.1%)  aws_lc_0_19_0_bn_uadd_consttime:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/add.c
 
 >    325,080  (0.2%, 96.3%)  aws_lc_0_19_0_bn_reduce_once_in_place:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/div.c
 
->    308,090  (0.2%, 96.5%)  aws_lc_0_19_0_BN_mod_inverse_odd:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/gcd.c
+>    307,881  (0.2%, 96.5%)  aws_lc_0_19_0_BN_mod_inverse_odd:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/gcd.c
 
->    303,186  (0.2%, 96.7%)  aws_lc_0_19_0_bn_is_bit_set_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
+>    303,602  (0.2%, 96.7%)  aws_lc_0_19_0_bn_is_bit_set_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
 
->    296,992  (0.2%, 96.9%)  aws_lc_0_19_0_bn_set_minimal_width:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
+>    296,637  (0.2%, 96.9%)  aws_lc_0_19_0_bn_set_minimal_width:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
 
 >    288,970  (0.2%, 97.1%)  s2n_stuffer_pem_read_contents:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_pem.c
 
->    266,503  (0.2%, 97.3%)  aws_lc_0_19_0_bn_wexpand:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
+>    266,309  (0.2%, 97.3%)  aws_lc_0_19_0_bn_wexpand:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/bn.c
 
->    233,220  (0.2%, 97.4%)  aws_lc_0_19_0_BN_is_bit_set:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
+>    233,540  (0.2%, 97.4%)  aws_lc_0_19_0_BN_is_bit_set:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
 
->    225,498  (0.1%, 97.6%)  aws_lc_0_19_0_BN_rshift1:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
+>    227,448  (0.1%, 97.6%)  aws_lc_0_19_0_BN_rshift1:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/shift.c
 
 >    217,557  (0.1%, 97.7%)  s2n_stuffer_read_base64:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/stuffer/s2n_stuffer_base64.c
 
->    216,900  (0.1%, 97.9%)  s2n_ensure_memmove_trace:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c
+>    216,900  (0.1%, 97.8%)  s2n_ensure_memmove_trace:/home/ubuntu/proj/s2n/bindings/rust/s2n-tls-sys/lib/utils/s2n_ensure.c
 
->    182,364  (0.1%, 98.0%)  aws_lc_0_19_0_bn_mul_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
+>    183,735  (0.1%, 98.0%)  aws_lc_0_19_0_bn_mul_words:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/asm/x86_64-gcc.c
 
->    181,690  (0.1%, 98.1%)  aws_lc_0_19_0_bn_usub_consttime:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/add.c
+>    181,050  (0.1%, 98.1%)  aws_lc_0_19_0_bn_usub_consttime:/home/ubuntu/.cargo/registry/src/index.crates.io-6f17d22bba15001f/aws-lc-sys-0.19.0/aws-lc/crypto/fipsmodule/bn/add.c
 
->    169,085  (0.1%, 98.2%)  __memcpy_avx_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
+>    169,672  (0.1%, 98.2%)  __memcpy_avx_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
 
 --------------------------------------------------------------------------------
 -- Annotated source file: ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
@@ -232,12 +232,12 @@ Ir______________
         .         // Note the compiler is aware that |value_barrier_w| has no side effects and
         .         // always has the same output for a given input. This allows it to eliminate
         .         // dead code, move computations across loops, and vectorize.
-3,299,340 (2.1%)  static inline crypto_word_t value_barrier_w(crypto_word_t a) {
+3,296,292 (2.1%)  static inline crypto_word_t value_barrier_w(crypto_word_t a) {
         .         #if defined(__GNUC__) || defined(__clang__)
-2,199,560 (1.4%)    __asm__("" : "+r"(a) : /* no inputs */);
+2,197,528 (1.4%)    __asm__("" : "+r"(a) : /* no inputs */);
         .         #endif
-1,099,780 (0.7%)    return a;
-2,199,560 (1.4%)  }
+1,098,764 (0.7%)    return a;
+2,197,528 (1.4%)  }
         .         
         .         // value_barrier_u32 behaves like |value_barrier_w| but takes a |uint32_t|.
        12 (0.0%)  static inline uint32_t value_barrier_u32(uint32_t a) {
@@ -257,13 +257,13 @@ Ir______________
         .         
         .         // constant_time_msb_w returns the given value with the MSB copied to all the
         .         // other bits.
-  574,320 (0.4%)  static inline crypto_word_t constant_time_msb_w(crypto_word_t a) {
-  382,880 (0.2%)    return 0u - (a >> (sizeof(a) * 8 - 1));
-  382,880 (0.2%)  }
+  572,796 (0.4%)  static inline crypto_word_t constant_time_msb_w(crypto_word_t a) {
+  381,864 (0.2%)    return 0u - (a >> (sizeof(a) * 8 - 1));
+  381,864 (0.2%)  }
         .         
         .         // constant_time_lt_w returns 0xff..f if a < b and 0 otherwise.
         .         static inline crypto_word_t constant_time_lt_w(crypto_word_t a,
-  478,325 (0.3%)                                                 crypto_word_t b) {
+  477,020 (0.3%)                                                 crypto_word_t b) {
         .           // Consider the two cases of the problem:
         .           //   msb(a) == msb(b): a < b iff the MSB of a - b is set.
         .           //   msb(a) != msb(b): a < b iff the MSB of b is set.
@@ -282,8 +282,8 @@ Ir______________
         .           // (assert (not (= (= #x00000001 (bvlshr (lt a b) #x0000001f)) (bvult a b))))
         .           // (check-sat)
         .           // (get-model)
-  956,650 (0.6%)    return constant_time_msb_w(a^((a^b)|((a-b)^a)));
-  191,330 (0.1%)  }
+  954,040 (0.6%)    return constant_time_msb_w(a^((a^b)|((a-b)^a)));
+  190,808 (0.1%)  }
         .         
         .         // constant_time_lt_8 acts like |constant_time_lt_w| but returns an 8-bit
         .         // mask.
@@ -302,7 +302,7 @@ Ir______________
         .         }
         .         
         .         // constant_time_is_zero returns 0xff..f if a == 0 and 0 otherwise.
-  383,100 (0.2%)  static inline crypto_word_t constant_time_is_zero_w(crypto_word_t a) {
+  382,112 (0.2%)  static inline crypto_word_t constant_time_is_zero_w(crypto_word_t a) {
         .           // Here is an SMT-LIB verification of this formula:
         .           //
         .           // (define-fun is_zero ((a (_ BitVec 32))) (_ BitVec 32)
@@ -314,8 +314,8 @@ Ir______________
         .           // (assert (not (= (= #x00000001 (bvlshr (is_zero a) #x0000001f)) (= a #x00000000))))
         .           // (check-sat)
         .           // (get-model)
-  766,200 (0.5%)    return constant_time_msb_w(~a & (a - 1));
-  191,550 (0.1%)  }
+  764,224 (0.5%)    return constant_time_msb_w(~a & (a - 1));
+  191,056 (0.1%)  }
         .         
         .         // constant_time_is_zero_8 acts like |constant_time_is_zero_w| but returns an
         .         // 8-bit mask.
@@ -325,9 +325,9 @@ Ir______________
         .         
         .         // constant_time_eq_w returns 0xff..f if a == b and 0 otherwise.
         .         static inline crypto_word_t constant_time_eq_w(crypto_word_t a,
-  478,315 (0.3%)                                                 crypto_word_t b) {
-  382,652 (0.2%)    return constant_time_is_zero_w(a ^ b);
-  191,326 (0.1%)  }
+  477,010 (0.3%)                                                 crypto_word_t b) {
+  381,608 (0.2%)    return constant_time_is_zero_w(a ^ b);
+  190,804 (0.1%)  }
         .         
         .         // constant_time_eq_8 acts like |constant_time_eq_w| but returns an 8-bit
         .         // mask.
@@ -346,15 +346,15 @@ Ir______________
         .         // either |a| (if |mask| is nonzero) or |b| (if |mask| is zero).
         .         static inline crypto_word_t constant_time_select_w(crypto_word_t mask,
         .                                                            crypto_word_t a,
-3,849,230 (2.5%)                                                     crypto_word_t b) {
+3,845,674 (2.5%)                                                     crypto_word_t b) {
         .           // Clang recognizes this pattern as a select. While it usually transforms it
         .           // to a cmov, it sometimes further transforms it into a branch, which we do
         .           // not want.
         .           //
         .           // Adding barriers to both |mask| and |~mask| breaks the relationship between
         .           // the two, which makes the compiler stick with bitmasks.
-6,048,790 (3.9%)    return (value_barrier_w(mask) & a) | (value_barrier_w(~mask) & b);
-1,649,670 (1.1%)  }
+6,043,202 (3.9%)    return (value_barrier_w(mask) & a) | (value_barrier_w(~mask) & b);
+1,648,146 (1.1%)  }
         .         
         .         // constant_time_select_8 acts like |constant_time_select| but operates on
         .         // 8-bit values.
@@ -365,10 +365,10 @@ Ir______________
         .         
         .         // constant_time_select_int acts like |constant_time_select| but operates on
         .         // ints.
-1,148,616 (0.7%)  static inline int constant_time_select_int(crypto_word_t mask, int a, int b) {
-1,531,488 (1.0%)    return (int)(constant_time_select_w(mask, (crypto_word_t)(a),
+1,145,568 (0.7%)  static inline int constant_time_select_int(crypto_word_t mask, int a, int b) {
+1,527,424 (1.0%)    return (int)(constant_time_select_w(mask, (crypto_word_t)(a),
         .                                               (crypto_word_t)(b)));
-  382,872 (0.2%)  }
+  381,856 (0.2%)  }
         .         
         .         #if defined(BORINGSSL_CONSTANT_TIME_VALIDATION)
         .         
@@ -412,11 +412,11 @@ Ir______________
         .           return (x >> 8) | (x << 8);
         .         }
         .         
-    3,516 (0.0%)  static inline uint32_t CRYPTO_bswap4(uint32_t x) {
-    1,172 (0.0%)    x = (x >> 16) | (x << 16);
-   10,548 (0.0%)    x = ((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8);
-    1,172 (0.0%)    return x;
-    2,344 (0.0%)  }
+    3,600 (0.0%)  static inline uint32_t CRYPTO_bswap4(uint32_t x) {
+    1,200 (0.0%)    x = (x >> 16) | (x << 16);
+   10,800 (0.0%)    x = ((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8);
+    1,200 (0.0%)    return x;
+    2,400 (0.0%)  }
         .         
     2,720 (0.0%)  static inline uint64_t CRYPTO_bswap8(uint64_t x) {
     5,984 (0.0%)    return CRYPTO_bswap4(x >> 32) | (((uint64_t)CRYPTO_bswap4(x)) << 32);
@@ -457,29 +457,29 @@ Ir______________
         .           return memcmp(s1, s2, n);
         .         }
         .         
-    9,252 (0.0%)  static inline void *OPENSSL_memcpy(void *dst, const void *src, size_t n) {
-    3,084 (0.0%)    if (n == 0) {
-       98 (0.0%)      return dst;
+    9,480 (0.0%)  static inline void *OPENSSL_memcpy(void *dst, const void *src, size_t n) {
+    3,160 (0.0%)    if (n == 0) {
+      106 (0.0%)      return dst;
         .           }
         .         
-    8,958 (0.0%)    return memcpy(dst, src, n);
-    3,084 (0.0%)  }
+    9,162 (0.0%)    return memcpy(dst, src, n);
+    3,160 (0.0%)  }
         .         
-       12 (0.0%)  static inline void *OPENSSL_memmove(void *dst, const void *src, size_t n) {
-        4 (0.0%)    if (n == 0) {
+       18 (0.0%)  static inline void *OPENSSL_memmove(void *dst, const void *src, size_t n) {
+        6 (0.0%)    if (n == 0) {
         .             return dst;
         .           }
         .         
-       12 (0.0%)    return memmove(dst, src, n);
-        4 (0.0%)  }
+       18 (0.0%)    return memmove(dst, src, n);
+        6 (0.0%)  }
         .         
-   17,958 (0.0%)  static inline void *OPENSSL_memset(void *dst, int c, size_t n) {
-    5,986 (0.0%)    if (n == 0) {
-    5,876 (0.0%)      return dst;
+   17,874 (0.0%)  static inline void *OPENSSL_memset(void *dst, int c, size_t n) {
+    5,958 (0.0%)    if (n == 0) {
+    5,842 (0.0%)      return dst;
         .           }
         .         
-      330 (0.0%)    return memset(dst, c, n);
-    5,986 (0.0%)  }
+      348 (0.0%)    return memset(dst, c, n);
+    5,958 (0.0%)  }
         .         
         .         
         .         // Loads and stores.
@@ -498,24 +498,24 @@ Ir______________
         .         
         .         }
         .         
-      224 (0.0%)  static inline uint32_t CRYPTO_load_u32_be(const void *in) {
+      322 (0.0%)  static inline uint32_t CRYPTO_load_u32_be(const void *in) {
         .           uint32_t v;
-      192 (0.0%)    OPENSSL_memcpy(&v, in, sizeof(v));
+      276 (0.0%)    OPENSSL_memcpy(&v, in, sizeof(v));
         .         #if defined(OPENSSL_BIG_ENDIAN)
         .           return v;
         .         #else
-       96 (0.0%)    return CRYPTO_bswap4(v);
+      138 (0.0%)    return CRYPTO_bswap4(v);
         .         #endif
-      160 (0.0%)  }
+      230 (0.0%)  }
         .         
-      260 (0.0%)  static inline void CRYPTO_store_u32_be(void *out, uint32_t v) {
+      330 (0.0%)  static inline void CRYPTO_store_u32_be(void *out, uint32_t v) {
         .         
         .         #if !defined(OPENSSL_BIG_ENDIAN)
-      208 (0.0%)    v = CRYPTO_bswap4(v);
+      264 (0.0%)    v = CRYPTO_bswap4(v);
         .         #endif
-      312 (0.0%)    OPENSSL_memcpy(out, &v, sizeof(v));
+      396 (0.0%)    OPENSSL_memcpy(out, &v, sizeof(v));
         .         
-      156 (0.0%)  }
+      198 (0.0%)  }
         .         
         .         static inline uint64_t CRYPTO_load_u64_le(const void *in) {
         .           uint64_t v;
@@ -567,13 +567,13 @@ Ir______________
         .         }
         .         
         .         static inline uint64_t CRYPTO_addc_u64(uint64_t x, uint64_t y, uint64_t carry,
-   20,432 (0.0%)                                         uint64_t *out_carry) {
-    5,108 (0.0%)    assert(carry <= 1);
+   18,104 (0.0%)                                         uint64_t *out_carry) {
+    4,526 (0.0%)    assert(carry <= 1);
         .         #if defined(BORINGSSL_HAS_UINT128)
-    7,662 (0.0%)    uint128_t ret = carry;
-   20,432 (0.0%)    ret += (uint128_t)x + y;
-   17,878 (0.0%)    *out_carry = (uint64_t)(ret >> 64);
-    2,554 (0.0%)    return (uint64_t)ret;
+    6,789 (0.0%)    uint128_t ret = carry;
+   18,104 (0.0%)    ret += (uint128_t)x + y;
+   15,841 (0.0%)    *out_carry = (uint64_t)(ret >> 64);
+    2,263 (0.0%)    return (uint64_t)ret;
         .         #else
         .           x += carry;
         .           carry = x < carry;
@@ -582,7 +582,7 @@ Ir______________
         .           *out_carry = carry;
         .           return ret;
         .         #endif
-    7,662 (0.0%)  }
+    6,789 (0.0%)  }
         .         #endif
         .         
         .         // CRYPTO_subc_* returns |x - y - borrow|, and sets |*out_borrow| to the borrow
@@ -601,12 +601,12 @@ Ir______________
         .         }
         .         
         .         static inline uint64_t CRYPTO_subc_u64(uint64_t x, uint64_t y, uint64_t borrow,
-    2,898 (0.0%)                                         uint64_t *out_borrow) {
-      828 (0.0%)    assert(borrow <= 1);
-    1,656 (0.0%)    uint64_t ret = x - y - borrow;
-    4,968 (0.0%)    *out_borrow = (x < y) | ((x == y) & borrow);
-      414 (0.0%)    return ret;
-      828 (0.0%)  }
+    2,996 (0.0%)                                         uint64_t *out_borrow) {
+      856 (0.0%)    assert(borrow <= 1);
+    1,712 (0.0%)    uint64_t ret = x - y - borrow;
+    5,136 (0.0%)    *out_borrow = (x < y) | ((x == y) & borrow);
+      428 (0.0%)    return ret;
+      856 (0.0%)  }
         .         #endif
         .         
         .         #if defined(OPENSSL_64_BIT)
@@ -641,46 +641,82 @@ Ir______________
 --------------------------------------------------------------------------------
 Ir___________ 
 
--- line 95 ----------------------------------------
-     .             return 1;
+-- line 59 ----------------------------------------
+     .         #include <string.h>
+     .         
+     .         #include <openssl/err.h>
+     .         #include <openssl/mem.h>
+     .         
+     .         #include "internal.h"
+     .         
+     .         
+     7 (0.0%)  int BN_add(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
+     .           const BIGNUM *tmp;
+     3 (0.0%)    int a_neg = a->neg, ret;
+     .         
+     .           //  a +  b	a+b
+     .           //  a + -b	a-b
+     .           // -a +  b	b-a
+     .           // -a + -b	-(a+b)
+     4 (0.0%)    if (a_neg ^ b->neg) {
+     .             // only one is negative
+     2 (0.0%)      if (a_neg) {
+     2 (0.0%)        tmp = a;
+     2 (0.0%)        a = b;
+     2 (0.0%)        b = tmp;
+     .             }
+     .         
+     .             // we are now a - b
+     7 (0.0%)      if (BN_ucmp(a, b) < 0) {
+     .               if (!BN_usub(r, b, a)) {
+     .                 return 0;
+     .               }
+     .               r->neg = 1;
+     .             } else {
+     8 (0.0%)        if (!BN_usub(r, a, b)) {
+     .                 return 0;
+     .               }
+     2 (0.0%)        r->neg = 0;
+     .             }
+     2 (0.0%)      return 1;
      .           }
      .         
      .           ret = BN_uadd(r, a, b);
      .           r->neg = a_neg;
      .           return ret;
-     .         }
+     2 (0.0%)  }
      .         
-64,328 (0.0%)  int bn_uadd_consttime(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
+63,833 (0.0%)  int bn_uadd_consttime(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
      .           // Widths are public, so we normalize to make |a| the larger one.
-35,088 (0.0%)    if (a->width < b->width) {
-   578 (0.0%)      const BIGNUM *tmp = a;
-   578 (0.0%)      a = b;
-   578 (0.0%)      b = tmp;
+34,818 (0.0%)    if (a->width < b->width) {
+   470 (0.0%)      const BIGNUM *tmp = a;
+   470 (0.0%)      a = b;
+   470 (0.0%)      b = tmp;
      .           }
      .         
-17,544 (0.0%)    int max = a->width;
-17,544 (0.0%)    int min = b->width;
-52,632 (0.0%)    if (!bn_wexpand(r, max + 1)) {
+17,409 (0.0%)    int max = a->width;
+17,409 (0.0%)    int min = b->width;
+52,227 (0.0%)    if (!bn_wexpand(r, max + 1)) {
      .             return 0;
      .           }
-23,392 (0.0%)    r->width = max + 1;
+23,212 (0.0%)    r->width = max + 1;
      .         
-64,328 (0.0%)    BN_ULONG carry = bn_add_words(r->d, a->d, b->d, min);
-45,304 (0.0%)    for (int i = min; i < max; i++) {
-48,526 (0.0%)      r->d[i] = CRYPTO_addc_w(a->d[i], 0, carry, &carry);
+63,833 (0.0%)    BN_ULONG carry = bn_add_words(r->d, a->d, b->d, min);
+43,870 (0.0%)    for (int i = min; i < max; i++) {
+42,997 (0.0%)      r->d[i] = CRYPTO_addc_w(a->d[i], 0, carry, &carry);
      .           }
      .         
-46,784 (0.0%)    r->d[max] = carry;
- 5,848 (0.0%)    return 1;
-35,088 (0.0%)  }
+46,424 (0.0%)    r->d[max] = carry;
+ 5,803 (0.0%)    return 1;
+34,818 (0.0%)  }
      .         
-40,929 (0.0%)  int BN_uadd(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
-46,776 (0.0%)    if (!bn_uadd_consttime(r, a, b)) {
+40,614 (0.0%)  int BN_uadd(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
+46,416 (0.0%)    if (!bn_uadd_consttime(r, a, b)) {
      .             return 0;
      .           }
-17,541 (0.0%)    bn_set_minimal_width(r);
- 5,847 (0.0%)    return 1;
-11,694 (0.0%)  }
+17,406 (0.0%)    bn_set_minimal_width(r);
+ 5,802 (0.0%)    return 1;
+11,604 (0.0%)  }
      .         
      .         int BN_add_word(BIGNUM *a, BN_ULONG w) {
      .           BN_ULONG l;
@@ -733,25 +769,25 @@ Ir___________
      .           }
      .         
      7 (0.0%)    if (BN_ucmp(a, b) < 0) {
-     .             if (!BN_usub(r, b, a)) {
+     8 (0.0%)      if (!BN_usub(r, b, a)) {
      .               return 0;
      .             }
-     .             r->neg = 1;
+     3 (0.0%)      r->neg = 1;
      .           } else {
-     8 (0.0%)      if (!BN_usub(r, a, b)) {
+     .             if (!BN_usub(r, a, b)) {
      .               return 0;
      .             }
-     2 (0.0%)      r->neg = 0;
+     .             r->neg = 0;
      .           }
      .         
      1 (0.0%)    return 1;
      2 (0.0%)  }
      .         
-32,054 (0.0%)  int bn_usub_consttime(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
+31,878 (0.0%)  int bn_usub_consttime(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
      .           // |b| may have more words than |a| given non-minimal inputs, but all words
      .           // beyond |a->width| must then be zero.
- 8,742 (0.0%)    int b_width = b->width;
-11,656 (0.0%)    if (b_width > a->width) {
+ 8,694 (0.0%)    int b_width = b->width;
+11,592 (0.0%)    if (b_width > a->width) {
      .             if (!bn_fits_in_words(b, a->width)) {
      .               OPENSSL_PUT_ERROR(BN, BN_R_ARG2_LT_ARG3);
      .               return 0;
@@ -759,32 +795,32 @@ Ir___________
      .             b_width = a->width;
      .           }
      .         
-26,226 (0.0%)    if (!bn_wexpand(r, a->width)) {
+26,082 (0.0%)    if (!bn_wexpand(r, a->width)) {
      .             return 0;
      .           }
      .         
-32,054 (0.0%)    BN_ULONG borrow = bn_sub_words(r->d, a->d, b->d, b_width);
-21,218 (0.0%)    for (int i = b_width; i < a->width; i++) {
- 3,116 (0.0%)      r->d[i] = CRYPTO_subc_w(a->d[i], 0, borrow, &borrow);
+31,878 (0.0%)    BN_ULONG borrow = bn_sub_words(r->d, a->d, b->d, b_width);
+21,176 (0.0%)    for (int i = b_width; i < a->width; i++) {
+ 3,382 (0.0%)      r->d[i] = CRYPTO_subc_w(a->d[i], 0, borrow, &borrow);
      .           }
      .         
- 8,742 (0.0%)    if (borrow) {
+ 8,694 (0.0%)    if (borrow) {
      .             OPENSSL_PUT_ERROR(BN, BN_R_ARG2_LT_ARG3);
      .             return 0;
      .           }
      .         
-11,656 (0.0%)    r->width = a->width;
- 5,828 (0.0%)    r->neg = 0;
- 2,914 (0.0%)    return 1;
-17,484 (0.0%)  }
+11,592 (0.0%)    r->width = a->width;
+ 5,796 (0.0%)    r->neg = 0;
+ 2,898 (0.0%)    return 1;
+17,388 (0.0%)  }
      .         
-20,384 (0.0%)  int BN_usub(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
-23,296 (0.0%)    if (!bn_usub_consttime(r, a, b)) {
+20,272 (0.0%)  int BN_usub(BIGNUM *r, const BIGNUM *a, const BIGNUM *b) {
+23,168 (0.0%)    if (!bn_usub_consttime(r, a, b)) {
      .             return 0;
      .           }
- 8,736 (0.0%)    bn_set_minimal_width(r);
- 2,912 (0.0%)    return 1;
- 5,824 (0.0%)  }
+ 8,688 (0.0%)    bn_set_minimal_width(r);
+ 2,896 (0.0%)    return 1;
+ 5,792 (0.0%)  }
      .         
      .         int BN_sub_word(BIGNUM *a, BN_ULONG w) {
      .           int i;
@@ -842,26 +878,26 @@ Ir______________
     1,664 (0.0%)  }
         .         
         .         BN_ULONG bn_mul_words(BN_ULONG *rp, const BN_ULONG *ap, size_t num,
-    1,206 (0.0%)                        BN_ULONG w) {
-      134 (0.0%)    BN_ULONG c1 = 0;
+    1,215 (0.0%)                        BN_ULONG w) {
+      135 (0.0%)    BN_ULONG c1 = 0;
         .         
-      268 (0.0%)    if (num == 0) {
+      270 (0.0%)    if (num == 0) {
         .             return c1;
         .           }
         .         
-    4,524 (0.0%)    while (num & ~3) {
-   38,304 (0.0%)      mul(rp[0], ap[0], w, c1);
-   42,560 (0.0%)      mul(rp[1], ap[1], w, c1);
-   42,560 (0.0%)      mul(rp[2], ap[2], w, c1);
-   42,560 (0.0%)      mul(rp[3], ap[3], w, c1);
-    2,128 (0.0%)      ap += 4;
-    2,128 (0.0%)      rp += 4;
-    2,128 (0.0%)      num -= 4;
+    4,558 (0.0%)    while (num & ~3) {
+   38,592 (0.0%)      mul(rp[0], ap[0], w, c1);
+   42,880 (0.0%)      mul(rp[1], ap[1], w, c1);
+   42,880 (0.0%)      mul(rp[2], ap[2], w, c1);
+   42,880 (0.0%)      mul(rp[3], ap[3], w, c1);
+    2,144 (0.0%)      ap += 4;
+    2,144 (0.0%)      rp += 4;
+    2,144 (0.0%)      num -= 4;
         .           }
-      268 (0.0%)    if (num) {
-    2,394 (0.0%)      mul(rp[0], ap[0], w, c1);
-      399 (0.0%)      if (--num == 0) {
-      266 (0.0%)        return c1;
+      270 (0.0%)    if (num) {
+    2,412 (0.0%)      mul(rp[0], ap[0], w, c1);
+      402 (0.0%)      if (--num == 0) {
+      268 (0.0%)        return c1;
         .             }
         .             mul(rp[1], ap[1], w, c1);
         .             if (--num == 0) {
@@ -870,7 +906,7 @@ Ir______________
         .             mul(rp[2], ap[2], w, c1);
         .           }
         1 (0.0%)    return c1;
-      536 (0.0%)  }
+      540 (0.0%)  }
         .         
         .         void bn_sqr_words(BN_ULONG *r, const BN_ULONG *a, size_t n) {
         .           if (n == 0) {
@@ -889,15 +925,15 @@ Ir______________
         .         }
         .         
         .         BN_ULONG bn_add_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
-  117,131 (0.1%)                        size_t n) {
+  116,816 (0.1%)                        size_t n) {
         .           BN_ULONG ret;
-   16,733 (0.0%)    size_t i = 0;
+   16,688 (0.0%)    size_t i = 0;
         .         
-   33,466 (0.0%)    if (n == 0) {
+   33,376 (0.0%)    if (n == 0) {
         2 (0.0%)      return 0;
         .           }
         .         
-4,615,582 (3.0%)    __asm__ volatile (
+4,597,261 (3.0%)    __asm__ volatile (
         .               "	subq	%0,%0		\n"  // clear carry
         .               "	jmp	1f		\n"
         .               ".p2align 4			\n"
@@ -913,19 +949,19 @@ Ir______________
         .               : "r"(rp), "r"(ap), "r"(bp)
         .               : "cc", "memory");
         .         
-   33,464 (0.0%)    return ret & 1;
-   33,466 (0.0%)  }
+   33,374 (0.0%)    return ret & 1;
+   33,376 (0.0%)  }
         .         
         .         BN_ULONG bn_sub_words(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp,
-   97,888 (0.1%)                        size_t n) {
+   97,783 (0.1%)                        size_t n) {
         .           BN_ULONG ret;
-   13,984 (0.0%)    size_t i = 0;
+   13,969 (0.0%)    size_t i = 0;
         .         
-   27,968 (0.0%)    if (n == 0) {
+   27,938 (0.0%)    if (n == 0) {
         4 (0.0%)      return 0;
         .           }
         .         
-2,953,538 (1.9%)    __asm__ volatile (
+2,952,557 (1.9%)    __asm__ volatile (
         .               "	subq	%0,%0		\n"  // clear borrow
         .               "	jmp	1f		\n"
         .               ".p2align 4			\n"
@@ -941,8 +977,8 @@ Ir______________
         .               : "r"(rp), "r"(ap), "r"(bp)
         .               : "cc", "memory");
         .         
-   27,964 (0.0%)    return ret & 1;
-   27,968 (0.0%)  }
+   27,934 (0.0%)    return ret & 1;
+   27,938 (0.0%)  }
         .         
         .         // mul_add_c(a,b,c0,c1,c2)  -- c+=a*b for three word number c=(c2,c1,c0)
         .         // mul_add_c2(a,b,c0,c1,c2) -- c+=2*a*b for three word number c=(c2,c1,c0)
@@ -1086,17 +1122,17 @@ Ir______________
         .         // spare.
         .         #define BN_MAX_WORDS (INT_MAX / (4 * BN_BITS2))
         .         
-      132 (0.0%)  BIGNUM *BN_new(void) {
-       99 (0.0%)    BIGNUM *bn = OPENSSL_zalloc(sizeof(BIGNUM));
+      148 (0.0%)  BIGNUM *BN_new(void) {
+      111 (0.0%)    BIGNUM *bn = OPENSSL_zalloc(sizeof(BIGNUM));
         .         
-       66 (0.0%)    if (bn == NULL) {
+       74 (0.0%)    if (bn == NULL) {
         .             return NULL;
         .           }
         .         
-       66 (0.0%)    bn->flags = BN_FLG_MALLOCED;
+       74 (0.0%)    bn->flags = BN_FLG_MALLOCED;
         .         
-       33 (0.0%)    return bn;
-       66 (0.0%)  }
+       37 (0.0%)    return bn;
+       74 (0.0%)  }
         .         
         .         BIGNUM *BN_secure_new(void) { return BN_new(); }
         .         
@@ -1104,21 +1140,21 @@ Ir______________
        75 (0.0%)    OPENSSL_memset(bn, 0, sizeof(BIGNUM));
        45 (0.0%)  }
         .         
-      180 (0.0%)  void BN_free(BIGNUM *bn) {
-       72 (0.0%)    if (bn == NULL) {
+      200 (0.0%)  void BN_free(BIGNUM *bn) {
+       80 (0.0%)    if (bn == NULL) {
        10 (0.0%)      return;
         .           }
         .         
-      130 (0.0%)    if ((bn->flags & BN_FLG_STATIC_DATA) == 0) {
-      104 (0.0%)      OPENSSL_free(bn->d);
+      150 (0.0%)    if ((bn->flags & BN_FLG_STATIC_DATA) == 0) {
+      120 (0.0%)      OPENSSL_free(bn->d);
         .           }
         .         
-      130 (0.0%)    if (bn->flags & BN_FLG_MALLOCED) {
-       68 (0.0%)      OPENSSL_free(bn);
+      150 (0.0%)    if (bn->flags & BN_FLG_MALLOCED) {
+       84 (0.0%)      OPENSSL_free(bn);
         .           } else {
        27 (0.0%)      bn->d = NULL;
         .           }
-       72 (0.0%)  }
+       80 (0.0%)  }
         .         
         .         void BN_clear_free(BIGNUM *bn) {
         .           BN_free(bn);
@@ -1180,75 +1216,75 @@ Ir______________
         .         
         .         // BN_num_bits_word returns the minimum number of bits needed to represent the
         .         // value in |l|.
-      140 (0.0%)  unsigned BN_num_bits_word(BN_ULONG l) {
+      144 (0.0%)  unsigned BN_num_bits_word(BN_ULONG l) {
         .           // |BN_num_bits| is often called on RSA prime factors. These have public bit
         .           // lengths, but all bits beyond the high bit are secret, so count bits in
         .           // constant time.
         .           BN_ULONG x, mask;
-      140 (0.0%)    int bits = (l != 0);
+      144 (0.0%)    int bits = (l != 0);
         .         
         .         #if BN_BITS2 > 32
         .           // Look at the upper half of |x|. |x| is at most 64 bits long.
-      105 (0.0%)    x = l >> 32;
+      108 (0.0%)    x = l >> 32;
         .           // Set |mask| to all ones if |x| (the top 32 bits of |l|) is non-zero and all
         .           // all zeros otherwise.
-      105 (0.0%)    mask = 0u - x;
-      105 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
+      108 (0.0%)    mask = 0u - x;
+      108 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
         .           // If |x| is non-zero, the lower half is included in the bit count in full,
         .           // and we count the upper half. Otherwise, we count the lower half.
-      210 (0.0%)    bits += 32 & mask;
-      140 (0.0%)    l ^= (x ^ l) & mask;  // |l| is |x| if |mask| and remains |l| otherwise.
+      216 (0.0%)    bits += 32 & mask;
+      144 (0.0%)    l ^= (x ^ l) & mask;  // |l| is |x| if |mask| and remains |l| otherwise.
         .         #endif
         .         
         .           // The remaining blocks are analogous iterations at lower powers of two.
-      105 (0.0%)    x = l >> 16;
-      105 (0.0%)    mask = 0u - x;
-      105 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
-      210 (0.0%)    bits += 16 & mask;
-      140 (0.0%)    l ^= (x ^ l) & mask;
+      108 (0.0%)    x = l >> 16;
+      108 (0.0%)    mask = 0u - x;
+      108 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
+      216 (0.0%)    bits += 16 & mask;
+      144 (0.0%)    l ^= (x ^ l) & mask;
         .         
-      105 (0.0%)    x = l >> 8;
-      105 (0.0%)    mask = 0u - x;
-      105 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
-      210 (0.0%)    bits += 8 & mask;
-      140 (0.0%)    l ^= (x ^ l) & mask;
+      108 (0.0%)    x = l >> 8;
+      108 (0.0%)    mask = 0u - x;
+      108 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
+      216 (0.0%)    bits += 8 & mask;
+      144 (0.0%)    l ^= (x ^ l) & mask;
         .         
-      105 (0.0%)    x = l >> 4;
-      105 (0.0%)    mask = 0u - x;
-      105 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
-      210 (0.0%)    bits += 4 & mask;
-      140 (0.0%)    l ^= (x ^ l) & mask;
+      108 (0.0%)    x = l >> 4;
+      108 (0.0%)    mask = 0u - x;
+      108 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
+      216 (0.0%)    bits += 4 & mask;
+      144 (0.0%)    l ^= (x ^ l) & mask;
         .         
-      105 (0.0%)    x = l >> 2;
-      105 (0.0%)    mask = 0u - x;
-      105 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
-      210 (0.0%)    bits += 2 & mask;
-      140 (0.0%)    l ^= (x ^ l) & mask;
+      108 (0.0%)    x = l >> 2;
+      108 (0.0%)    mask = 0u - x;
+      108 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
+      216 (0.0%)    bits += 2 & mask;
+      144 (0.0%)    l ^= (x ^ l) & mask;
         .         
-      105 (0.0%)    x = l >> 1;
-      105 (0.0%)    mask = 0u - x;
-      105 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
-      210 (0.0%)    bits += 1 & mask;
+      108 (0.0%)    x = l >> 1;
+      108 (0.0%)    mask = 0u - x;
+      108 (0.0%)    mask = (0u - (mask >> (BN_BITS2 - 1)));
+      216 (0.0%)    bits += 1 & mask;
         .         
-       35 (0.0%)    return bits;
-       70 (0.0%)  }
+       36 (0.0%)    return bits;
+       72 (0.0%)  }
         .         
-      192 (0.0%)  unsigned BN_num_bits(const BIGNUM *bn) {
-      128 (0.0%)    const int width = bn_minimal_width(bn);
-       64 (0.0%)    if (width == 0) {
+      198 (0.0%)  unsigned BN_num_bits(const BIGNUM *bn) {
+      132 (0.0%)    const int width = bn_minimal_width(bn);
+       66 (0.0%)    if (width == 0) {
         .             return 0;
         .           }
         .         
-      480 (0.0%)    return (width - 1) * BN_BITS2 + BN_num_bits_word(bn->d[width - 1]);
-       96 (0.0%)  }
+      495 (0.0%)    return (width - 1) * BN_BITS2 + BN_num_bits_word(bn->d[width - 1]);
+       99 (0.0%)  }
         .         
        45 (0.0%)  unsigned BN_num_bytes(const BIGNUM *bn) {
        45 (0.0%)    return (BN_num_bits(bn) + 7) / 8;
        18 (0.0%)  }
         .         
-      224 (0.0%)  void BN_zero(BIGNUM *bn) {
-      336 (0.0%)    bn->width = bn->neg = 0;
-      168 (0.0%)  }
+      240 (0.0%)  void BN_zero(BIGNUM *bn) {
+      360 (0.0%)    bn->width = bn->neg = 0;
+      180 (0.0%)  }
         .         
         5 (0.0%)  int BN_one(BIGNUM *bn) {
         4 (0.0%)    return BN_set_word(bn, 1);
@@ -1287,14 +1323,14 @@ Ir______________
         .           bn->flags |= BN_FLG_STATIC_DATA;
         .         }
         .         
-   14,735 (0.0%)  int bn_fits_in_words(const BIGNUM *bn, size_t num) {
+   14,660 (0.0%)  int bn_fits_in_words(const BIGNUM *bn, size_t num) {
         .           // All words beyond |num| must be zero.
-    2,947 (0.0%)    BN_ULONG mask = 0;
-  597,116 (0.4%)    for (size_t i = num; i < (size_t)bn->width; i++) {
-  669,130 (0.4%)      mask |= bn->d[i];
+    2,932 (0.0%)    BN_ULONG mask = 0;
+  596,204 (0.4%)    for (size_t i = num; i < (size_t)bn->width; i++) {
+  668,206 (0.4%)      mask |= bn->d[i];
         .           }
-    8,841 (0.0%)    return mask == 0;
-    5,894 (0.0%)  }
+    8,796 (0.0%)    return mask == 0;
+    5,864 (0.0%)  }
         .         
         .         int bn_copy_words(BN_ULONG *out, size_t num, const BIGNUM *bn) {
         .           if (bn->neg) {
@@ -1325,36 +1361,36 @@ Ir______________
         .           }
         .         }
         .         
-  105,894 (0.1%)  int bn_wexpand(BIGNUM *bn, size_t words) {
+  105,762 (0.1%)  int bn_wexpand(BIGNUM *bn, size_t words) {
         .           BN_ULONG *a;
         .         
-   88,245 (0.1%)    if (words <= (size_t)bn->dmax) {
-   35,194 (0.0%)      return 1;
+   88,135 (0.1%)    if (words <= (size_t)bn->dmax) {
+   35,142 (0.0%)      return 1;
         .           }
         .         
-      104 (0.0%)    if (words > BN_MAX_WORDS) {
+      112 (0.0%)    if (words > BN_MAX_WORDS) {
         .             OPENSSL_PUT_ERROR(BN, BN_R_BIGNUM_TOO_LONG);
         .             return 0;
         .           }
         .         
-      260 (0.0%)    if (bn->flags & BN_FLG_STATIC_DATA) {
+      280 (0.0%)    if (bn->flags & BN_FLG_STATIC_DATA) {
         .             OPENSSL_PUT_ERROR(BN, BN_R_EXPAND_ON_STATIC_BIGNUM_DATA);
         .             return 0;
         .           }
         .         
-      260 (0.0%)    a = OPENSSL_calloc(words, sizeof(BN_ULONG));
-      104 (0.0%)    if (a == NULL) {
+      280 (0.0%)    a = OPENSSL_calloc(words, sizeof(BN_ULONG));
+      112 (0.0%)    if (a == NULL) {
         .             return 0;
         .           }
         .         
-      520 (0.0%)    OPENSSL_memcpy(a, bn->d, sizeof(BN_ULONG) * bn->width);
+      560 (0.0%)    OPENSSL_memcpy(a, bn->d, sizeof(BN_ULONG) * bn->width);
         .         
-      208 (0.0%)    OPENSSL_free(bn->d);
-      156 (0.0%)    bn->d = a;
-      208 (0.0%)    bn->dmax = (int)words;
+      224 (0.0%)    OPENSSL_free(bn->d);
+      168 (0.0%)    bn->d = a;
+      224 (0.0%)    bn->dmax = (int)words;
         .         
-       52 (0.0%)    return 1;
-   35,298 (0.0%)  }
+       56 (0.0%)    return 1;
+   35,254 (0.0%)  }
         .         
         .         int bn_expand(BIGNUM *bn, size_t bits) {
         .           if (bits + BN_BITS2 - 1 < bits) {
@@ -1411,20 +1447,20 @@ Ir______________
         .           }
    54,470 (0.0%)  }
         .         
-   70,032 (0.0%)  int bn_minimal_width(const BIGNUM *bn) {
-   52,524 (0.0%)    int ret = bn->width;
-  304,718 (0.2%)    while (ret > 0 && bn->d[ret - 1] == 0) {
-    6,427 (0.0%)      ret--;
+   69,960 (0.0%)  int bn_minimal_width(const BIGNUM *bn) {
+   52,470 (0.0%)    int ret = bn->width;
+  303,346 (0.2%)    while (ret > 0 && bn->d[ret - 1] == 0) {
+    6,333 (0.0%)      ret--;
         .           }
-   17,508 (0.0%)    return ret;
-   35,016 (0.0%)  }
+   17,490 (0.0%)    return ret;
+   34,980 (0.0%)  }
         .         
-   87,350 (0.1%)  void bn_set_minimal_width(BIGNUM *bn) {
-   87,350 (0.1%)    bn->width = bn_minimal_width(bn);
-   69,880 (0.0%)    if (bn->width == 0) {
-        2 (0.0%)      bn->neg = 0;
+   87,245 (0.1%)  void bn_set_minimal_width(BIGNUM *bn) {
+   87,245 (0.1%)    bn->width = bn_minimal_width(bn);
+   69,796 (0.0%)    if (bn->width == 0) {
+        4 (0.0%)      bn->neg = 0;
         .           }
-   52,410 (0.0%)  }
+   52,347 (0.0%)  }
         .         
         .         int BN_get_flags(const BIGNUM *bn, int flags) {
         .           return bn->flags & flags;
@@ -1444,40 +1480,40 @@ Ir______________
         .         
         .         
         .         static int bn_cmp_words_consttime(const BN_ULONG *a, size_t a_len,
-   23,480 (0.0%)                                    const BN_ULONG *b, size_t b_len) {
+   23,344 (0.0%)                                    const BN_ULONG *b, size_t b_len) {
         .           OPENSSL_STATIC_ASSERT(sizeof(BN_ULONG) <= sizeof(crypto_word_t),
         .                                 crypto_word_t_is_too_small)
-    2,935 (0.0%)    int ret = 0;
+    2,918 (0.0%)    int ret = 0;
         .           // Process the common words in little-endian order.
-   14,675 (0.0%)    size_t min = a_len < b_len ? a_len : b_len;
-  397,327 (0.3%)    for (size_t i = 0; i < min; i++) {
-1,339,282 (0.9%)      crypto_word_t eq = constant_time_eq_w(a[i], b[i]);
-1,339,282 (0.9%)      crypto_word_t lt = constant_time_lt_w(a[i], b[i]);
+   14,590 (0.0%)    size_t min = a_len < b_len ? a_len : b_len;
+  396,198 (0.3%)    for (size_t i = 0; i < min; i++) {
+1,335,628 (0.9%)      crypto_word_t eq = constant_time_eq_w(a[i], b[i]);
+1,335,628 (0.9%)      crypto_word_t lt = constant_time_lt_w(a[i], b[i]);
         .             ret =
-1,147,956 (0.7%)          constant_time_select_int(eq, ret, constant_time_select_int(lt, -1, 1));
+1,144,824 (0.7%)          constant_time_select_int(eq, ret, constant_time_select_int(lt, -1, 1));
         .           }
         .         
         .           // If |a| or |b| has non-zero words beyond |min|, they take precedence.
-    8,805 (0.0%)    if (a_len < b_len) {
-       45 (0.0%)      crypto_word_t mask = 0;
-      698 (0.0%)      for (size_t i = a_len; i < b_len; i++) {
-      642 (0.0%)        mask |= b[i];
+    8,754 (0.0%)    if (a_len < b_len) {
+       52 (0.0%)      crypto_word_t mask = 0;
+      768 (0.0%)      for (size_t i = a_len; i < b_len; i++) {
+      684 (0.0%)        mask |= b[i];
         .             }
-      495 (0.0%)      ret = constant_time_select_int(constant_time_is_zero_w(mask), ret, -1);
-    8,670 (0.0%)    } else if (b_len < a_len) {
-       65 (0.0%)      crypto_word_t mask = 0;
-      774 (0.0%)      for (size_t i = b_len; i < a_len; i++) {
-      576 (0.0%)        mask |= a[i];
+      572 (0.0%)      ret = constant_time_select_int(constant_time_is_zero_w(mask), ret, -1);
+    8,598 (0.0%)    } else if (b_len < a_len) {
+       72 (0.0%)      crypto_word_t mask = 0;
+      844 (0.0%)      for (size_t i = b_len; i < a_len; i++) {
+      618 (0.0%)        mask |= a[i];
         .             }
-      650 (0.0%)      ret = constant_time_select_int(constant_time_is_zero_w(mask), ret, 1);
+      720 (0.0%)      ret = constant_time_select_int(constant_time_is_zero_w(mask), ret, 1);
         .           }
         .         
-    2,935 (0.0%)    return ret;
-    5,870 (0.0%)  }
+    2,918 (0.0%)    return ret;
+    5,836 (0.0%)  }
         .         
-   17,598 (0.0%)  int BN_ucmp(const BIGNUM *a, const BIGNUM *b) {
-   35,196 (0.0%)    return bn_cmp_words_consttime(a->d, a->width, b->d, b->width);
-    5,866 (0.0%)  }
+   17,496 (0.0%)  int BN_ucmp(const BIGNUM *a, const BIGNUM *b) {
+   34,992 (0.0%)    return bn_cmp_words_consttime(a->d, a->width, b->d, b->width);
+    5,832 (0.0%)  }
         .         
        60 (0.0%)  int BN_cmp(const BIGNUM *a, const BIGNUM *b) {
        40 (0.0%)    if ((a == NULL) || (b == NULL)) {
@@ -1529,9 +1565,9 @@ Ir______________
         .           return BN_cmp(a, &b_bn);
         .         }
         .         
-   14,670 (0.0%)  int BN_is_zero(const BIGNUM *bn) {
-   11,736 (0.0%)    return bn_fits_in_words(bn, 0);
-    5,868 (0.0%)  }
+   14,595 (0.0%)  int BN_is_zero(const BIGNUM *bn) {
+   11,676 (0.0%)    return bn_fits_in_words(bn, 0);
+    5,838 (0.0%)  }
         .         
        15 (0.0%)  int BN_is_one(const BIGNUM *bn) {
        36 (0.0%)    return bn->neg == 0 && BN_abs_is_word(bn, 1);
@@ -1541,9 +1577,9 @@ Ir______________
         .           return BN_abs_is_word(bn, w) && (w == 0 || bn->neg == 0);
         .         }
         .         
-   23,224 (0.0%)  int BN_is_odd(const BIGNUM *bn) {
-   66,826 (0.0%)    return bn->width > 0 && (bn->d[0] & 1) == 1;
-   11,612 (0.0%)  }
+   23,424 (0.0%)  int BN_is_odd(const BIGNUM *bn) {
+   67,348 (0.0%)    return bn->width > 0 && (bn->d[0] & 1) == 1;
+   11,712 (0.0%)  }
         .         
         .         int BN_is_pow2(const BIGNUM *bn) {
         .           int width = bn_minimal_width(bn);
@@ -1595,7 +1631,7 @@ Ir____________
       .         }
       .         
       .         static inline void bn_div_rem_words(BN_ULONG *quotient_out, BN_ULONG *rem_out,
-    924 (0.0%)                                      BN_ULONG n0, BN_ULONG n1, BN_ULONG d0) {
+    931 (0.0%)                                      BN_ULONG n0, BN_ULONG n1, BN_ULONG d0) {
       .           // GCC and Clang generate function calls to |__udivdi3| and |__umoddi3| when
       .           // the |BN_ULLONG|-based C code is used.
       .           //
@@ -1614,7 +1650,7 @@ Ir____________
       .                            : "a"(n1), "d"(n0), "rm"(d0)
       .                            : "cc");
       .         #elif defined(BN_CAN_USE_INLINE_ASM) && defined(OPENSSL_X86_64)
-  1,056 (0.0%)    __asm__ volatile("divq %4"
+  1,064 (0.0%)    __asm__ volatile("divq %4"
       .                            : "=a"(*quotient_out), "=d"(*rem_out)
       .                            : "a"(n1), "d"(n0), "rm"(d0)
       .                            : "cc");
@@ -1627,7 +1663,7 @@ Ir____________
       .         #endif
       .           *rem_out = n1 - (*quotient_out * d0);
       .         #endif
-    396 (0.0%)  }
+    399 (0.0%)  }
       .         
       .         // BN_div computes "quotient := numerator / divisor", rounding towards zero,
       .         // and sets up |rem| such that "quotient * divisor + rem = numerator" holds.
@@ -1646,7 +1682,7 @@ Ir____________
       .         // and Necessary Software Countermeasures" by Onur Acıçmez, Shay Gueron, and
       .         // Jean-Pierre Seifert.
       .         int BN_div(BIGNUM *quotient, BIGNUM *rem, const BIGNUM *numerator,
-     26 (0.0%)             const BIGNUM *divisor, BN_CTX *ctx) {
+     39 (0.0%)             const BIGNUM *divisor, BN_CTX *ctx) {
       .           int norm_shift, loop;
       .           BIGNUM wnum;
       .           BN_ULONG *resp, *wnump;
@@ -1659,58 +1695,58 @@ Ir____________
       .           // retain the previous behavior.
       .         
       .           // Invalid zero-padding would have particularly bad consequences.
-      8 (0.0%)    int numerator_width = bn_minimal_width(numerator);
-      8 (0.0%)    int divisor_width = bn_minimal_width(divisor);
-     28 (0.0%)    if ((numerator_width > 0 && numerator->d[numerator_width - 1] == 0) ||
-     20 (0.0%)        (divisor_width > 0 && divisor->d[divisor_width - 1] == 0)) {
+     12 (0.0%)    int numerator_width = bn_minimal_width(numerator);
+     12 (0.0%)    int divisor_width = bn_minimal_width(divisor);
+     42 (0.0%)    if ((numerator_width > 0 && numerator->d[numerator_width - 1] == 0) ||
+     30 (0.0%)        (divisor_width > 0 && divisor->d[divisor_width - 1] == 0)) {
       .             OPENSSL_PUT_ERROR(BN, BN_R_NOT_INITIALIZED);
       .             return 0;
       .           }
       .         
-     10 (0.0%)    if (BN_is_zero(divisor)) {
+     15 (0.0%)    if (BN_is_zero(divisor)) {
       .             OPENSSL_PUT_ERROR(BN, BN_R_DIV_BY_ZERO);
       .             return 0;
       .           }
       .         
-      6 (0.0%)    BN_CTX_start(ctx);
-      8 (0.0%)    BIGNUM *tmp = BN_CTX_get(ctx);
-      8 (0.0%)    BIGNUM *snum = BN_CTX_get(ctx);
-      8 (0.0%)    BIGNUM *sdiv = BN_CTX_get(ctx);
-      2 (0.0%)    BIGNUM *res = NULL;
-      4 (0.0%)    if (quotient == NULL) {
-     10 (0.0%)      res = BN_CTX_get(ctx);
+      9 (0.0%)    BN_CTX_start(ctx);
+     12 (0.0%)    BIGNUM *tmp = BN_CTX_get(ctx);
+     12 (0.0%)    BIGNUM *snum = BN_CTX_get(ctx);
+     12 (0.0%)    BIGNUM *sdiv = BN_CTX_get(ctx);
+      3 (0.0%)    BIGNUM *res = NULL;
+      6 (0.0%)    if (quotient == NULL) {
+     15 (0.0%)      res = BN_CTX_get(ctx);
       .           } else {
       .             res = quotient;
       .           }
-      8 (0.0%)    if (sdiv == NULL || res == NULL) {
+     12 (0.0%)    if (sdiv == NULL || res == NULL) {
       .             goto err;
       .           }
       .         
       .           // First we normalise the numbers
-     16 (0.0%)    norm_shift = BN_BITS2 - (BN_num_bits(divisor) % BN_BITS2);
-     16 (0.0%)    if (!BN_lshift(sdiv, divisor, norm_shift)) {
+     24 (0.0%)    norm_shift = BN_BITS2 - (BN_num_bits(divisor) % BN_BITS2);
+     24 (0.0%)    if (!BN_lshift(sdiv, divisor, norm_shift)) {
       .             goto err;
       .           }
-      6 (0.0%)    bn_set_minimal_width(sdiv);
-      4 (0.0%)    sdiv->neg = 0;
-      2 (0.0%)    norm_shift += BN_BITS2;
-     16 (0.0%)    if (!BN_lshift(snum, numerator, norm_shift)) {
+      9 (0.0%)    bn_set_minimal_width(sdiv);
+      6 (0.0%)    sdiv->neg = 0;
+      3 (0.0%)    norm_shift += BN_BITS2;
+     24 (0.0%)    if (!BN_lshift(snum, numerator, norm_shift)) {
       .             goto err;
       .           }
-      6 (0.0%)    bn_set_minimal_width(snum);
-      4 (0.0%)    snum->neg = 0;
+      9 (0.0%)    bn_set_minimal_width(snum);
+      6 (0.0%)    snum->neg = 0;
       .         
       .           // Since we don't want to have special-case logic for the case where snum is
       .           // larger than sdiv, we pad snum with enough zeroes without changing its
       .           // value.
-     14 (0.0%)    if (snum->width <= sdiv->width + 1) {
-      .             if (!bn_wexpand(snum, sdiv->width + 2)) {
+     21 (0.0%)    if (snum->width <= sdiv->width + 1) {
+     10 (0.0%)      if (!bn_wexpand(snum, sdiv->width + 2)) {
       .               goto err;
       .             }
-      .             for (int i = snum->width; i < sdiv->width + 2; i++) {
-      .               snum->d[i] = 0;
+     15 (0.0%)      for (int i = snum->width; i < sdiv->width + 2; i++) {
+      7 (0.0%)        snum->d[i] = 0;
       .             }
-      .             snum->width = sdiv->width + 2;
+      6 (0.0%)      snum->width = sdiv->width + 2;
       .           } else {
      20 (0.0%)      if (!bn_wexpand(snum, snum->width + 1)) {
       .               goto err;
@@ -1719,68 +1755,68 @@ Ir____________
      10 (0.0%)      snum->width++;
       .           }
       .         
-      6 (0.0%)    div_n = sdiv->width;
-      6 (0.0%)    num_n = snum->width;
-      6 (0.0%)    loop = num_n - div_n;
+      9 (0.0%)    div_n = sdiv->width;
+      9 (0.0%)    num_n = snum->width;
+      9 (0.0%)    loop = num_n - div_n;
       .           // Lets setup a 'window' into snum
       .           // This is the part that corresponds to the current
       .           // 'area' being divided
-      2 (0.0%)    wnum.neg = 0;
-     14 (0.0%)    wnum.d = &(snum->d[loop]);
-      4 (0.0%)    wnum.width = div_n;
+      3 (0.0%)    wnum.neg = 0;
+     21 (0.0%)    wnum.d = &(snum->d[loop]);
+      6 (0.0%)    wnum.width = div_n;
       .           // only needed when BN_ucmp messes up the values between width and max
-      8 (0.0%)    wnum.dmax = snum->dmax - loop;  // so we don't step out of bounds
+     12 (0.0%)    wnum.dmax = snum->dmax - loop;  // so we don't step out of bounds
       .         
       .           // Get the top 2 words of sdiv
       .           // div_n=sdiv->width;
-     18 (0.0%)    d0 = sdiv->d[div_n - 1];
-     24 (0.0%)    d1 = (div_n == 1) ? 0 : sdiv->d[div_n - 2];
+     27 (0.0%)    d0 = sdiv->d[div_n - 1];
+     36 (0.0%)    d1 = (div_n == 1) ? 0 : sdiv->d[div_n - 2];
       .         
       .           // pointer to the 'top' of snum
-     16 (0.0%)    wnump = &(snum->d[num_n - 1]);
+     24 (0.0%)    wnump = &(snum->d[num_n - 1]);
       .         
       .           // Setup |res|. |numerator| and |res| may alias, so we save |numerator->neg|
       .           // for later.
-      6 (0.0%)    const int numerator_neg = numerator->neg;
-     12 (0.0%)    res->neg = (numerator_neg ^ divisor->neg);
-     18 (0.0%)    if (!bn_wexpand(res, loop + 1)) {
+      9 (0.0%)    const int numerator_neg = numerator->neg;
+     18 (0.0%)    res->neg = (numerator_neg ^ divisor->neg);
+     27 (0.0%)    if (!bn_wexpand(res, loop + 1)) {
       .             goto err;
       .           }
-      8 (0.0%)    res->width = loop - 1;
-     16 (0.0%)    resp = &(res->d[loop - 1]);
+     12 (0.0%)    res->width = loop - 1;
+     24 (0.0%)    resp = &(res->d[loop - 1]);
       .         
       .           // space for temp
-     18 (0.0%)    if (!bn_wexpand(tmp, div_n + 1)) {
+     27 (0.0%)    if (!bn_wexpand(tmp, div_n + 1)) {
       .             goto err;
       .           }
       .         
       .           // if res->width == 0 then clear the neg value otherwise decrease
       .           // the resp pointer
-      8 (0.0%)    if (res->width == 0) {
+     12 (0.0%)    if (res->width == 0) {
       .             res->neg = 0;
       .           } else {
-      2 (0.0%)      resp--;
+      3 (0.0%)      resp--;
       .           }
       .         
-    936 (0.0%)    for (int i = 0; i < loop - 1; i++, wnump--, resp--) {
+    949 (0.0%)    for (int i = 0; i < loop - 1; i++, wnump--, resp--) {
       .             BN_ULONG q, l0;
       .             // the first part of the loop uses the top two words of snum and sdiv to
       .             // calculate a BN_ULONG q such that | wnum - sdiv * q | < sdiv
-    132 (0.0%)      BN_ULONG n0, n1, rm = 0;
+    133 (0.0%)      BN_ULONG n0, n1, rm = 0;
       .         
-    396 (0.0%)      n0 = wnump[0];
-    396 (0.0%)      n1 = wnump[-1];
-    396 (0.0%)      if (n0 == d0) {
+    399 (0.0%)      n0 = wnump[0];
+    399 (0.0%)      n1 = wnump[-1];
+    399 (0.0%)      if (n0 == d0) {
       .               q = BN_MASK2;
       .             } else {
       .               // n0 < d0
-  1,056 (0.0%)        bn_div_rem_words(&q, &rm, n0, n1, d0);
+  1,064 (0.0%)        bn_div_rem_words(&q, &rm, n0, n1, d0);
       .         
       .         #ifdef BN_ULLONG
-  2,244 (0.0%)        BN_ULLONG t2 = (BN_ULLONG)d1 * q;
+  2,261 (0.0%)        BN_ULLONG t2 = (BN_ULLONG)d1 * q;
       .               for (;;) {
-  2,418 (0.0%)          if (t2 <= ((((BN_ULLONG)rm) << BN_BITS2) | wnump[-2])) {
-    212 (0.0%)            break;
+  2,434 (0.0%)          if (t2 <= ((((BN_ULLONG)rm) << BN_BITS2) | wnump[-2])) {
+    214 (0.0%)            break;
       .                 }
     132 (0.0%)          q--;
     176 (0.0%)          rm += d0;
@@ -1806,12 +1842,12 @@ Ir____________
       .         #endif  // !BN_ULLONG
       .             }
       .         
-  1,320 (0.0%)      l0 = bn_mul_words(tmp->d, sdiv->d, div_n, q);
-  1,056 (0.0%)      tmp->d[div_n] = l0;
-    396 (0.0%)      wnum.d--;
+  1,330 (0.0%)      l0 = bn_mul_words(tmp->d, sdiv->d, div_n, q);
+  1,064 (0.0%)      tmp->d[div_n] = l0;
+    399 (0.0%)      wnum.d--;
       .             // ingore top values of the bignums just sub the two
       .             // BN_ULONG arrays with bn_sub_words
-  1,452 (0.0%)      if (bn_sub_words(wnum.d, wnum.d, tmp->d, div_n + 1)) {
+  1,463 (0.0%)      if (bn_sub_words(wnum.d, wnum.d, tmp->d, div_n + 1)) {
       .               // Note: As we have considered only the leading
       .               // two BN_ULONGs in the calculation of q, sdiv * q
       .               // might be greater than wnum (but then (q-1) * sdiv
@@ -1825,40 +1861,40 @@ Ir____________
       .               }
       .             }
       .             // store part of the result
-    396 (0.0%)      *resp = q;
+    399 (0.0%)      *resp = q;
       .           }
       .         
-      6 (0.0%)    bn_set_minimal_width(snum);
+      9 (0.0%)    bn_set_minimal_width(snum);
       .         
-      4 (0.0%)    if (rem != NULL) {
-     16 (0.0%)      if (!BN_rshift(rem, snum, norm_shift)) {
+      6 (0.0%)    if (rem != NULL) {
+     24 (0.0%)      if (!BN_rshift(rem, snum, norm_shift)) {
       .               goto err;
       .             }
-     10 (0.0%)      if (!BN_is_zero(rem)) {
-      6 (0.0%)        rem->neg = numerator_neg;
+     15 (0.0%)      if (!BN_is_zero(rem)) {
+      9 (0.0%)        rem->neg = numerator_neg;
       .             }
       .           }
       .         
-      6 (0.0%)    bn_set_minimal_width(res);
-      6 (0.0%)    BN_CTX_end(ctx);
-      4 (0.0%)    return 1;
+      9 (0.0%)    bn_set_minimal_width(res);
+      9 (0.0%)    BN_CTX_end(ctx);
+      6 (0.0%)    return 1;
       .         
       .         err:
       .           BN_CTX_end(ctx);
       .           return 0;
-     12 (0.0%)  }
+     18 (0.0%)  }
       .         
-      .         int BN_nnmod(BIGNUM *r, const BIGNUM *m, const BIGNUM *d, BN_CTX *ctx) {
-      .           if (!(BN_mod(r, m, d, ctx))) {
+      8 (0.0%)  int BN_nnmod(BIGNUM *r, const BIGNUM *m, const BIGNUM *d, BN_CTX *ctx) {
+     10 (0.0%)    if (!(BN_mod(r, m, d, ctx))) {
       .             return 0;
       .           }
-      .           if (!r->neg) {
+      4 (0.0%)    if (!r->neg) {
       .             return 1;
       .           }
       .         
       .           // now -|d| < r < 0, so we have to set r := r + |d|.
-      .           return (d->neg ? BN_sub : BN_add)(r, r, d);
-      .         }
+     12 (0.0%)    return (d->neg ? BN_sub : BN_add)(r, r, d);
+      2 (0.0%)  }
       .         
       .         BN_ULONG bn_reduce_once(BN_ULONG *r, const BN_ULONG *a, BN_ULONG carry,
      81 (0.0%)                          const BN_ULONG *m, size_t num) {
@@ -1875,7 +1911,7 @@ Ir____________
       .           //
       .           // Although |carry| may be one if it was one on input and |bn_sub_words|
       .           // returns zero, this would give |r| > |m|, violating our input assumptions.
-     36 (0.0%)    assert(carry == 0 || carry == (BN_ULONG)-1);
+     32 (0.0%)    assert(carry == 0 || carry == (BN_ULONG)-1);
      72 (0.0%)    bn_select_words(r, carry, a /* r < 0 */, r /* r >= 0 */, num);
       9 (0.0%)    return carry;
      18 (0.0%)  }
@@ -2164,7 +2200,7 @@ Ir___________
      .           // bits on 32-bit systems, but much more on 64-bit systems)
      .           int shift;
      .         
-14,561 (0.0%)    while (!BN_is_zero(B)) {
+14,476 (0.0%)    while (!BN_is_zero(B)) {
      .             //      0 < B < |n|,
      .             //      0 < A <= |n|,
      .             // (1) -sign*X*a  ==  B   (mod |n|),
@@ -2173,45 +2209,45 @@ Ir___________
      .             // Now divide  B  by the maximum possible power of two in the integers,
      .             // and divide  X  by the same value mod |n|.
      .             // When we're done, (1) still holds.
- 2,911 (0.0%)      shift = 0;
-43,938 (0.0%)      while (!BN_is_bit_set(B, shift)) {
+ 2,894 (0.0%)      shift = 0;
+43,375 (0.0%)      while (!BN_is_bit_set(B, shift)) {
      .               // note that 0 < B
- 2,950 (0.0%)        shift++;
+ 2,889 (0.0%)        shift++;
      .         
-14,750 (0.0%)        if (BN_is_odd(X)) {
-11,712 (0.0%)          if (!BN_uadd(X, X, n)) {
+14,445 (0.0%)        if (BN_is_odd(X)) {
+11,344 (0.0%)          if (!BN_uadd(X, X, n)) {
      .                   goto err;
      .                 }
      .               }
      .               // now X is even, so we can easily divide it by two
-20,650 (0.0%)        if (!BN_rshift1(X, X)) {
+20,223 (0.0%)        if (!BN_rshift1(X, X)) {
      .                 goto err;
      .               }
      .             }
- 5,822 (0.0%)      if (shift > 0) {
-11,792 (0.0%)        if (!BN_rshift(B, B, shift)) {
+ 5,788 (0.0%)      if (shift > 0) {
+11,584 (0.0%)        if (!BN_rshift(B, B, shift)) {
      .                 goto err;
      .               }
      .             }
      .         
      .             // Same for A and Y. Afterwards, (2) still holds.
- 2,911 (0.0%)      shift = 0;
-43,112 (0.0%)      while (!BN_is_bit_set(A, shift)) {
+ 2,894 (0.0%)      shift = 0;
+43,753 (0.0%)      while (!BN_is_bit_set(A, shift)) {
      .               // note that 0 < A
- 2,832 (0.0%)        shift++;
+ 2,943 (0.0%)        shift++;
      .         
-14,160 (0.0%)        if (BN_is_odd(Y)) {
-11,776 (0.0%)          if (!BN_uadd(Y, Y, n)) {
+14,715 (0.0%)        if (BN_is_odd(Y)) {
+11,920 (0.0%)          if (!BN_uadd(Y, Y, n)) {
      .                   goto err;
      .                 }
      .               }
      .               // now Y is even
-19,824 (0.0%)        if (!BN_rshift1(Y, Y)) {
+20,601 (0.0%)        if (!BN_rshift1(Y, Y)) {
      .                 goto err;
      .               }
      .             }
- 5,822 (0.0%)      if (shift > 0) {
-11,496 (0.0%)        if (!BN_rshift(A, A, shift)) {
+ 5,788 (0.0%)      if (shift > 0) {
+11,568 (0.0%)        if (!BN_rshift(A, A, shift)) {
      .                 goto err;
      .               }
      .             }
@@ -2226,23 +2262,23 @@ Ir___________
      .             // (2)  sign*Y*a  ==  A   (mod |n|),
      .             //
      .             // and that either  A  or  B  is even in the next iteration.
-20,377 (0.0%)      if (BN_ucmp(B, A) >= 0) {
+20,258 (0.0%)      if (BN_ucmp(B, A) >= 0) {
      .               // -sign*(X + Y)*a == B - A  (mod |n|)
-11,792 (0.0%)        if (!BN_uadd(X, X, Y)) {
+11,584 (0.0%)        if (!BN_uadd(X, X, Y)) {
      .                 goto err;
      .               }
      .               // NB: we could use BN_mod_add_quick(X, X, Y, n), but that
      .               // actually makes the algorithm slower
-11,792 (0.0%)        if (!BN_usub(B, B, A)) {
+11,584 (0.0%)        if (!BN_usub(B, B, A)) {
      .                 goto err;
      .               }
      .             } else {
      .               //  sign*(X + Y)*a == A - B  (mod |n|)
-11,496 (0.0%)        if (!BN_uadd(Y, Y, X)) {
+11,568 (0.0%)        if (!BN_uadd(Y, Y, X)) {
      .                 goto err;
      .               }
      .               // as above, BN_mod_add_quick(Y, Y, X, n) would slow things down
-11,496 (0.0%)        if (!BN_usub(A, A, B)) {
+11,568 (0.0%)        if (!BN_usub(A, A, B)) {
      .                 goto err;
      .               }
      .             }
@@ -2268,8 +2304,8 @@ Ir___________
      .           // Now  Y*a  ==  A  (mod |n|).
      .         
      .           // Y*a == 1  (mod |n|)
-    11 (0.0%)    if (Y->neg || BN_ucmp(Y, n) >= 0) {
-     .             if (!BN_nnmod(Y, Y, n, ctx)) {
+     4 (0.0%)    if (Y->neg || BN_ucmp(Y, n) >= 0) {
+     8 (0.0%)      if (!BN_nnmod(Y, Y, n, ctx)) {
      .               goto err;
      .             }
      .           }
@@ -2351,29 +2387,29 @@ Ir______________
         .         #include "internal.h"
         .         
         .         
-       28 (0.0%)  int BN_lshift(BIGNUM *r, const BIGNUM *a, int n) {
+       42 (0.0%)  int BN_lshift(BIGNUM *r, const BIGNUM *a, int n) {
         .           int i, nw, lb, rb;
         .           BN_ULONG *t, *f;
         .           BN_ULONG l;
         .         
-        8 (0.0%)    if (n < 0) {
+       12 (0.0%)    if (n < 0) {
         .             OPENSSL_PUT_ERROR(BN, BN_R_NEGATIVE_NUMBER);
         .             return 0;
         .           }
         .         
-       16 (0.0%)    r->neg = a->neg;
-       24 (0.0%)    nw = n / BN_BITS2;
-       48 (0.0%)    if (!bn_wexpand(r, a->width + nw + 1)) {
+       24 (0.0%)    r->neg = a->neg;
+       36 (0.0%)    nw = n / BN_BITS2;
+       72 (0.0%)    if (!bn_wexpand(r, a->width + nw + 1)) {
         .             return 0;
         .           }
-       32 (0.0%)    lb = n % BN_BITS2;
-       12 (0.0%)    rb = BN_BITS2 - lb;
-       12 (0.0%)    f = a->d;
-       12 (0.0%)    t = r->d;
-       36 (0.0%)    t[a->width + nw] = 0;
-        8 (0.0%)    if (lb == 0) {
-    1,190 (0.0%)      for (i = a->width - 1; i >= 0; i--) {
-    5,404 (0.0%)        t[nw + i] = f[i];
+       48 (0.0%)    lb = n % BN_BITS2;
+       18 (0.0%)    rb = BN_BITS2 - lb;
+       18 (0.0%)    f = a->d;
+       18 (0.0%)    t = r->d;
+       54 (0.0%)    t[a->width + nw] = 0;
+       12 (0.0%)    if (lb == 0) {
+    1,590 (0.0%)      for (i = a->width - 1; i >= 0; i--) {
+    7,196 (0.0%)        t[nw + i] = f[i];
         .             }
         .           } else {
         .             for (i = a->width - 1; i >= 0; i--) {
@@ -2382,12 +2418,12 @@ Ir______________
         .               t[nw + i] = l << lb;
         .             }
         .           }
-       28 (0.0%)    OPENSSL_memset(t, 0, nw * sizeof(t[0]));
-       28 (0.0%)    r->width = a->width + nw + 1;
-       12 (0.0%)    bn_set_minimal_width(r);
+       42 (0.0%)    OPENSSL_memset(t, 0, nw * sizeof(t[0]));
+       42 (0.0%)    r->width = a->width + nw + 1;
+       18 (0.0%)    bn_set_minimal_width(r);
         .         
-        4 (0.0%)    return 1;
-        8 (0.0%)  }
+        6 (0.0%)    return 1;
+       12 (0.0%)  }
         .         
         .         int BN_lshift1(BIGNUM *r, const BIGNUM *a) {
         .           BN_ULONG *ap, *rp, t, c;
@@ -2406,40 +2442,40 @@ Ir______________
         .         }
         .         
         .         void bn_rshift_words(BN_ULONG *r, const BN_ULONG *a, unsigned shift,
-   23,304 (0.0%)                       size_t num) {
-    8,739 (0.0%)    unsigned shift_bits = shift % BN_BITS2;
-   11,652 (0.0%)    size_t shift_words = shift / BN_BITS2;
-    8,739 (0.0%)    if (shift_words >= num) {
+   23,176 (0.0%)                       size_t num) {
+    8,691 (0.0%)    unsigned shift_bits = shift % BN_BITS2;
+   11,588 (0.0%)    size_t shift_words = shift / BN_BITS2;
+    8,691 (0.0%)    if (shift_words >= num) {
         .             OPENSSL_memset(r, 0, num * sizeof(BN_ULONG));
         .             return;
         .           }
-    5,826 (0.0%)    if (shift_bits == 0) {
-       24 (0.0%)      OPENSSL_memmove(r, a + shift_words, (num - shift_words) * sizeof(BN_ULONG));
+    5,794 (0.0%)    if (shift_bits == 0) {
+       36 (0.0%)      OPENSSL_memmove(r, a + shift_words, (num - shift_words) * sizeof(BN_ULONG));
         .           } else {
-  478,822 (0.3%)      for (size_t i = shift_words; i < num - 1; i++) {
-  550,134 (0.4%)        r[i - shift_words] =
-1,833,780 (1.2%)            (a[i] >> shift_bits) | (a[i + 1] << (BN_BITS2 - shift_bits));
+  477,538 (0.3%)      for (size_t i = shift_words; i < num - 1; i++) {
+  548,736 (0.4%)        r[i - shift_words] =
+1,829,120 (1.2%)            (a[i] >> shift_bits) | (a[i + 1] << (BN_BITS2 - shift_bits));
         .             }
-   49,487 (0.0%)      r[num - 1 - shift_words] = a[num - 1] >> shift_bits;
+   49,198 (0.0%)      r[num - 1 - shift_words] = a[num - 1] >> shift_bits;
         .           }
-   29,130 (0.0%)    OPENSSL_memset(r + num - shift_words, 0, shift_words * sizeof(BN_ULONG));
-    5,826 (0.0%)  }
+   28,970 (0.0%)    OPENSSL_memset(r + num - shift_words, 0, shift_words * sizeof(BN_ULONG));
+    5,794 (0.0%)  }
         .         
-   20,391 (0.0%)  int BN_rshift(BIGNUM *r, const BIGNUM *a, int n) {
-    5,826 (0.0%)    if (n < 0) {
+   20,279 (0.0%)  int BN_rshift(BIGNUM *r, const BIGNUM *a, int n) {
+    5,794 (0.0%)    if (n < 0) {
         .             OPENSSL_PUT_ERROR(BN, BN_R_NEGATIVE_NUMBER);
         .             return 0;
         .           }
         .         
-   26,217 (0.0%)    if (!bn_wexpand(r, a->width)) {
+   26,073 (0.0%)    if (!bn_wexpand(r, a->width)) {
         .             return 0;
         .           }
-   29,130 (0.0%)    bn_rshift_words(r->d, a->d, n, a->width);
-   11,652 (0.0%)    r->neg = a->neg;
-   11,652 (0.0%)    r->width = a->width;
-    8,739 (0.0%)    bn_set_minimal_width(r);
-    2,913 (0.0%)    return 1;
-    5,826 (0.0%)  }
+   28,970 (0.0%)    bn_rshift_words(r->d, a->d, n, a->width);
+   11,588 (0.0%)    r->neg = a->neg;
+   11,588 (0.0%)    r->width = a->width;
+    8,691 (0.0%)    bn_set_minimal_width(r);
+    2,897 (0.0%)    return 1;
+    5,794 (0.0%)  }
         .         
         .         int bn_rshift_secret_shift(BIGNUM *r, const BIGNUM *a, unsigned n,
         .                                    BN_CTX *ctx) {
@@ -2458,26 +2494,26 @@ Ir______________
         .           return ret;
         .         }
         .         
-   34,692 (0.0%)  void bn_rshift1_words(BN_ULONG *r, const BN_ULONG *a, size_t num) {
-   11,564 (0.0%)    if (num == 0) {
+   34,992 (0.0%)  void bn_rshift1_words(BN_ULONG *r, const BN_ULONG *a, size_t num) {
+   11,664 (0.0%)    if (num == 0) {
         .             return;
         .           }
-1,878,072 (1.2%)    for (size_t i = 0; i < num - 1; i++) {
-7,742,196 (5.0%)      r[i] = (a[i] >> 1) | (a[i + 1] << (BN_BITS2 - 1));
+1,893,762 (1.2%)    for (size_t i = 0; i < num - 1; i++) {
+7,806,834 (5.0%)      r[i] = (a[i] >> 1) | (a[i + 1] << (BN_BITS2 - 1));
         .           }
-   80,948 (0.1%)    r[num - 1] = a[num - 1] >> 1;
-   11,564 (0.0%)  }
+   81,648 (0.1%)    r[num - 1] = a[num - 1] >> 1;
+   11,664 (0.0%)  }
         .         
-   34,692 (0.0%)  int BN_rshift1(BIGNUM *r, const BIGNUM *a) {
-   52,038 (0.0%)    if (!bn_wexpand(r, a->width)) {
+   34,992 (0.0%)  int BN_rshift1(BIGNUM *r, const BIGNUM *a) {
+   52,488 (0.0%)    if (!bn_wexpand(r, a->width)) {
         .             return 0;
         .           }
-   57,820 (0.0%)    bn_rshift1_words(r->d, a->d, a->width);
-   23,128 (0.0%)    r->width = a->width;
-   23,128 (0.0%)    r->neg = a->neg;
-   17,346 (0.0%)    bn_set_minimal_width(r);
-    5,782 (0.0%)    return 1;
-   11,564 (0.0%)  }
+   58,320 (0.0%)    bn_rshift1_words(r->d, a->d, a->width);
+   23,328 (0.0%)    r->width = a->width;
+   23,328 (0.0%)    r->neg = a->neg;
+   17,496 (0.0%)    bn_set_minimal_width(r);
+    5,832 (0.0%)    return 1;
+   11,664 (0.0%)  }
         .         
        24 (0.0%)  int BN_set_bit(BIGNUM *a, int n) {
         8 (0.0%)    if (n < 0) {
@@ -2518,21 +2554,21 @@ Ir______________
         .           return 1;
         .         }
         .         
-   69,966 (0.0%)  int bn_is_bit_set_words(const BN_ULONG *a, size_t num, size_t bit) {
-   34,983 (0.0%)    size_t i = bit / BN_BITS2;
-   34,983 (0.0%)    size_t j = bit % BN_BITS2;
-   34,983 (0.0%)    if (i >= num) {
+   70,062 (0.0%)  int bn_is_bit_set_words(const BN_ULONG *a, size_t num, size_t bit) {
+   35,031 (0.0%)    size_t i = bit / BN_BITS2;
+   35,031 (0.0%)    size_t j = bit % BN_BITS2;
+   35,031 (0.0%)    if (i >= num) {
         .             return 0;
         .           }
-  104,949 (0.1%)    return (a[i] >> j) & 1;
-   23,322 (0.0%)  }
+  105,093 (0.1%)    return (a[i] >> j) & 1;
+   23,354 (0.0%)  }
         .         
-   69,966 (0.0%)  int BN_is_bit_set(const BIGNUM *a, int n) {
-   23,322 (0.0%)    if (n < 0) {
+   70,062 (0.0%)  int BN_is_bit_set(const BIGNUM *a, int n) {
+   23,354 (0.0%)    if (n < 0) {
         .             return 0;
         .           }
-  116,610 (0.1%)    return bn_is_bit_set_words(a->d, a->width, n);
-   23,322 (0.0%)  }
+  116,770 (0.1%)    return bn_is_bit_set_words(a->d, a->width, n);
+   23,354 (0.0%)  }
         .         
         .         int BN_mask_bits(BIGNUM *a, int n) {
         .           if (n < 0) {
@@ -3058,18 +3094,18 @@ Ir___________
     90 (0.0%)  	andq	$4095,%r11
     90 (0.0%)  	cmpq	%r11,%r10
     90 (0.0%)  	jb	.Lsqr8x_sp_alt
-    22 (0.0%)  	subq	%r11,%rbp
-    22 (0.0%)  	leaq	-64(%rbp,%r9,2),%rbp
-    22 (0.0%)  	jmp	.Lsqr8x_sp_done
+    16 (0.0%)  	subq	%r11,%rbp
+    16 (0.0%)  	leaq	-64(%rbp,%r9,2),%rbp
+    16 (0.0%)  	jmp	.Lsqr8x_sp_done
      .         
      .         .align	32
      .         .Lsqr8x_sp_alt:
-    68 (0.0%)  	leaq	4096-64(,%r9,2),%r10
-    68 (0.0%)  	leaq	-64(%rbp,%r9,2),%rbp
-    68 (0.0%)  	subq	%r10,%r11
-    68 (0.0%)  	movq	$0,%r10
-    68 (0.0%)  	cmovcq	%r10,%r11
-    68 (0.0%)  	subq	%r11,%rbp
+    74 (0.0%)  	leaq	4096-64(,%r9,2),%r10
+    74 (0.0%)  	leaq	-64(%rbp,%r9,2),%rbp
+    74 (0.0%)  	subq	%r10,%r11
+    74 (0.0%)  	movq	$0,%r10
+    74 (0.0%)  	cmovcq	%r10,%r11
+    74 (0.0%)  	subq	%r11,%rbp
      .         .Lsqr8x_sp_done:
     90 (0.0%)  	andq	$-64,%rbp
     90 (0.0%)  	movq	%rsp,%r11
@@ -5727,10 +5763,10 @@ Ir____________
 --------------------------------------------------------------------------------
 Ir_________________ 
 
-153,260,458 (98.9%)    annotated: files known & above threshold & readable, line numbers known
+153,243,914 (98.9%)    annotated: files known & above threshold & readable, line numbers known
           0            annotated: files known & above threshold & readable, line numbers unknown
           0          unannotated: files known & above threshold & two or more non-identical
-    169,627  (0.1%)  unannotated: files known & above threshold & unreadable 
-  1,523,501  (1.0%)  unannotated: files known & below threshold
-     13,662  (0.0%)  unannotated: files unknown
+    170,214  (0.1%)  unannotated: files known & above threshold & unreadable 
+  1,537,214  (1.0%)  unannotated: files known & below threshold
+     13,754  (0.0%)  unannotated: files unknown
 
