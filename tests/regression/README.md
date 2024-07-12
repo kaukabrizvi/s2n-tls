@@ -33,7 +33,7 @@ To run the harnesses with Valgrind and store the annotated results, use the `run
 
 Make the `run_harnesses.sh` script executable:
 
-\```sh
+\```bash
 chmod +x run_harnesses.sh
 \```
 
@@ -41,7 +41,7 @@ chmod +x run_harnesses.sh
 
 To run all harnesses, execute the script without any arguments:
 
-\```sh
+\```bash
 ./run_harnesses.sh
 \```
 
@@ -49,7 +49,7 @@ To run all harnesses, execute the script without any arguments:
 
 To run a specific harness, provide the harness name as an argument:
 
-\```sh
+\```bash
 ./run_harnesses.sh config_create
 \```
 
@@ -57,7 +57,7 @@ To run a specific harness, provide the harness name as an argument:
 
 To run multiple specified harnesses, provide the harness names as arguments:
 
-\```sh
+\```bash
 ./run_harnesses.sh config_create rsa_handshake
 \```
 
