@@ -20,7 +20,7 @@ mkdir -p perf_outputs
 # Check if any harness is specified
 if [ $# -eq 0 ]; then
     echo "No harness specified. Running all harnesses..."
-    harnesses=(config_create config_configure create_cert data_transfer rsa_handshake ecdsa_handshake resumption)
+    harnesses=(config_create config_configure create_cert data_transfer rsa_handshake ecdsa_handshake resumption cleanup_connection)
 else
     # Use the specified harnesses
     harnesses=("$@")

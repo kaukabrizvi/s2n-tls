@@ -12,6 +12,7 @@ This folder contains regression tests and benchmarking tools for the `s2n-tls` l
    - **rsa_handshake.rs**: Performs an RSA handshake in s2n-tls.
    - **ecdsa_handshake.rs**: Performs an ECDSA handshake in s2n-tls.
    - **resumption_benchmark.rs**: Benchmarking test for TLS session resumption.
+   - **cleanup_connection.rs**: Sets up and then wipes a connection.
 
 2. **Cargo.toml**
    - The configuration file for building and running the regression tests using Cargo.
@@ -92,6 +93,9 @@ Performs an ECDSA handshake in s2n-tls and validates the handshake process utili
 ### resumption_benchmark.rs
 
 Benchmarks the performance of TLS session resumption. Only measures the cost of resuming a connection following an initial full handshake.
+### cleanup_connection.rs
+
+Sets up and performs an RSA handshake, only measuring the connection wipe.
 
 ## Contributing to s2n-tls
 
