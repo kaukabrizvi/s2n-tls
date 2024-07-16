@@ -1,7 +1,7 @@
 use s2n_tls::{callbacks::VerifyHostNameCallback, config::Builder, security};
 type Error = Box<dyn std::error::Error>;
 
-pub fn create_empty_config() -> Result<s2n_tls::config::Builder, Error> {
+pub fn create_empty_config() -> Result <s2n_tls::config::Builder, s2n_tls::error::Error> {
     Ok(Builder::new())
 }
 
