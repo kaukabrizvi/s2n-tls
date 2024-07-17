@@ -1,22 +1,23 @@
 use crabgrind as cg;
-use s2n_tls::security;
-use regression::{create_empty_config, configure_config, CertKeyPair, create_cert};
+use s2n_tls::config::Builder;
+use regression::CertKeyPair;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), s2n_tls::error::Error> {
     cg::cachegrind::stop_instrumentation();
     
-    let builder = create_empty_config()?;
-    let builder = configure_config(builder, &security::DEFAULT_TLS13)?;
+    let mut builder = Builder::new();
     
     let keypair_rsa = CertKeyPair::rsa();
     
     cg::cachegrind::start_instrumentation();
     
-    let builder = create_cert(builder, keypair_rsa)?;
+    builder
+        .load_pem(keypair_rsa.cert(), keypair_rsa.key())
+        .expect("Unable to load cert/pem");
+    builder.trust_pem(keypair_rsa.cert()).expect("load cert pem");
+    let _config = builder.build().expect("Failed to build config");
     
     cg::cachegrind::stop_instrumentation();
-    
-    builder.build().map_err(|e| Box::new(e) as Box<dyn std::error::Error>)?;
     
     Ok(())
 }

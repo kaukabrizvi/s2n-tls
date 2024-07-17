@@ -42,3 +42,4 @@ result-*
 *.class
 # Exclude rust build directories
 *target/
+tests/regression/Cargo.lock

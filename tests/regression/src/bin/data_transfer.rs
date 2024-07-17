@@ -5,7 +5,7 @@ use s2n_tls::testing::TestPair;
 const DATA_CHUNK: &[u8] = &[3, 1, 4]; // The data chunk to be sent
 const ONE_MB: usize = 1_048_576; // 1 MB in bytes
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), s2n_tls::error::Error> {
     cg::cachegrind::stop_instrumentation();
     
     let config = s2n_tls::testing::build_config(&security::DEFAULT_TLS13).expect("Failed to build config");

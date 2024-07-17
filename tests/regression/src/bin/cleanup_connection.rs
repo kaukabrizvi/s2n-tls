@@ -1,16 +1,15 @@
 use crabgrind as cg;
 use s2n_tls::security;
 use s2n_tls::testing::TestPair;
-use regression::{create_config, CertKeyPair};
-use std::error::Error;
+use regression::{set_config, CertKeyPair};
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), s2n_tls::error::Error> {
     // Stop instrumentation before the setup
     cg::cachegrind::stop_instrumentation();
 
     // Create and configure the connection
     let keypair_rsa = CertKeyPair::rsa();
-    let config = create_config(&security::DEFAULT_TLS13, keypair_rsa)?;
+    let config = set_config(&security::DEFAULT_TLS13, keypair_rsa)?;
 
     // Create a new connection
     let mut pair = TestPair::from_config(&config);

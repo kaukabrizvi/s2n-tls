@@ -1,5 +1,5 @@
 use s2n_tls::{callbacks::VerifyHostNameCallback, config::Builder, security};
-type Error = Box<dyn std::error::Error>;
+type Error = s2n_tls::error::Error;
 
 pub fn create_empty_config() -> Result <s2n_tls::config::Builder, s2n_tls::error::Error> {
     Ok(Builder::new())
@@ -61,38 +61,23 @@ impl VerifyHostNameCallback for InsecureAcceptAllCertificatesHandler {
     }
 }
 
-// Function to create config
-pub fn create_config(
+// Function to create default config with specified parameters
+pub fn set_config(
     cipher_prefs: &security::Policy,
     keypair: CertKeyPair
 ) -> Result<s2n_tls::config::Config, Error> {
-    let builder = Builder::new();
-    let builder = configure_config(builder, cipher_prefs)?;
-    let builder = create_cert(builder, keypair)?;
-    builder.build().map_err(|e| e.into())
-}
-
-// Function to configure config
-pub fn configure_config(
-    mut builder: s2n_tls::config::Builder,
-    cipher_prefs: &security::Policy
-) -> Result<s2n_tls::config::Builder, Error> {
+    let mut builder = Builder::new();
     builder
         .set_security_policy(cipher_prefs)
         .expect("Unable to set config cipher preferences");
     builder
         .set_verify_host_callback(InsecureAcceptAllCertificatesHandler {})
         .expect("Unable to set a host verify callback.");
-    Ok(builder)
-}
-
-pub fn create_cert(
-    mut builder: s2n_tls::config::Builder,
-    keypair: CertKeyPair
-) -> Result<s2n_tls::config::Builder, Error> {
     builder
         .load_pem(keypair.cert(), keypair.key())
         .expect("Unable to load cert/pem");
     builder.trust_pem(keypair.cert()).expect("load cert pem");
-    Ok(builder)
+    builder.build()
 }
+
+

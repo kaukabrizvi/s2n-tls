@@ -3,7 +3,6 @@ use regression::{CertKeyPair, InsecureAcceptAllCertificatesHandler};
 use s2n_tls::security;
 use s2n_tls::config::Builder;
 use std::{
-    error::Error,
     sync::{Arc, Mutex},
     time::SystemTime,
     pin::Pin,
@@ -49,7 +48,7 @@ impl s2n_tls::config::ConnectionInitializer for SessionTicketHandler {
 const KEY: [u8; 16] = [0; 16];
 const KEYNAME: [u8; 3] = [1, 3, 4];
 
-fn validate_session_ticket(conn: &Connection) -> Result<(), Box<dyn Error>> {
+fn validate_session_ticket(conn: &Connection) -> Result<(), s2n_tls::error::Error> {
     assert!(conn.session_ticket_length()? > 0);
     let mut session = vec![0; conn.session_ticket_length()?];
     assert_eq!(
@@ -60,7 +59,7 @@ fn validate_session_ticket(conn: &Connection) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), s2n_tls::error::Error> {
     cg::cachegrind::stop_instrumentation();
     let keypair = CertKeyPair::default();
 
@@ -74,36 +73,60 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let handler = SessionTicketHandler::default();
 
-    // create config for client
+    // Create config for client
     let mut client_config_builder = Builder::new();
     client_config_builder
         .enable_session_tickets(true)?
         .set_session_ticket_callback(handler.clone())?
-        .set_connection_initializer(handler.clone())?
+        .set_connection_initializer(handler)?
         .trust_pem(keypair.cert())?
         .set_verify_host_callback(InsecureAcceptAllCertificatesHandler {})?
         .set_security_policy(&security::DEFAULT_TLS13)?;
     let client_config = client_config_builder.build()?;
 
-    // Initial handshake, no instrumentation
+    // 1st handshake: no session ticket, so no resumption
     {
         let mut pair = s2n_tls::testing::TestPair::from_configs(&client_config, &server_config);
+        // Client needs a waker due to its use of an async callback
         pair.client.set_waker(Some(&noop_waker()))?;
         pair.handshake()?;
+
+        // Do a recv call on the client side to read a session ticket. Poll function
+        // returns pending since no application data was read, however it is enough
+        // to collect the session ticket.
+        assert!(pair.client.poll_recv(&mut [0]).is_pending());
+
+        // Assert the resumption status
         assert!(!pair.client.resumed());
+
+        // Validate that a ticket is available
         validate_session_ticket(&pair.client)?;
     }
 
-    // Session resumption handshake with instrumentation
+    // Start Cachegrind instrumentation for the second handshake
     cg::cachegrind::start_instrumentation();
+
+    // 2nd handshake: should be able to use the session ticket from the first
+    //                handshake (stored on the config) to resume
     {
         let mut pair = s2n_tls::testing::TestPair::from_configs(&client_config, &server_config);
+        // Client needs a waker due to its use of an async callback
         pair.client.set_waker(Some(&noop_waker()))?;
         pair.handshake()?;
+
+        // Do a recv call on the client side to read a session ticket. Poll function
+        // returns pending since no application data was read, however it is enough
+        // to collect the session ticket.
+        assert!(pair.client.poll_recv(&mut [0]).is_pending());
+
+        // Assert the resumption status
         assert!(pair.client.resumed());
+
+        // Validate that a ticket is available
         validate_session_ticket(&pair.client)?;
-        validate_session_ticket(&pair.server)?;
     }
+
+    // Stop Cachegrind instrumentation
     cg::cachegrind::stop_instrumentation();
 
     Ok(())

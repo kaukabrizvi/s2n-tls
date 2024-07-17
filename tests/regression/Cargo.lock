@@ -484,7 +484,6 @@ dependencies = [
 name = "s2n-tls"
 version = "0.2.8"
 dependencies = [
- "bytes",
  "errno",
  "hex",
  "libc",
