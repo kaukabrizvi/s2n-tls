@@ -482,7 +482,7 @@ dependencies = [
 
 [[package]]
 name = "s2n-tls"
-version = "0.2.8"
+version = "0.2.9"
 dependencies = [
  "errno",
  "hex",
@@ -493,7 +493,7 @@ dependencies = [
 
 [[package]]
 name = "s2n-tls-sys"
-version = "0.2.8"
+version = "0.2.9"
 dependencies = [
  "aws-lc-rs",
  "cc",
