@@ -1,70 +1,17 @@
-use s2n_tls::{callbacks::VerifyHostNameCallback, config::Builder, security};
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+use s2n_tls::{
+    config::Builder,
+    security,
+    testing::{CertKeyPair, InsecureAcceptAllCertificatesHandler},
+};
 type Error = s2n_tls::error::Error;
-
-pub fn create_empty_config() -> Result <s2n_tls::config::Builder, s2n_tls::error::Error> {
-    Ok(Builder::new())
-}
-
-pub struct CertKeyPair {
-    cert_path: &'static str,
-    cert: &'static [u8],
-    key: &'static [u8],
-}
-
-impl CertKeyPair {
-    pub fn cert_path(&self) -> &'static str {
-        self.cert_path
-    }
-
-    pub fn cert(&self) -> &'static [u8] {
-        self.cert
-    }
-
-    pub fn key(&self) -> &'static [u8] {
-        self.key
-    }
-
-    pub fn rsa() -> Self {
-        CertKeyPair {
-            cert_path: concat!(
-                env!("CARGO_MANIFEST_DIR"),
-                "/../../../tests/pems/rsa_4096_sha512_client_cert.pem",
-            ),
-            cert: &include_bytes!("../../../tests/pems/rsa_4096_sha512_client_cert.pem")[..],
-            key: &include_bytes!("../../../tests/pems/rsa_4096_sha512_client_key.pem")[..],
-        }
-    }
-
-    pub fn ecdsa() -> Self {
-        CertKeyPair {
-            cert_path: concat!(
-                env!("CARGO_MANIFEST_DIR"),
-                "/../../../tests/pems/ecdsa_p256_client_cert.pem",
-            ),
-            cert: &include_bytes!("../../../tests/pems/ecdsa_p384_pkcs1_cert.pem")[..],
-            key: &include_bytes!("../../../tests/pems/ecdsa_p384_pkcs1_key.pem")[..],
-        }
-    }
-}
-
-impl Default for CertKeyPair {
-    fn default() -> Self {
-        CertKeyPair::rsa()
-    }
-}
-
-pub struct InsecureAcceptAllCertificatesHandler {}
-
-impl VerifyHostNameCallback for InsecureAcceptAllCertificatesHandler {
-    fn verify_host_name(&self, _host_name: &str) -> bool {
-        true
-    }
-}
 
 // Function to create default config with specified parameters
 pub fn set_config(
     cipher_prefs: &security::Policy,
-    keypair: CertKeyPair
+    keypair: CertKeyPair,
 ) -> Result<s2n_tls::config::Config, Error> {
     let mut builder = Builder::new();
     builder
@@ -80,4 +27,230 @@ pub fn set_config(
     builder.build()
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crabgrind as cg;
+    use s2n_tls::testing::TestPair;
+    use std::{
+        env,
+        fs::{create_dir, File},
+        io::{self, BufRead, Write},
+        path::Path,
+        process::Command,
+    };
 
+    const COST: u64 = 1_000_000; //configurable threshold for regression
+
+    struct InstrumentationControl;
+
+    impl InstrumentationControl {
+        fn stop_instrumentation(&self) {
+            cg::cachegrind::stop_instrumentation();
+        }
+
+        fn start_instrumentation(&self) {
+            cg::cachegrind::start_instrumentation();
+        }
+    }
+
+    // environment variable to determine whether to run under valgrind or solely test functionality
+    fn is_running_under_valgrind() -> bool {
+        env::var("ENABLE_VALGRIND").is_ok()
+    }
+
+    // environment variable to determine whether to run diff between commits
+    fn is_diff_enabled() -> bool {
+        env::var("DIFF").is_ok()
+    }
+
+    fn valgrind_test<F>(test_name: &str, test_body: F) -> Result<(), s2n_tls::error::Error>
+    where
+        F: FnOnce(&InstrumentationControl) -> Result<(), s2n_tls::error::Error>,
+    {
+        if !is_running_under_valgrind() {
+            let ctrl = InstrumentationControl;
+            test_body(&ctrl)
+        } else if is_diff_enabled() {
+            run_valgrind_diff_test(test_name);
+            Ok(())
+        } else {
+            run_valgrind_test(test_name);
+            Ok(())
+        }
+    }
+
+    //test to create new config, set security policy, host_callback information, load/trust certs, and build config
+    #[test]
+    fn test_set_config() {
+        valgrind_test("test_set_config", |ctrl| {
+            ctrl.stop_instrumentation();
+            ctrl.start_instrumentation();
+            let keypair_rsa = CertKeyPair::default();
+            let _config =
+                set_config(&security::DEFAULT_TLS13, keypair_rsa).expect("Failed to build config");
+            Ok(())
+        })
+        .unwrap();
+    }
+
+    #[test]
+    fn test_rsa_handshake() {
+        valgrind_test("test_rsa_handshake", |ctrl| {
+            ctrl.stop_instrumentation();
+            // Example usage with RSA keypair (default)
+            let keypair_rsa = CertKeyPair::default();
+            let config = set_config(&security::DEFAULT_TLS13, keypair_rsa)?;
+            // Create a pair (client + server) using that config, start handshake measurement
+            let mut pair = TestPair::from_config(&config);
+            // Assert a successful handshake
+            ctrl.start_instrumentation();
+            assert!(pair.handshake().is_ok());
+            ctrl.stop_instrumentation();
+            Ok(())
+        })
+        .unwrap();
+    }
+
+    // function to run specified test using valgrind
+    fn run_valgrind_test(test_name: &str) {
+        let exe_path = std::env::args().next().unwrap();
+        let output_file = format!("cachegrind_{}.out", test_name);
+        let output_command = format!("--cachegrind-out-file={}", &output_file);
+        let mut command = Command::new("valgrind");
+        command
+            .args(["--tool=cachegrind", &output_command, &exe_path, test_name])
+            .env_remove("ENABLE_VALGRIND"); // ensures that the recursive call is made to the actual harness code block rather than back to this function
+
+        println!("Running command: {:?}", command);
+        let status = command.status().expect("Failed to execute valgrind");
+
+        if !status.success() {
+            panic!("Valgrind failed");
+        }
+
+        let annotate_output = Command::new("cg_annotate")
+            .arg(&output_file)
+            .output()
+            .expect("Failed to run cg_annotate");
+
+        if !annotate_output.status.success() {
+            panic!("cg_annotate failed");
+        }
+        let _dir_path = create_dir(Path::new("target/perf_outputs"));
+        let annotate_file = format!("target/perf_outputs/{}.annotated.txt", test_name);
+        let mut file = File::create(&annotate_file).expect("Failed to create annotation file");
+        file.write_all(&annotate_output.stdout)
+            .expect("Failed to write annotation file");
+
+        let count = grep_for_instructions(&annotate_file)
+            .expect("Failed to get instruction count from file");
+        //this is temporary code to showcase the future diff functionality, here the code regresses by 10% each time so this test will almost always fail
+        let new_count = count + count / 10;
+        let diff = new_count - count;
+        assert!(
+            diff <= COST,
+            "Instruction count difference in {} exceeds the threshold, regression of {} instructions",
+            test_name,
+            diff
+        );
+    }
+
+    // function to run specified test using valgrind and diff with previous commit
+    fn run_valgrind_diff_test(test_name: &str) {
+        // Run on current commit
+        run_valgrind_for_commit(test_name, "HEAD");
+
+        // Run on previous commit
+        run_valgrind_for_commit(test_name, "HEAD^");
+
+        // Compare results
+        let current_output = format!("cachegrind_{}_HEAD.out", test_name);
+        let previous_output = format!("cachegrind_{}_HEAD^1.out", test_name);
+        let diff_output = format!("target/perf_outputs/{}_diff.txt", test_name);
+
+        let diff_command = Command::new("cg_annotate")
+            .args(["--diff", &previous_output, &current_output])
+            .output()
+            .expect("Failed to run cg_annotate --diff");
+
+        if !diff_command.status.success() {
+            panic!("cg_annotate --diff failed");
+        }
+
+        let _dir_path = create_dir(Path::new("target/perf_outputs"));
+        let mut file = File::create(&diff_output).expect("Failed to create diff file");
+        file.write_all(&diff_command.stdout)
+            .expect("Failed to write diff file");
+
+        let count = grep_for_instructions(&diff_output)
+            .expect("Failed to get instruction count from file");
+
+        assert!(
+            count <= COST,
+            "Instruction count difference in {} exceeds the threshold, regression of {} instructions",
+            test_name,
+            count
+        );
+    }
+
+    fn run_valgrind_for_commit(test_name: &str, commit: &str) {
+        let exe_path = std::env::args().next().unwrap();
+        let output_file = format!("cachegrind_{}_{}.out", test_name, commit.replace("^", "1"));
+        let output_command = format!("--cachegrind-out-file={}", &output_file);
+
+        let mut command = Command::new("valgrind");
+        command
+            .args(["--tool=cachegrind", &output_command, &exe_path, test_name])
+            .env_remove("ENABLE_VALGRIND");
+
+        println!("Running command: {:?} at commit {}", command, commit);
+        let status = Command::new("git")
+            .args(["checkout", commit])
+            .status()
+            .expect("Failed to checkout commit");
+
+        if !status.success() {
+            panic!("Git checkout failed for commit {}", commit);
+        }
+
+        let status = command.status().expect("Failed to execute valgrind");
+
+        if !status.success() {
+            panic!("Valgrind failed for commit {}", commit);
+        }
+
+        let status = Command::new("git")
+            .args(["checkout", "HEAD"])
+            .status()
+            .expect("Failed to checkout HEAD");
+
+        if !status.success() {
+            panic!("Git checkout failed for HEAD");
+        }
+    }
+
+    // parses the annotated file for the overall instruction count total
+    fn grep_for_instructions(file_path: &str) -> Result<u64, io::Error> {
+        let path = Path::new(file_path);
+        let file = File::open(path)?;
+        let reader = io::BufReader::new(file);
+
+        for line in reader.lines() {
+            let line = line?;
+            if line.contains("PROGRAM TOTALS") {
+                if let Some(instructions) = line.split_whitespace().next() {
+                    return instructions
+                        .replace(',', "")
+                        .parse::<u64>()
+                        .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e));
+                }
+            }
+        }
+
+        Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "Failed to find instruction count in annotated file",
+        ))
+    }
+}
