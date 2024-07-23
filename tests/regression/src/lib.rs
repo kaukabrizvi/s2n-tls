@@ -1,6 +1,3 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: Apache-2.0
-
 use s2n_tls::{
     config::Builder,
     security,
@@ -40,7 +37,7 @@ mod tests {
         process::Command,
     };
 
-    const COST: u64 = 1_000_000; //configurable threshold for regression
+    const COST: u64 = 100; // configurable threshold for regression
 
     struct InstrumentationControl;
 
@@ -54,33 +51,44 @@ mod tests {
         }
     }
 
-    // environment variable to determine whether to run under valgrind or solely test functionality
+    // Environment variable to determine whether to run under valgrind or solely test functionality
     fn is_running_under_valgrind() -> bool {
         env::var("ENABLE_VALGRIND").is_ok()
     }
 
-    // environment variable to determine whether to run diff between commits
-    fn is_diff_enabled() -> bool {
-        env::var("DIFF").is_ok()
+    // Function to get the test suffix from environment variables
+    fn get_test_suffix() -> String {
+        env::var("TEST_SUFFIX").unwrap_or_else(|_| "curr".to_string())
     }
 
-    fn valgrind_test<F>(test_name: &str, test_body: F) -> Result<(), s2n_tls::error::Error>
+    // Function to determine if diff mode is enabled
+    fn is_diff_mode() -> bool {
+        env::var("DIFF_MODE").is_ok()
+    }
+
+    fn valgrind_test<F>(
+        test_name: &str,
+        test_body: F,
+    ) -> Result<(), s2n_tls::error::Error>
     where
         F: FnOnce(&InstrumentationControl) -> Result<(), s2n_tls::error::Error>,
     {
+        let suffix = get_test_suffix();
         if !is_running_under_valgrind() {
-            let ctrl = InstrumentationControl;
-            test_body(&ctrl)
-        } else if is_diff_enabled() {
-            run_valgrind_diff_test(test_name);
-            Ok(())
+            if is_diff_mode() {
+                run_diff_test(test_name);
+                Ok(())
+            } else {
+                let ctrl = InstrumentationControl;
+                test_body(&ctrl)
+            }
         } else {
-            run_valgrind_test(test_name);
+            run_valgrind_test(test_name, &suffix);
             Ok(())
         }
     }
 
-    //test to create new config, set security policy, host_callback information, load/trust certs, and build config
+    // Test to create new config, set security policy, host_callback information, load/trust certs, and build config
     #[test]
     fn test_set_config() {
         valgrind_test("test_set_config", |ctrl| {
@@ -112,17 +120,16 @@ mod tests {
         .unwrap();
     }
 
-    // function to run specified test using valgrind
-    fn run_valgrind_test(test_name: &str) {
+    // Function to run specified test using valgrind
+    fn run_valgrind_test(test_name: &str, suffix: &str) {
         let exe_path = std::env::args().next().unwrap();
-        let output_file = format!("cachegrind_{}.out", test_name);
+        let output_file = format!("target/cg_artifacts/cachegrind_{}_{}.out", test_name, suffix);
         let output_command = format!("--cachegrind-out-file={}", &output_file);
         let mut command = Command::new("valgrind");
         command
             .args(["--tool=cachegrind", &output_command, &exe_path, test_name])
-            .env_remove("ENABLE_VALGRIND"); // ensures that the recursive call is made to the actual harness code block rather than back to this function
+            .env_remove("ENABLE_VALGRIND"); // Ensures that the recursive call is made to the actual harness code block rather than back to this function
 
-        println!("Running command: {:?}", command);
         let status = command.status().expect("Failed to execute valgrind");
 
         if !status.success() {
@@ -138,100 +145,57 @@ mod tests {
             panic!("cg_annotate failed");
         }
         let _dir_path = create_dir(Path::new("target/perf_outputs"));
-        let annotate_file = format!("target/perf_outputs/{}.annotated.txt", test_name);
+        let annotate_file = format!("target/perf_outputs/{}_{}.annotated.txt", test_name, suffix);
         let mut file = File::create(&annotate_file).expect("Failed to create annotation file");
         file.write_all(&annotate_output.stdout)
             .expect("Failed to write annotation file");
 
         let count = grep_for_instructions(&annotate_file)
             .expect("Failed to get instruction count from file");
-        //this is temporary code to showcase the future diff functionality, here the code regresses by 10% each time so this test will almost always fail
-        let new_count = count + count / 10;
-        let diff = new_count - count;
+
+        println!("Instruction count for {}: {}", test_name, count);
+    }
+
+    // Function to run cg_annotate --diff and assert on the difference
+    fn run_diff_test(test_name: &str) {
+        let prev_file = format!("target/cg_artifacts/cachegrind_{}_prev.out", test_name);
+        let curr_file = format!("target/cg_artifacts/cachegrind_{}_curr.out", test_name);
+
+        // Check if both prev and curr files exist
+        if !Path::new(&prev_file).exists() || !Path::new(&curr_file).exists() {
+            panic!("Required cachegrind files not found: {} or {}", prev_file, curr_file);
+        }
+
+        let diff_output = Command::new("cg_annotate")
+            .args(["--diff", &prev_file, &curr_file])
+            .output()
+            .expect("Failed to run cg_annotate --diff");
+
+        if !diff_output.status.success() {
+            panic!("cg_annotate --diff failed");
+        }
+
+        let _dir_path = create_dir(Path::new("target/perf_outputs"));
+        let diff_file = format!("target/perf_outputs/{}_diff.annotated.txt", test_name);
+        let mut file = File::create(&diff_file).expect("Failed to create diff annotation file");
+        file.write_all(&diff_output.stdout)
+            .expect("Failed to write diff annotation file");
+
+        let diff = grep_for_instructions(&diff_file)
+            .expect("Failed to parse cg_annotate --diff output");
+
+        println!("Instruction difference for {}: {}", test_name, diff);
+
         assert!(
-            diff <= COST,
+            diff <= self::COST as i64,
             "Instruction count difference in {} exceeds the threshold, regression of {} instructions",
             test_name,
             diff
         );
     }
 
-    // function to run specified test using valgrind and diff with previous commit
-    fn run_valgrind_diff_test(test_name: &str) {
-        // Run on current commit
-        run_valgrind_for_commit(test_name, "HEAD");
-
-        // Run on previous commit
-        run_valgrind_for_commit(test_name, "HEAD^");
-
-        // Compare results
-        let current_output = format!("cachegrind_{}_HEAD.out", test_name);
-        let previous_output = format!("cachegrind_{}_HEAD^1.out", test_name);
-        let diff_output = format!("target/perf_outputs/{}_diff.txt", test_name);
-
-        let diff_command = Command::new("cg_annotate")
-            .args(["--diff", &previous_output, &current_output])
-            .output()
-            .expect("Failed to run cg_annotate --diff");
-
-        if !diff_command.status.success() {
-            panic!("cg_annotate --diff failed");
-        }
-
-        let _dir_path = create_dir(Path::new("target/perf_outputs"));
-        let mut file = File::create(&diff_output).expect("Failed to create diff file");
-        file.write_all(&diff_command.stdout)
-            .expect("Failed to write diff file");
-
-        let count = grep_for_instructions(&diff_output)
-            .expect("Failed to get instruction count from file");
-
-        assert!(
-            count <= COST,
-            "Instruction count difference in {} exceeds the threshold, regression of {} instructions",
-            test_name,
-            count
-        );
-    }
-
-    fn run_valgrind_for_commit(test_name: &str, commit: &str) {
-        let exe_path = std::env::args().next().unwrap();
-        let output_file = format!("cachegrind_{}_{}.out", test_name, commit.replace("^", "1"));
-        let output_command = format!("--cachegrind-out-file={}", &output_file);
-
-        let mut command = Command::new("valgrind");
-        command
-            .args(["--tool=cachegrind", &output_command, &exe_path, test_name])
-            .env_remove("ENABLE_VALGRIND");
-
-        println!("Running command: {:?} at commit {}", command, commit);
-        let status = Command::new("git")
-            .args(["checkout", commit])
-            .status()
-            .expect("Failed to checkout commit");
-
-        if !status.success() {
-            panic!("Git checkout failed for commit {}", commit);
-        }
-
-        let status = command.status().expect("Failed to execute valgrind");
-
-        if !status.success() {
-            panic!("Valgrind failed for commit {}", commit);
-        }
-
-        let status = Command::new("git")
-            .args(["checkout", "HEAD"])
-            .status()
-            .expect("Failed to checkout HEAD");
-
-        if !status.success() {
-            panic!("Git checkout failed for HEAD");
-        }
-    }
-
-    // parses the annotated file for the overall instruction count total
-    fn grep_for_instructions(file_path: &str) -> Result<u64, io::Error> {
+    // Parses the annotated file or diff output for the overall instruction count total
+    fn grep_for_instructions(file_path: &str) -> Result<i64, io::Error> {
         let path = Path::new(file_path);
         let file = File::open(path)?;
         let reader = io::BufReader::new(file);
@@ -242,7 +206,7 @@ mod tests {
                 if let Some(instructions) = line.split_whitespace().next() {
                     return instructions
                         .replace(',', "")
-                        .parse::<u64>()
+                        .parse::<i64>()
                         .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e));
                 }
             }
