@@ -1,0 +1,82 @@
+name: Performance Regression Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  regression-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install Rust toolchain
+        id: toolchain
+        run: |
+          rustup toolchain install stable
+          rustup override set stable
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y valgrind
+
+      - name: Generate
+        run: ${{env.ROOT_PATH}}/generate.sh
+
+      - name: Build project
+        run: cargo build --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Run scalar performance test (curr)
+        env:
+          ENABLE_VALGRIND: true
+          TEST_SUFFIX: curr
+        run: cargo test --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Store curr results
+        run: |
+          mkdir -p target/perf_outputs/curr
+          mv target/perf_outputs/*_curr.annotated.txt target/perf_outputs/curr/
+
+      - name: Checkout mainline
+        run: |
+          git fetch origin mainline
+          git checkout mainline
+
+      - name: Build project (mainline)
+        run: cargo build --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Run scalar performance test (prev)
+        env:
+          ENABLE_VALGRIND: true
+          TEST_SUFFIX: prev
+        run: cargo test --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Store prev results
+        run: |
+          mkdir -p target/perf_outputs/prev
+          mv target/perf_outputs/*_prev.annotated.txt target/perf_outputs/prev/
+
+      - name: Checkout pull request branch
+        run: git checkout ${{ github.event.pull_request.head.sha }}
+
+      - name: Run diff test
+        env:
+          DIFF_MODE: true
+        run: cargo test --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Store diff results
+        run: |
+          mkdir -p target/perf_outputs/diff
+          mv target/perf_outputs/*diff.txt target/perf_outputs/diff/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: perf-outputs
+          path: target/perf_outputs
