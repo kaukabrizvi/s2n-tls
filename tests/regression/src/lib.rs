@@ -66,10 +66,7 @@ mod tests {
         env::var("DIFF_MODE").is_ok()
     }
 
-    fn valgrind_test<F>(
-        test_name: &str,
-        test_body: F,
-    ) -> Result<(), s2n_tls::error::Error>
+    fn valgrind_test<F>(test_name: &str, test_body: F) -> Result<(), s2n_tls::error::Error>
     where
         F: FnOnce(&InstrumentationControl) -> Result<(), s2n_tls::error::Error>,
     {
@@ -123,7 +120,10 @@ mod tests {
     // Function to run specified test using valgrind
     fn run_valgrind_test(test_name: &str, suffix: &str) {
         let exe_path = std::env::args().next().unwrap();
-        let output_file = format!("target/cg_artifacts/cachegrind_{}_{}.out", test_name, suffix);
+        let output_file = format!(
+            "target/cg_artifacts/cachegrind_{}_{}.out",
+            test_name, suffix
+        );
         let output_command = format!("--cachegrind-out-file={}", &output_file);
         let mut command = Command::new("valgrind");
         command
@@ -163,7 +163,10 @@ mod tests {
 
         // Check if both prev and curr files exist
         if !Path::new(&prev_file).exists() || !Path::new(&curr_file).exists() {
-            panic!("Required cachegrind files not found: {} or {}", prev_file, curr_file);
+            panic!(
+                "Required cachegrind files not found: {} or {}",
+                prev_file, curr_file
+            );
         }
 
         let diff_output = Command::new("cg_annotate")
@@ -181,8 +184,8 @@ mod tests {
         file.write_all(&diff_output.stdout)
             .expect("Failed to write diff annotation file");
 
-        let diff = grep_for_instructions(&diff_file)
-            .expect("Failed to parse cg_annotate --diff output");
+        let diff =
+            grep_for_instructions(&diff_file).expect("Failed to parse cg_annotate --diff output");
 
         println!("Instruction difference for {}: {}", test_name, diff);
 
