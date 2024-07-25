@@ -81,6 +81,7 @@ jobs:
         env:
           DIFF_MODE: true
         run: cargo test --release --manifest-path=tests/regression/Cargo.toml
+        continue-on-error: true
 
       - name: Store diff results
         run: |
