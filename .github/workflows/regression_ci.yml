@@ -60,8 +60,8 @@ jobs:
 
       - name: Store curr results
         run: |
-          mkdir -p target/perf_outputs/curr
-          mv target/perf_outputs/*_curr.annotated.txt target/perf_outputs/curr/
+          mkdir -p tests/regression/target/perf_outputs/curr
+          mv tests/regression/target/perf_outputs/*_curr.annotated.txt tests/regression/target/perf_outputs/curr/
 
       - name: Checkout mainline
         run: |
@@ -79,8 +79,8 @@ jobs:
 
       - name: Store prev results
         run: |
-          mkdir -p target/perf_outputs/prev
-          mv target/perf_outputs/*_prev.annotated.txt target/perf_outputs/prev/
+          mkdir -p tests/regression/target/perf_outputs/prev
+          mv tests/regression/target/perf_outputs/*_prev.annotated.txt tests/regression/target/perf_outputs/prev/
 
       - name: Checkout pull request branch
         run: git checkout ${{ github.event.pull_request.head.sha }}
@@ -92,8 +92,8 @@ jobs:
 
       - name: Store diff results
         run: |
-          mkdir -p target/perf_outputs/diff
-          mv target/perf_outputs/*diff.txt target/perf_outputs/diff/
+          mkdir -p tests/regression/target/perf_outputs/diff
+          mv tests/regression/target/perf_outputs/*diff.txt tests/regression/target/perf_outputs/diff/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
