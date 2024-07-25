@@ -179,7 +179,7 @@ mod tests {
             panic!("cg_annotate --diff failed");
         }
 
-        create_dir_all(Path::new("target/perf_outputs"));
+        create_dir_all(Path::new("target/perf_outputs")).unwrap();
         let diff_file = format!("target/perf_outputs/{}_diff.annotated.txt", test_name);
         let mut file = File::create(&diff_file).expect("Failed to create diff annotation file");
         file.write_all(&diff_output.stdout)
