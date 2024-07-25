@@ -31,7 +31,7 @@ mod tests {
     use s2n_tls::testing::TestPair;
     use std::{
         env,
-        fs::{create_dir_all, File},
+        fs::{create_dir, File},
         io::{self, BufRead, Write},
         path::Path,
         process::Command,
@@ -121,15 +121,16 @@ mod tests {
     fn run_valgrind_test(test_name: &str, suffix: &str) {
         let exe_path = std::env::args().next().unwrap();
         create_dir_all(Path::new("target/cg_artifacts")).unwrap();
-        let output_file = format!("target/cg_artifacts/cachegrind_{}.out", test_name);
+        let output_file = format!(
+            "target/cg_artifacts/cachegrind_{}_{}.out",
+            test_name, suffix
+        );
         let output_command = format!("--cachegrind-out-file={}", &output_file);
         let mut command = Command::new("valgrind");
         command
             .args(["--tool=cachegrind", &output_command, &exe_path, test_name])
-            // Ensures that the recursive call is made to the actual harness code block rather than back to this function
-            .env_remove("ENABLE_VALGRIND"); 
+            .env_remove("ENABLE_VALGRIND"); // Ensures that the recursive call is made to the actual harness code block rather than back to this function
 
-        println!("Running command: {:?}", command);
         let status = command.status().expect("Failed to execute valgrind");
 
         if !status.success() {
@@ -145,7 +146,7 @@ mod tests {
             panic!("cg_annotate failed");
         }
         create_dir_all(Path::new("target/perf_outputs")).unwrap();
-        let annotate_file = format!("target/perf_outputs/{}.annotated.txt", test_name);
+        let annotate_file = format!("target/perf_outputs/{}_{}.annotated.txt", test_name, suffix);
         let mut file = File::create(&annotate_file).expect("Failed to create annotation file");
         file.write_all(&annotate_output.stdout)
             .expect("Failed to write annotation file");
@@ -178,7 +179,7 @@ mod tests {
             panic!("cg_annotate --diff failed");
         }
 
-        let _dir_path = create_dir_all(Path::new("target/perf_outputs"));
+        create_dir_all(Path::new("target/perf_outputs"));
         let diff_file = format!("target/perf_outputs/{}_diff.annotated.txt", test_name);
         let mut file = File::create(&diff_file).expect("Failed to create diff annotation file");
         file.write_all(&diff_output.stdout)
