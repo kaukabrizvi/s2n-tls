@@ -31,6 +31,8 @@ jobs:
         run: ${{env.ROOT_PATH}}bindings/rust/generate.sh --skip-tests
 
       - name: Build project
+        env:
+          CFLAGS: -I/usr/include/valgrind
         run: cargo build --release --manifest-path=tests/regression/Cargo.toml
 
       - name: Run scalar performance test (curr)
