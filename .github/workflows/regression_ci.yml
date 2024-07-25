@@ -81,14 +81,15 @@ jobs:
         env:
           DIFF_MODE: true
         run: cargo test --release --manifest-path=tests/regression/Cargo.toml
-        continue-on-error: true
-
+        
       - name: Store diff results
+        if: always()
         run: |
           mkdir -p tests/regression/target/perf_outputs/diff
           mv tests/regression/target/perf_outputs/*diff.txt tests/regression/target/perf_outputs/diff/
 
       - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: perf-outputs
