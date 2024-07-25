@@ -46,8 +46,8 @@ jobs:
           DEP_VALGRIND: /usr/include
         run: cargo build --release --manifest-path=tests/regression/Cargo.toml
 
-      - name: List target directory before tests
-        run: ls -R target
+      - name: print working directory before tests
+        run: pwd
 
       - name: Run scalar performance test (curr)
         env:
@@ -55,8 +55,8 @@ jobs:
           TEST_SUFFIX: curr
         run: cargo test --release --manifest-path=tests/regression/Cargo.toml
 
-      - name: List target directory after tests
-        run: ls -R target
+      - name: print working directory after tests
+        run: pwd
 
       - name: Store curr results
         run: |
