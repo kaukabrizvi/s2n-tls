@@ -32,7 +32,7 @@ jobs:
 
       - name: Build project
         env:
-          CFLAGS: -I/usr/include/valgrind
+          DEP_VALGRIND: /usr/include
         run: cargo build --release --manifest-path=tests/regression/Cargo.toml
 
       - name: Run scalar performance test (curr)
