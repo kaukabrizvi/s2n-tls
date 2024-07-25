@@ -57,7 +57,7 @@ jobs:
 
       - name: Checkout mainline
         run: |
-          git fetch origin mainl
+          git fetch origin main
           git checkout main
 
       - name: Build project (mainline)
