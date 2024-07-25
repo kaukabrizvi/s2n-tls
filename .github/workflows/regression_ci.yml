@@ -87,7 +87,7 @@ jobs:
         if: always()
         run: |
           mkdir -p tests/regression/target/perf_outputs/diff
-          mv tests/regression/target/perf_outputs/*diff.txt tests/regression/target/perf_outputs/diff/
+          mv tests/regression/target/perf_outputs/*_diff.annotated.txt tests/regression/target/perf_outputs/diff/
 
       - name: Upload artifacts
         if: always()
