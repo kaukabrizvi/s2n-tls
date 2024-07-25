@@ -1,6 +1,6 @@
 # Regression Testing for s2n-tls
 
-This folder contains regression tests and benchmarking tools for the `s2n-tls` library. The tests focus on various aspects of TLS connections.
+This folder contains regression tests and benchmarking tools for the `s2n-tls` library. The tests focus on various aspects of TLS connections. 
 
 ## Testing Philosophy
 
