@@ -30,7 +30,9 @@ jobs:
         run: sudo apt-get install -y valgrind
       
       - name: Check Valgrind
-        run: ls /usr/include/valgrind
+        run: |
+          ls /usr/include/valgrind
+          valgrind --version
 
       - name: Generate
         run: ${{env.ROOT_PATH}}bindings/rust/generate.sh --skip-tests
