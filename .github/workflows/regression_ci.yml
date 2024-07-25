@@ -26,8 +26,14 @@ jobs:
       - name: Update package list
         run: sudo apt-get update
 
-      - name: Install Valgrind
-        run: sudo apt-get install -y valgrind
+      - - name: Download Valgrind 3.22 Source
+        run: |
+          wget http://valgrind.org/downloads/valgrind-3.22.0.tar.bz2
+          tar -xjf valgrind-3.22.0.tar.bz2
+          cd valgrind-3.22.0
+          ./configure
+          make
+          sudo make install
       
       - name: Check Valgrind
         run: valgrind --version
