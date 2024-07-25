@@ -31,7 +31,7 @@ mod tests {
     use s2n_tls::testing::TestPair;
     use std::{
         env,
-        fs::{create_dir, File},
+        fs::{create_dir_all, File},
         io::{self, BufRead, Write},
         path::Path,
         process::Command,
