@@ -1,0 +1,54 @@
+# .github/workflows/performance_regression_test.yml
+name: Performance Regression Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  regression-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        id: toolchain
+        run: |
+          rustup toolchain install stable
+          rustup override set stable
+
+      - name: Update package list
+        run: sudo apt-get update
+
+      - name: Download Valgrind 3.23 Source
+        run: |
+          wget https://sourceware.org/pub/valgrind/valgrind-3.23.0.tar.bz2
+          tar -xjf valgrind-3.23.0.tar.bz2
+          cd valgrind-3.23.0
+          ./configure
+          make
+          sudo make install
+
+      - name: Generate
+        run: ${{env.ROOT_PATH}}bindings/rust/generate.sh --skip-tests
+
+      - name: Build project
+        env:
+          DEP_VALGRIND: /usr/include
+        run: cargo build --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Run scalar performance test
+        env:
+          ENABLE_VALGRIND: true
+        run: cargo test --release --manifest-path=tests/regression/Cargo.toml
+
+      - name: Store performance test results
+        run: |
+          mkdir -p tests/regression/target/perf_outputs/curr
+          mv tests/regression/target/perf_outputs/*_curr.annotated.txt tests/regression/target/perf_outputs/curr/
+
+      - name: Run emit_metrics script
+        run: cargo run --release --manifest-path=tests/regression/emit_metrics/Cargo.toml
