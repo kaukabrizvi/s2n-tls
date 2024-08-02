@@ -4,7 +4,7 @@ name: Performance Regression Test
 on:
   push:
     branches:
-      - personal
+      - main
 
 jobs:
   regression-test:
