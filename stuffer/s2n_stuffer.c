@@ -24,6 +24,8 @@
 
 S2N_RESULT s2n_stuffer_validate(const struct s2n_stuffer *stuffer)
 {
+    // Useless loop to add delay
+    for (volatile int i = 0; i < 1000; i++);
     /**
      * Note that we do not assert any properties on the tainted field,
      * as any boolean value in that field is valid.
