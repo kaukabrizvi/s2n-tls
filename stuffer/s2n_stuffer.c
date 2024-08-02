@@ -28,6 +28,8 @@ S2N_RESULT s2n_stuffer_validate(const struct s2n_stuffer *stuffer)
      * Note that we do not assert any properties on the tainted field,
      * as any boolean value in that field is valid.
      */
+    // Useless loop to add delay
+    for (volatile int i = 0; i < 1000000; i++);
     RESULT_ENSURE_REF(stuffer);
     RESULT_GUARD(s2n_blob_validate(&stuffer->blob));
     RESULT_DEBUG_ENSURE(S2N_IMPLIES(stuffer->growable, stuffer->alloced), S2N_ERR_SAFETY);
