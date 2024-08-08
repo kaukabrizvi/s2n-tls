@@ -45,15 +45,8 @@ jobs:
 
       - name: Run scalar performance test (curr)
         env:
-          ENABLE_VALGRIND: true
-          TEST_SUFFIX: curr
+          PERF_MODE: valgrind
         run: cargo test --release --manifest-path=tests/regression/Cargo.toml
-
-
-      - name: Store curr results
-        run: |
-          mkdir -p tests/regression/target/perf_outputs/curr
-          mv tests/regression/target/perf_outputs/*_curr.annotated.txt tests/regression/target/perf_outputs/curr/
 
       - name: Checkout mainline
         run: |
@@ -65,27 +58,23 @@ jobs:
 
       - name: Run scalar performance test (prev)
         env:
-          ENABLE_VALGRIND: true
-          TEST_SUFFIX: prev
+          PERF_MODE: valgrind
         run: cargo test --release --manifest-path=tests/regression/Cargo.toml
-
-      - name: Store prev results
-        run: |
-          mkdir -p tests/regression/target/perf_outputs/prev
-          mv tests/regression/target/perf_outputs/*_prev.annotated.txt tests/regression/target/perf_outputs/prev/
 
       - name: Checkout pull request branch
         run: git checkout ${{ github.event.pull_request.head.sha }}
 
       - name: Run diff test
         env:
-          DIFF_MODE: true
+          PERF_MODE: diff
         run: cargo test --release --manifest-path=tests/regression/Cargo.toml
 
-      - name: Store diff results
+      - name: Store annotated and diff results
         run: |
-          mkdir -p tests/regression/target/perf_outputs/diff
-          mv tests/regression/target/perf_outputs/*diff.txt tests/regression/target/perf_outputs/diff/
+          mkdir -p target/perf_outputs
+          cp -r target/*/*.annotated.txt target/perf_outputs/
+          mkdir -p target/perf_outputs/diff
+          mv target/diff/* target/perf_outputs/diff/
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
