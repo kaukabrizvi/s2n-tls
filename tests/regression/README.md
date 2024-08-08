@@ -15,6 +15,7 @@ The performance benchmarking framework utilizes CPU Instruction count across API
 1. **lib.rs**
    - **test_set_config**: Builds a new s2n-tls config with a security policy, host callback and certs
    - **test_rsa_handshake**: Performs an RSA handshake in s2n-tls.
+   - **test_session_resumption**: Measures session resumption, only covers the second handshake
 
 2. **Cargo.toml**
    - The configuration file for building and running the regression tests using Cargo.
@@ -133,3 +134,6 @@ Configures and creates a new s2n-tls configuration with a specified security pol
 ### test_rsa_handshake
 
 Performs an RSA handshake in s2n-tls and validates the handshake process utilizing rsa_4096_sha512.
+
+### test_session_resumption
+Performs a handshake, sets a session ticket and then utilizes that ticket to resume the session in the second handshake.
