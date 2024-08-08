@@ -215,7 +215,11 @@ mod tests {
         fn new(prev_profile: &RawProfile, curr_profile: &RawProfile, max_diff: f64) -> Self {
             let diff_profile = Self {
                 test_name: curr_profile.test_name.clone(),
-                prev_profile_count: find_instruction_count(&std::fs::read_to_string(prev_profile.path()).unwrap()).unwrap(),
+                // looks for the instruction count in the previous profile by reading the annotated profile
+                prev_profile_count: find_instruction_count(
+                    &std::fs::read_to_string
+                    (prev_profile.path().replace("raw", "annotated")
+                ).unwrap()).unwrap(),
                 max_diff
             };
 
@@ -245,7 +249,6 @@ mod tests {
                 .expect("Failed to parse cg_annotate --diff output");
 
             let diff_percentage = diff as f64 / self.prev_profile_count as f64;
-
             assert!(
                 diff_percentage <= self.max_diff,
                 "Instruction count difference exceeds the threshold, regression of {diff_percentage}% ({diff} instructions). 
