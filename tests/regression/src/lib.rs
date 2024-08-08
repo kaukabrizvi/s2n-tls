@@ -55,8 +55,6 @@ mod tests {
         process::{Command, Output},
     };
 
-    const MAX_DIFF: i64 = 1_000;
-
     struct InstrumentationControl;
 
     impl InstrumentationControl {
@@ -86,7 +84,7 @@ mod tests {
         }
     }
 
-    fn valgrind_test<F>(test_name: &str, test_body: F) -> Result<(), s2n_tls::error::Error>
+    fn valgrind_test<F>(test_name: &str, max_diff: f64, test_body: F) -> Result<(), s2n_tls::error::Error>
     where
         F: FnOnce(&InstrumentationControl) -> Result<(), s2n_tls::error::Error>,
     {
@@ -97,7 +95,7 @@ mod tests {
             }
             RegressionTestMode::Diff => {
                 let (prev_profile, curr_profile) = RawProfile::query(test_name);
-                DiffProfile::new(&prev_profile, &curr_profile).assert_performance();
+                DiffProfile::new(&prev_profile, &curr_profile, max_diff).assert_performance();
             }
             RegressionTestMode::Default => {
                 let ctrl = InstrumentationControl;
@@ -210,11 +208,15 @@ mod tests {
 
     struct DiffProfile {
         test_name: String,
+        prev_profile_count: i64,
+        max_diff: f64
     }
     impl DiffProfile {
-        fn new(prev_profile: &RawProfile, curr_profile: &RawProfile) -> Self {
+        fn new(prev_profile: &RawProfile, curr_profile: &RawProfile, max_diff: f64) -> Self {
             let diff_profile = Self {
                 test_name: curr_profile.test_name.clone(),
+                prev_profile_count: find_instruction_count(&std::fs::read_to_string(prev_profile.path()).unwrap()).unwrap(),
+                max_diff
             };
 
             // diff the raw profile
@@ -241,11 +243,13 @@ mod tests {
 
             let diff = find_instruction_count(&diff_content)
                 .expect("Failed to parse cg_annotate --diff output");
+
+            let diff_percentage = diff as f64 / self.prev_profile_count as f64;
+
             assert!(
-                diff <= MAX_DIFF,
-                "Instruction count difference exceeds the threshold, regression of {} instructions. 
-                Check the annotated output logs in target/diff/{}.diff for debug information",
-                diff, self.test_name
+                diff_percentage <= self.max_diff,
+                "Instruction count difference exceeds the threshold, regression of {diff_percentage}% ({diff} instructions). 
+                Check the annotated output logs in target/diff/{}.diff for debug information", self.test_name
             );
         }
     }
@@ -303,7 +307,7 @@ mod tests {
     /// Test to create new config, set security policy, host_callback information, load/trust certs, and build config.
     #[test]
     fn test_set_config() {
-        valgrind_test("test_set_config", |ctrl| {
+        valgrind_test("test_set_config", 0.01, |ctrl| {
             ctrl.stop_instrumentation();
             ctrl.start_instrumentation();
             let keypair_rsa = CertKeyPair::default();
@@ -317,7 +321,7 @@ mod tests {
     /// Test which creates a TestPair from config using `rsa_4096_sha512`. Only measures a pair handshake.
     #[test]
     fn test_rsa_handshake() {
-        valgrind_test("test_rsa_handshake", |ctrl| {
+        valgrind_test("test_rsa_handshake", 0.01, |ctrl| {
             ctrl.stop_instrumentation();
             let keypair_rsa = CertKeyPair::default();
             let config = set_config(&security::DEFAULT_TLS13, keypair_rsa)?;
