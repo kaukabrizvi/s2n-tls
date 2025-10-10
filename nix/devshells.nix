@@ -2,29 +2,27 @@
 , aws-lc, aws-lc-fips-2022, aws-lc-fips-2024, writeScript }:
 
 let
-  # Shared shellHook to force Nix toolchain paths for CMake discovery
   commonShellHook = ''
-    # Prefer Nix-provided Clang/LLVM tools (avoid /usr/bin)
     export CC="$(command -v clang)"
     export CXX="$(command -v clang++)"
     export AR="$(command -v llvm-ar || command -v ar)"
-    export NM="$(command -v llvm-nm || command -v nm)"
-    export RANLIB="$(command -v llvm-ranlib || command -v ranlib)"
-    export OBJCOPY="$(command -v llvm-objcopy || command -v objcopy)"
-
-    # Optional: prefer Ninja if present (faster/more deterministic)
     if command -v ninja >/dev/null 2>&1; then
       export CMAKE_GENERATOR="Ninja"
     fi
-
-    echo "Toolchain:"
-    echo "  CC=$CC"
-    echo "  CXX=$CXX"
-    echo "  AR=$AR"
-    echo "  NM=$NM"
-    echo "  RANLIB=$RANLIB"
-    echo "  OBJCOPY=$OBJCOPY"
   '';
+  awsLcStatic = aws-lc.overrideAttrs (old: {
+    cmakeFlags = (old.cmakeFlags or []) ++ [
+      "-DBUILD_SHARED_LIBS=OFF"
+      "-DBUILD_TESTING=OFF"
+    ];
+  });
+  
+  awsLcFips2024Static = aws-lc-fips-2024.overrideAttrs (old: {
+    cmakeFlags = (old.cmakeFlags or []) ++ [
+      "-DBUILD_SHARED_LIBS=OFF"
+      "-DBUILD_TESTING=OFF"
+    ];
+  });
 
   # Define the default devShell
   default = pkgs.mkShell {
@@ -102,16 +100,16 @@ let
   });
 
   # Define the awslc devShell
-  awslc_shell = default.overrideAttrs (finalAttrs: previousAttrs: {
-    buildInputs = [ pkgs.cmake aws-lc ];
+  awslc_shell = default.overrideAttrs (final: prev: {
+    buildInputs = [ pkgs.cmake awsLcStatic ];
     S2N_LIBCRYPTO = "awslc";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
       export PATH=${openssl_1_1_1}/bin:$PATH
       export PS1="[nix $S2N_LIBCRYPTO] $PS1"
-
+      # Prefer aws-lc’s dev+lib outputs so CMake sees static targets
+      export CMAKE_PREFIX_PATH="${awsLcStatic}''${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
       ${commonShellHook}
-
       source ${writeScript ./shell.sh}
     '';
   });
@@ -130,16 +128,15 @@ let
     '';
   });
 
-  awslcfips2024_shell = default.overrideAttrs (finalAttrs: previousAttrs: {
-    buildInputs = [ pkgs.cmake aws-lc-fips-2024 ];
+  awslcfips2024_shell = default.overrideAttrs (final: prev: {
+    buildInputs = [ pkgs.cmake awsLcFips2024Static ];
     S2N_LIBCRYPTO = "awslc-fips-2024";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
       export PATH=${openssl_1_1_1}/bin:$PATH
       export PS1="[nix $S2N_LIBCRYPTO] $PS1"
-
+      export CMAKE_PREFIX_PATH="${awsLcFips2024Static}''${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
       ${commonShellHook}
-
       source ${writeScript ./shell.sh}
     '';
   });
