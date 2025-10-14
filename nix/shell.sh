@@ -224,67 +224,34 @@ function apache2_start(){
     fi
 }
 
-rust_integration() {
-  set -euo pipefail
-  set -x  # keep for now; remove once green
+function rust_integration(){
+    rm -rf build/
+    cmake -B build . \
+	    -D CMAKE_C_COMPILER=clang \
+	    -D CMAKE_BUILD_TYPE=RelWithDebInfo \
+        -D BUILD_TESTING=OFF \
+	    -D S2N_INTERN_LIBCRYPTO=ON
+    cmake --build ./build -j $(nproc)
+    # Run the generator exactly as before, but in a subshell so any `exit`
+    # inside the script cannot terminate this shell.
 
-  echo ">>> PATH before build: $PATH"
-  type -a cargo || true
+    (  # <-- subshell starts
+    set -euo pipefail
+    bindings/rust/extended/generate.sh --skip-tests
+    )
 
-  # Clean + build
-  rm -rf build CMakeCache.txt CMakeFiles || true
-  cmake -B build . \
-    -D CMAKE_C_COMPILER=clang \
-    -D CMAKE_BUILD_TYPE=RelWithDebInfo \
-    -D BUILD_TESTING=OFF \
-    -D S2N_INTERN_LIBCRYPTO=ON
-  cmake --build ./build -j"$(nproc)"
+    # Now run Rust tests (still in the same devShell)
+    export S2N_TLS_LIB_DIR="$PWD/build/lib"
+    export S2N_TLS_INCLUDE_DIR="$PWD/api"
 
-# after cmake --build ...
-export S2N_TLS_LIB_DIR="$PWD/build/lib"
-export S2N_TLS_INCLUDE_DIR="$PWD/api"   
-
-# Ensure bindgen sees the API headers
-EXTRA_INC="-I$S2N_TLS_INCLUDE_DIR"
-
-# run generator without exiting the parent shell
-(
-  set -euo pipefail
-  cd bindings/rust/extended/generate
-  BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -I$S2N_TLS_INCLUDE_DIR" \
-  cargo run -- ../s2n-tls-sys
-)
-
-  echo ">>> generator done; continuing to cargo tests"
-
-  # Choose a non-rustup cargo
-  CARGO_BIN=""
-  while read -r cand; do
-    [[ -z "$cand" ]] && continue
-    if [[ "$cand" != *"/rustup-"*"/bin/cargo" ]]; then
-      CARGO_BIN="$cand"; break
+    # Prefer a real cargo over rustup’s shim if present
+    if cargo --version 2>&1 | grep -q 'rustup could not choose'; then
+        CARGO_BIN="$(type -a -p cargo 2>/dev/null | grep -v '/rustup-.*/bin/cargo' | head -n1 || true)"
+        [[ -z "$CARGO_BIN" ]] && CARGO_BIN="$(ls -1d /nix/store/*-cargo-*/bin/cargo 2>/dev/null | head -n1 || true)"
+    else
+        CARGO_BIN="$(command -v cargo)"
     fi
-  done < <(type -a -p cargo 2>/dev/null || which -a cargo 2>/dev/null || true)
 
-  if [[ -z "${CARGO_BIN:-}" ]]; then
-    for cand in /nix/store/*-cargo-*/bin/cargo /nix/store/*-rust-*/bin/cargo; do
-      [[ -x "$cand" ]] && CARGO_BIN="$cand" && break || true
-    done
-  fi
-
-  if [[ -z "${CARGO_BIN:-}" ]]; then
-    echo "No non-rustup cargo found; bootstrapping rustup toolchain as fallback"
-    rustup set profile minimal || true
-    rustup toolchain install 1.72.0 || rustup default stable
-    rustup default 1.72.0 || true
-    CARGO_BIN="$(command -v cargo)"
-  fi
-
-  "$CARGO_BIN" --version
-
-  export S2N_TLS_LIB_DIR="$PWD/build/lib"
-  export S2N_TLS_INCLUDE_DIR="$PWD/api"
-
-  echo ">>> running cargo tests with $CARGO_BIN"
-  "$CARGO_BIN" test --manifest-path bindings/rust/standard/integration/Cargo.toml
+    "$CARGO_BIN" --version
+    "$CARGO_BIN" test --manifest-path bindings/rust/standard/integration/Cargo.toml 
 }
