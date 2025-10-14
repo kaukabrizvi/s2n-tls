@@ -39,10 +39,19 @@
           pkgs.gnutls
           pkgs.tshark
 
+          # Toolchains and build tools (from Nix)
+          pkgs.cmake
+          pkgs.ninja
+
           # C Compiler Tooling; adding llvm/clang is an involved future task.
           pkgs.gcc
           pkgs.gdb
           pkgs.valgrind
+
+          # *** Add Clang + LLVM binutils from Nix ***
+          pkgs.llvmPackages_18.clang
+          pkgs.llvmPackages_18.bintools   # ar/nm/ranlib/objcopy from LLVM
+          pkgs.llvmPackages_18.libclang
 
           # Linters/Formatters
           pkgs.shellcheck
