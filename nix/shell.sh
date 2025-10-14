@@ -224,18 +224,60 @@ function apache2_start(){
     fi
 }
 
-function rust_integration(){
-    rm -rf build/
-    cmake -B build . \
-	    -D CMAKE_C_COMPILER=clang \
-	    -D CMAKE_BUILD_TYPE=RelWithDebInfo \
-        -D BUILD_TESTING=OFF \
-	    -D S2N_INTERN_LIBCRYPTO=ON
-    cmake --build ./build -j $(nproc)
-    bindings/rust/extended/generate.sh --skip-tests
-    export S2N_TLS_LIB_DIR=$(pwd)/build/lib
-    export S2N_TLS_INCLUDE_DIR=$(pwd)/api
-    command -v cargo
-    cargo --version
-    cargo test --manifest-path bindings/rust/standard/integration/Cargo.toml 
+rust_integration() {
+  set -euo pipefail
+  set -x  # keep for now; remove once green
+
+  echo ">>> PATH before build: $PATH"
+  type -a cargo || true
+
+  # Clean + build
+  rm -rf build CMakeCache.txt CMakeFiles || true
+  cmake -B build . \
+    -D CMAKE_C_COMPILER=clang \
+    -D CMAKE_BUILD_TYPE=RelWithDebInfo \
+    -D BUILD_TESTING=OFF \
+    -D S2N_INTERN_LIBCRYPTO=ON
+  cmake --build ./build -j"$(nproc)"
+
+# run generator without exiting the parent shell
+(
+  set -euo pipefail
+  pushd bindings/rust/extended/generate
+  cargo run -- ../s2n-tls-sys
+  popd
+)
+
+  echo ">>> generator done; continuing to cargo tests"
+
+  # Choose a non-rustup cargo
+  CARGO_BIN=""
+  while read -r cand; do
+    [[ -z "$cand" ]] && continue
+    if [[ "$cand" != *"/rustup-"*"/bin/cargo" ]]; then
+      CARGO_BIN="$cand"; break
+    fi
+  done < <(type -a -p cargo 2>/dev/null || which -a cargo 2>/dev/null || true)
+
+  if [[ -z "${CARGO_BIN:-}" ]]; then
+    for cand in /nix/store/*-cargo-*/bin/cargo /nix/store/*-rust-*/bin/cargo; do
+      [[ -x "$cand" ]] && CARGO_BIN="$cand" && break || true
+    done
+  fi
+
+  if [[ -z "${CARGO_BIN:-}" ]]; then
+    echo "No non-rustup cargo found; bootstrapping rustup toolchain as fallback"
+    rustup set profile minimal || true
+    rustup toolchain install 1.72.0 || rustup default stable
+    rustup default 1.72.0 || true
+    CARGO_BIN="$(command -v cargo)"
+  fi
+
+  "$CARGO_BIN" --version
+
+  export S2N_TLS_LIB_DIR="$PWD/build/lib"
+  export S2N_TLS_INCLUDE_DIR="$PWD/api"
+
+  echo ">>> running cargo tests with $CARGO_BIN"
+  "$CARGO_BIN" test --manifest-path bindings/rust/standard/integration/Cargo.toml
 }
