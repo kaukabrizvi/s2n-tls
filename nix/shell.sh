@@ -235,5 +235,7 @@ function rust_integration(){
     bindings/rust/extended/generate.sh --skip-tests
     export S2N_TLS_LIB_DIR=$(pwd)/build/lib
     export S2N_TLS_INCLUDE_DIR=$(pwd)/api
+    command -v cargo
+    cargo --version
     cargo test --manifest-path bindings/rust/standard/integration/Cargo.toml 
 }
