@@ -240,12 +240,19 @@ rust_integration() {
     -D S2N_INTERN_LIBCRYPTO=ON
   cmake --build ./build -j"$(nproc)"
 
+# after cmake --build ...
+export S2N_TLS_LIB_DIR="$PWD/build/lib"
+export S2N_TLS_INCLUDE_DIR="$PWD/api"   
+
+# Ensure bindgen sees the API headers
+EXTRA_INC="-I$S2N_TLS_INCLUDE_DIR"
+
 # run generator without exiting the parent shell
 (
   set -euo pipefail
-  pushd bindings/rust/extended/generate
+  cd bindings/rust/extended/generate
+  BINDGEN_EXTRA_CLANG_ARGS="$BINDGEN_EXTRA_CLANG_ARGS -I$S2N_TLS_INCLUDE_DIR" \
   cargo run -- ../s2n-tls-sys
-  popd
 )
 
   echo ">>> generator done; continuing to cargo tests"
