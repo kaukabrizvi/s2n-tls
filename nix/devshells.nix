@@ -40,6 +40,18 @@ let
       fi
   )"
   '';
+
+  commonToolInputs = [
+    pkgs.llvmPackages_18.clang
+    pkgs.llvmPackages_18.lld
+    pkgs.cmake
+    pkgs.ninja
+    pkgs.pkg-config
+    pkgs.rustc
+    pkgs.cargo
+    pkgs.rustfmt
+  ];
+
   awsLcStatic = aws-lc.overrideAttrs (old: {
     cmakeFlags = (old.cmakeFlags or []) ++ [
       "-DBUILD_SHARED_LIBS=OFF"
@@ -58,7 +70,7 @@ let
   default = pkgs.mkShell {
     inherit system;
     # keep minimal buildInputs; most tools come via `packages = common_packages`
-    buildInputs = [ pkgs.cmake openssl_3_0 ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake openssl_3_0 ];
     packages = common_packages;
 
     S2N_LIBCRYPTO = "openssl-3.0";
@@ -87,7 +99,7 @@ let
 
   # Define the openssl111 devShell
   openssl111 = default.overrideAttrs (finalAttrs: previousAttrs: {
-    buildInputs = [ pkgs.cmake openssl_1_1_1 ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake openssl_1_1_1 ];
     S2N_LIBCRYPTO = "openssl-1.1.1";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
@@ -102,7 +114,7 @@ let
 
   # Define the libressl devShell
   libressl_shell = default.overrideAttrs (finalAttrs: previousAttrs: {
-    buildInputs = [ pkgs.cmake pkgs.libressl ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake pkgs.libressl ];
     S2N_LIBCRYPTO = "libressl";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
@@ -116,7 +128,7 @@ let
   });
 
   openssl102 = default.overrideAttrs (finalAttrs: previousAttrs: {
-    buildInputs = [ pkgs.cmake openssl_1_0_2 ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake openssl_1_0_2 ];
     S2N_LIBCRYPTO = "openssl-1.0.2";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
@@ -131,7 +143,7 @@ let
 
   # Define the awslc devShell
   awslc_shell = default.overrideAttrs (final: prev: {
-    buildInputs = [ pkgs.cmake awsLcStatic ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake awsLcStatic ];
     S2N_LIBCRYPTO = "awslc";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
@@ -145,7 +157,7 @@ let
   });
 
   awslcfips2022_shell = default.overrideAttrs (finalAttrs: previousAttrs: {
-    buildInputs = [ pkgs.cmake aws-lc-fips-2022 ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake aws-lc-fips-2022 ];
     S2N_LIBCRYPTO = "awslc-fips-2022";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
@@ -159,7 +171,7 @@ let
   });
 
   awslcfips2024_shell = default.overrideAttrs (final: prev: {
-    buildInputs = [ pkgs.cmake awsLcFips2024Static ];
+    buildInputs = commonToolInputs ++ [ pkgs.cmake awsLcFips2024Static ];
     S2N_LIBCRYPTO = "awslc-fips-2024";
     shellHook = ''
       echo Setting up $S2N_LIBCRYPTO environment from flake.nix...
