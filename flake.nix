@@ -44,9 +44,6 @@
           pkgs.gdb
           pkgs.valgrind
 
-          # Add LLVM binutils from Nix for objcopy
-          pkgs.llvmPackages_18.bintools   
-
           # Linters/Formatters
           pkgs.shellcheck
           # There are 2 nix formatters; use the old one for now.
