@@ -117,16 +117,6 @@ batch:
           NIXDEV_LIBCRYPTO: .#awslcfips2024
           NIX_CACHE_BUCKET: s3://codebuildnixinteg-prod-nixcachebucketintegprodx861-ehnvuoswh2yr?region=us-east-2
 
-    # AWS-LC FIPS 2024 aarch64
-    - identifier: Rust_awslcfips2024_aarch64_0
-      depend-on:
-        - nixCache_aarch64
-      env:
-        fleet: ubuntu24_aarch64_nix
-        variables:
-          NIXDEV_LIBCRYPTO: .#awslcfips2024
-          NIX_CACHE_BUCKET: s3://codebuildnixinteg-prod-nixcachebucketintegprodaarc-rqyksjxh6wxa?region=us-east-2
-
 phases:
   install:
     commands:

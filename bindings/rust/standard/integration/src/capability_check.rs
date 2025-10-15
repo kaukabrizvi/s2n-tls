@@ -29,7 +29,7 @@ impl Libcrypto {
 
         match libcrypto.as_str() {
             "awslc" => Libcrypto::Awslc,
-            "awslc-fips" => Libcrypto::AwslcFips,
+            "awslc-fips" | "awslc-fips-2022" | "awslc-fips-2024" => Libcrypto::AwslcFips,
             "openssl-1.0.2" => Libcrypto::OpenSsl102,
             "openssl-1.1.1" => Libcrypto::OpenSsl111,
             "openssl-3.0" => Libcrypto::OpenSsl30,
