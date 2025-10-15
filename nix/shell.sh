@@ -233,7 +233,7 @@ function rust_integration(){
 	    -D S2N_INTERN_LIBCRYPTO=ON
     cmake --build ./build -j $(nproc)
     bindings/rust/extended/generate.sh --skip-tests
-    # Use workspace-local, writable homes (important in CI)
+    
     export RUSTUP_HOME="$PWD/.rustup"
     export CARGO_HOME="$PWD/.cargo"
 

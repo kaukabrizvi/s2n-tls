@@ -45,7 +45,8 @@ pub enum Capability {
     /// Support for TLS 1.3
     Tls13,
     /// Support for ML-DSA and ML-KEM
-    PQAlgorithms,
+    MLKem,
+    MLDsa,
 }
 
 impl Capability {
@@ -57,10 +58,9 @@ impl Capability {
         match self {
             // OpenSSL 1.0.2 doesn't support RSA-PSS, so TLS 1.3 isn't enabled
             Capability::Tls13 => libcrypto != Libcrypto::OpenSsl102,
-            // PQ is only supported for AWS-LC
-            Capability::PQAlgorithms => {
-                libcrypto == Libcrypto::Awslc || libcrypto == Libcrypto::AwslcFips
-            }
+            // AWS-LC: supports both ML-KEM + ML-DSA, AWSLCFIPS: supports ML-KEM
+            Capability::MLKem => matches!(libcrypto, Libcrypto::Awslc | Libcrypto::AwslcFips),
+            Capability::MLDsa => matches!(libcrypto, Libcrypto::Awslc),
         }
     }
 }
