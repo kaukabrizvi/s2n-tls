@@ -233,28 +233,23 @@ function rust_integration(){
 	    -D S2N_INTERN_LIBCRYPTO=ON
     cmake --build ./build -j $(nproc)
     bindings/rust/extended/generate.sh --skip-tests
-    export S2N_TLS_LIB_DIR="$REPO_ROOT/build/lib"
-    export S2N_TLS_INCLUDE_DIR="$REPO_ROOT/api"
+    # Use workspace-local, writable homes (important in CI)
+    export RUSTUP_HOME="$PWD/.rustup"
+    export CARGO_HOME="$PWD/.cargo"
 
-    echo "All cargos on PATH:"
-    type -a -p cargo || true
+    rustup set profile minimal
+    rustup set auto-self-update disable
 
-    # === Pick non-rustup cargo (SAFEST) ===
-    CARGO_BIN="$(type -a -p cargo 2>/dev/null | grep -v '/rustup-.*/bin/cargo' | head -n1 || true)"
-    [[ -z "$CARGO_BIN" ]] && CARGO_BIN="$(ls -1d /nix/store/*-cargo-*/bin/cargo 2>/dev/null | head -n1 || true)"
+    TOOLCHAIN="stable"   
+    rustup toolchain install "$TOOLCHAIN" --component rustfmt --component clippy
+    rustup default "$TOOLCHAIN"
 
-    # Fallback: initialize rustup toolchain only if no real cargo found
-    if [[ -z "$CARGO_BIN" ]]; then
-        echo "No non-rustup cargo on PATH; bootstrapping rustup toolchain..."
-        export RUSTUP_HOME="$REPO_ROOT/.rustup"
-        export CARGO_HOME="$REPO_ROOT/.cargo"
-        rustup set profile minimal
-        rustup toolchain install 1.82.0 --component rustfmt
-        rustup default 1.82.0
-        CARGO_BIN="$(command -v cargo)"
-    fi
+    export PATH="$CARGO_HOME/bin:$PATH"
+    hash -r
 
-    echo "Using cargo: $CARGO_BIN"
-    "$CARGO_BIN" --version
-    "$CARGO_BIN" test --manifest-path "$REPO_ROOT/bindings/rust/standard/integration/Cargo.toml" 
+    cargo --version
+    rustc --version
+    export S2N_TLS_LIB_DIR=$(pwd)/build/lib
+    export S2N_TLS_INCLUDE_DIR=$(pwd)/api
+    cargo test --manifest-path bindings/rust/standard/integration/Cargo.toml 
 }
