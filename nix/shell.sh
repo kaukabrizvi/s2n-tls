@@ -232,26 +232,9 @@ function rust_integration(){
         -D BUILD_TESTING=OFF \
 	    -D S2N_INTERN_LIBCRYPTO=ON
     cmake --build ./build -j $(nproc)
-    # Run the generator exactly as before, but in a subshell so any `exit`
-    # inside the script cannot terminate this shell.
-
-    (  # <-- subshell starts
-    set -euo pipefail
     bindings/rust/extended/generate.sh --skip-tests
-    )
-
-    # Now run Rust tests (still in the same devShell)
-    export S2N_TLS_LIB_DIR="$PWD/build/lib"
-    export S2N_TLS_INCLUDE_DIR="$PWD/api"
-
-    # Prefer a real cargo over rustup’s shim if present
-    if cargo --version 2>&1 | grep -q 'rustup could not choose'; then
-        CARGO_BIN="$(type -a -p cargo 2>/dev/null | grep -v '/rustup-.*/bin/cargo' | head -n1 || true)"
-        [[ -z "$CARGO_BIN" ]] && CARGO_BIN="$(ls -1d /nix/store/*-cargo-*/bin/cargo 2>/dev/null | head -n1 || true)"
-    else
-        CARGO_BIN="$(command -v cargo)"
-    fi
-
-    "$CARGO_BIN" --version
-    "$CARGO_BIN" test --manifest-path bindings/rust/standard/integration/Cargo.toml 
+    which -a cargo
+    export S2N_TLS_LIB_DIR=$(pwd)/build/lib
+    export S2N_TLS_INCLUDE_DIR=$(pwd)/api
+    cargo test --manifest-path bindings/rust/standard/integration/Cargo.toml 
 }
