@@ -2,7 +2,7 @@ name: CodeGuru Security Example
 on:
   push:
     branches:
-      - 'main'
+      - 'hackathon-llm-pentest'
 
 permissions:
   id-token: write
