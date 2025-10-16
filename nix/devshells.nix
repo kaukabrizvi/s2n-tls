@@ -5,51 +5,24 @@ let
     commonShellHook = ''
       export CC="$(command -v clang)"
       export CXX="$(command -v clang++)"
-      export AR="$(command -v llvm-ar || command -v ar)"
-      if command -v ninja >/dev/null 2>&1; then
-        export CMAKE_GENERATOR="Ninja"
-      fi
 
+      # Make libclang discoverable for bindgen
       export LIBCLANG_PATH="${pkgs.lib.getLib pkgs.llvmPackages_18.libclang}/lib"
-      export CLANG_PATH="${pkgs.llvmPackages_18.clang}/bin/clang"
       if [ -n "$LD_LIBRARY_PATH" ]; then
         export LD_LIBRARY_PATH="$LIBCLANG_PATH:$LD_LIBRARY_PATH"
       else
         export LD_LIBRARY_PATH="$LIBCLANG_PATH"
       fi
-
-      export BINDGEN_EXTRA_CLANG_ARGS="$(
-        cat ${pkgs.stdenv.cc}/nix-support/libc-crt1-cflags
-      ) $(
-        cat ${pkgs.stdenv.cc}/nix-support/libc-cflags
-      ) $(
-        cat ${pkgs.stdenv.cc}/nix-support/cc-cflags
-      ) $(
-      cat ${pkgs.stdenv.cc}/nix-support/libcxx-cxxflags
-    ) $(
-      # For clang toolchain: add builtin headers after system ones
-        if ${pkgs.lib.boolToString pkgs.stdenv.cc.isClang}; then
-        echo -idirafter ${pkgs.stdenv.cc.cc}/lib/clang/$(${pkgs.coreutils}/bin/basename ${pkgs.stdenv.cc.cc}/lib/clang/* | head -n1)/include
-        fi
-      ) $(
-        # For GCC toolchain: add libstdc++ and fixed includes + GCC private includes
-      if ${pkgs.lib.boolToString pkgs.stdenv.cc.isGNU}; then
-        echo -isystem ${pkgs.stdenv.cc.cc}/include/c++/$(${pkgs.lib.getVersion pkgs.stdenv.cc.cc}) \
-              -isystem ${pkgs.stdenv.cc.cc}/include/c++/$(${pkgs.lib.getVersion pkgs.stdenv.cc.cc})/${pkgs.stdenv.hostPlatform.config} \
-            -idirafter ${pkgs.stdenv.cc.cc}/lib/gcc/${pkgs.stdenv.hostPlatform.config}/$(${pkgs.lib.getVersion pkgs.stdenv.cc.cc})/include
-      fi
-  )"
-  '';
+'';
 
   commonToolInputs = [
     pkgs.llvmPackages_18.clang
-    pkgs.llvmPackages_18.lld
+    pkgs.llvmPackages_18.libclang
     pkgs.cmake
     pkgs.ninja
     pkgs.pkg-config
     pkgs.rustc
     pkgs.cargo
-    pkgs.rustfmt
   ];
 
   awsLcStatic = aws-lc.overrideAttrs (old: {
@@ -68,6 +41,11 @@ let
 
   # Define the default devShell
   default = pkgs.mkShell {
+    # This is a development environment shell which should be able to:
+    #  - build s2n-tls
+    #  - run unit tests
+    #  - run integ tests
+    #  - do common development operations (e.g. lint, debug, and manage repos)
     inherit system;
     # keep minimal buildInputs; most tools come via `packages = common_packages`
     buildInputs = commonToolInputs ++ [ pkgs.cmake openssl_3_0 ];

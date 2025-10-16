@@ -39,19 +39,18 @@
           pkgs.gnutls
           pkgs.tshark
 
-          # Toolchains and build tools (from Nix)
+          # Build configuration systems 
           pkgs.cmake
-          pkgs.ninja
 
-          # C Compiler Tooling; adding llvm/clang is an involved future task.
+          # C Compiler Tooling
           pkgs.gcc
           pkgs.gdb
           pkgs.valgrind
-
-          # *** Add Clang + LLVM binutils from Nix ***
           pkgs.llvmPackages_18.clang
-          pkgs.llvmPackages_18.bintools   # ar/nm/ranlib/objcopy from LLVM
-          pkgs.llvmPackages_18.libclang
+          pkgs.llvmPackages_18.bintools
+
+          # Compiler library
+          pkgs.llvmPackages_18.libclang # Provides libclang for Rust bindgen
 
           # Linters/Formatters
           pkgs.shellcheck
