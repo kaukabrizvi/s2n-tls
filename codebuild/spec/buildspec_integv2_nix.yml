@@ -40,6 +40,7 @@ batch:
         variables:
           NIXDEV_LIBCRYPTO: .#awslc
           NIX_CACHE_BUCKET: s3://codebuildnixinteg-prod-nixcachebucketintegprodx861-ehnvuoswh2yr?region=us-east-2
+          S2N_NO_HEADBUILD=1
 
     # AWSLC aarch64
     - identifier: Integ_awslc_aarch64_0
@@ -50,6 +51,7 @@ batch:
         variables:
           NIXDEV_LIBCRYPTO: .#awslc
           NIX_CACHE_BUCKET: s3://codebuildnixinteg-prod-nixcachebucketintegprodaarc-rqyksjxh6wxa?region=us-east-2
+          S2N_NO_HEADBUILD=1
 
     # AWSLC-FIPS-2022
     - identifier: Integ_awslcfips2022_x86_64_0
