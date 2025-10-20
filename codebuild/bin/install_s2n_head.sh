@@ -36,7 +36,7 @@ if [[ "$IN_NIX_SHELL" ]]; then
     # Make sure main is available in our workspace.
     # This is a workaround for the merge queue workflow.
     git fetch origin
-    git checkout main
+    git checkout nix-experimentation
     git checkout $CODEBUILD_SOURCE_VERSION
 else
     export DEST_DIR="$SRC_ROOT"/bin
