@@ -23,7 +23,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="s2n-logo-github.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">AWS s2n-tls<span id="projectnumber">&#160;-a3bc274c</span>
+   <div id="projectname">AWS s2n-tls<span id="projectnumber">&#160;-018ebfe1</span>
    </div>
    <div id="projectbrief">s2n-tls is a C99 implementation of the TLS/SSL protocols that is designed to be simple, small, fast, and with security as a priority.</div>
   </td>
@@ -265,9 +265,10 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>S2N_TLS_SIGNATURE_ANONYMOUS</b> = 0
 , <b>S2N_TLS_SIGNATURE_RSA</b> = 1
 , <b>S2N_TLS_SIGNATURE_ECDSA</b> = 3
-, <b>S2N_TLS_SIGNATURE_RSA_PSS_RSAE</b> = 224
+, <b>S2N_TLS_SIGNATURE_MLDSA</b> = 9
 , <br />
-&#160;&#160;<b>S2N_TLS_SIGNATURE_RSA_PSS_PSS</b>
+&#160;&#160;<b>S2N_TLS_SIGNATURE_RSA_PSS_RSAE</b> = 224
+, <b>S2N_TLS_SIGNATURE_RSA_PSS_PSS</b>
 <br />
  }</td></tr>
 <tr class="separator:a9812997751f63ac2d5ab70852792a689"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,6 +293,12 @@ Enumerations</h2></td></tr>
 , <b>S2N_PSK_MODE_EXTERNAL</b>
  }</td></tr>
 <tr class="separator:a3c5d0a0d8a1092a60dd0f50cdf969524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a388f87d7049392968cf4fba3bdefa197"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a388f87d7049392968cf4fba3bdefa197">s2n_cert_sni_match</a> { <b>S2N_SNI_NONE</b> = 1
+, <b>S2N_SNI_EXACT_MATCH</b>
+, <b>S2N_SNI_WILDCARD_MATCH</b>
+, <b>S2N_SNI_NO_MATCH</b>
+ }</td></tr>
+<tr class="separator:a388f87d7049392968cf4fba3bdefa197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b0e141e39d6fd9782af697513933995"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a3b0e141e39d6fd9782af697513933995">s2n_async_pkey_validation_mode</a> { <b>S2N_ASYNC_PKEY_VALIDATION_FAST</b>
 , <b>S2N_ASYNC_PKEY_VALIDATION_STRICT</b>
  }</td></tr>
@@ -327,6 +334,9 @@ Functions</h2></td></tr>
 <tr class="separator:a41b65ad20272f232f12c8ae36578d372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bec40a852f3766f4e419684036e7550"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a6bec40a852f3766f4e419684036e7550">s2n_cleanup</a> (void)</td></tr>
 <tr class="separator:a6bec40a852f3766f4e419684036e7550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f36379e13f9e3f1646ccb1f02cc4b4f"><td class="memItemLeft" align="right" valign="top"><a id="a7f36379e13f9e3f1646ccb1f02cc4b4f" name="a7f36379e13f9e3f1646ccb1f02cc4b4f"></a>
+<a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><b>s2n_cleanup_final</b> (void)</td></tr>
+<tr class="separator:a7f36379e13f9e3f1646ccb1f02cc4b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2f5f01eb4a3c924ffb8674bd3256601"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#ae2f5f01eb4a3c924ffb8674bd3256601">s2n_get_fips_mode</a> (s2n_fips_mode *fips_mode)</td></tr>
 <tr class="separator:ae2f5f01eb4a3c924ffb8674bd3256601"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae4a525b68ba7bd181a27de9ea2fcd1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> struct s2n_config *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#aae4a525b68ba7bd181a27de9ea2fcd1a">s2n_config_new</a> (void)</td></tr>
@@ -651,6 +661,8 @@ Functions</h2></td></tr>
 <tr class="separator:a4311542818a2f029b2f157803949faa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3201f28508d383632996dcc861a521d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a3201f28508d383632996dcc861a521d4">s2n_connection_get_selected_client_cert_digest_algorithm</a> (struct s2n_connection *conn, <a class="el" href="s2n_8h.html#a08eccb21b18130aef8c19a288801f379">s2n_tls_hash_algorithm</a> *chosen_alg)</td></tr>
 <tr class="separator:a3201f28508d383632996dcc861a521d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af42c827e46b894c9cbf5ed309852526f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#af42c827e46b894c9cbf5ed309852526f">s2n_connection_get_signature_scheme</a> (struct s2n_connection *conn, const char **scheme_name)</td></tr>
+<tr class="separator:af42c827e46b894c9cbf5ed309852526f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2ec12d27f27f757ddfaf2bcadc9956a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> struct s2n_cert_chain_and_key *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#aa2ec12d27f27f757ddfaf2bcadc9956a">s2n_connection_get_selected_cert</a> (struct s2n_connection *conn)</td></tr>
 <tr class="separator:aa2ec12d27f27f757ddfaf2bcadc9956a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a346a183c22e8b394c17bd22ac54b1553"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a346a183c22e8b394c17bd22ac54b1553">s2n_cert_chain_get_length</a> (const struct s2n_cert_chain_and_key *chain_and_key, uint32_t *cert_length)</td></tr>
@@ -723,6 +735,8 @@ Functions</h2></td></tr>
 <tr class="separator:a249408b5a39897276524176bb951dba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed6c509e7ec18b2a9ddb47e3e595b565"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#aed6c509e7ec18b2a9ddb47e3e595b565">s2n_connection_get_cipher</a> (struct s2n_connection *conn)</td></tr>
 <tr class="separator:aed6c509e7ec18b2a9ddb47e3e595b565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a762ffd38a013dba0c9266dd90b91183b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a762ffd38a013dba0c9266dd90b91183b">s2n_connection_get_certificate_match</a> (struct s2n_connection *conn, <a class="el" href="s2n_8h.html#a388f87d7049392968cf4fba3bdefa197">s2n_cert_sni_match</a> *match_status)</td></tr>
+<tr class="separator:a762ffd38a013dba0c9266dd90b91183b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad34a96dd1e2cae7dd2da4812576a65fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#ad34a96dd1e2cae7dd2da4812576a65fc">s2n_connection_get_master_secret</a> (const struct s2n_connection *conn, uint8_t *secret_bytes, size_t max_size)</td></tr>
 <tr class="separator:ad34a96dd1e2cae7dd2da4812576a65fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8c865863e6dcfa38d4de30cd11f7c40"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#ae8c865863e6dcfa38d4de30cd11f7c40">s2n_connection_tls_exporter</a> (struct s2n_connection *conn, const uint8_t *label, uint32_t label_length, const uint8_t *context, uint32_t context_length, uint8_t *output, uint32_t output_length)</td></tr>
@@ -737,6 +751,8 @@ Functions</h2></td></tr>
 <tr class="separator:a5c26b7b10e7ed39a6cd3aeaab0f4066a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c116afc860c9273c32126617881f4b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a1c116afc860c9273c32126617881f4b5">s2n_connection_get_kem_group_name</a> (struct s2n_connection *conn)</td></tr>
 <tr class="separator:a1c116afc860c9273c32126617881f4b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad782d2e72055ddfc4ce8768c163f4c6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#ad782d2e72055ddfc4ce8768c163f4c6b">s2n_connection_get_key_exchange_group</a> (struct s2n_connection *conn, const char **group_name)</td></tr>
+<tr class="separator:ad782d2e72055ddfc4ce8768c163f4c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5612a3161a2dcb4dd7fcb04aaf8845a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a5612a3161a2dcb4dd7fcb04aaf8845a8">s2n_connection_get_alert</a> (struct s2n_connection *conn)</td></tr>
 <tr class="separator:a5612a3161a2dcb4dd7fcb04aaf8845a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8649c4ff89e91c0a2278c139bc033449"><td class="memItemLeft" align="right" valign="top"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s2n_8h.html#a8649c4ff89e91c0a2278c139bc033449">s2n_connection_get_handshake_type_name</a> (struct s2n_connection *conn)</td></tr>
@@ -1394,7 +1410,7 @@ Safety</h1>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Function pointer for a user provided send callback. </p>
+<p >Function pointer for a user provided recv callback. </p>
 
 </div>
 </div>
@@ -1569,6 +1585,22 @@ Safety</h1>
 <li>Optional (default): Sends the client certificate if the server requests client authentication. No certificate is sent if the application hasn't provided a certificate.</li>
 <li>Required: Send the client certificate. Abort the handshake if the server doesn't request client authentication or if the application hasn't provided a certificate. </li>
 </ul>
+
+</div>
+</div>
+<a id="a388f87d7049392968cf4fba3bdefa197" name="a388f87d7049392968cf4fba3bdefa197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a388f87d7049392968cf4fba3bdefa197">&#9670;&#160;</a></span>s2n_cert_sni_match</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="s2n_8h.html#a388f87d7049392968cf4fba3bdefa197">s2n_cert_sni_match</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >A metric to determine whether or not the server found a certificate that matched the client's SNI extension.</p>
+<p >S2N_SNI_NONE: Client did not send the SNI extension. S2N_SNI_EXACT_MATCH: Server had a certificate that matched the client's SNI extension. S2N_SNI_WILDCARD_MATCH: Server had a certificate with a domain name containing a wildcard character that could be matched to the client's SNI extension. S2N_SNI_NO_MATCH: Server did not have a certificate that could be matched to the client's SNI extension. </p>
 
 </div>
 </div>
@@ -1908,6 +1940,7 @@ Safety</h1>
 </div><div class="memdoc">
 <p >Returns the input to the private key operation.</p>
 <p >When signing, the input is the digest to sign. When decrypting, the input is the data to decrypt.</p>
+<p >When signing with ML-DSA, the input is the "external mu" pre-hash value described in <a href="https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-09.html#appendix-D">https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-09.html#appendix-D</a></p>
 <h1><a class="anchor" id="autotoc_md15"></a>
 Safety</h1>
 <ul>
@@ -2821,7 +2854,7 @@ Safety</h1>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Cleans up any internal resources used by s2n-tls. This function should be called from each thread or process that is created subsequent to calling <code>s2n_init</code> when that thread or process is done calling other s2n-tls functions.</p>
+<p >Cleans up thread-local resources used by s2n-tls. Does not perform a full library cleanup. To fully clean up the library use s2n_cleanup_final().</p>
 <dl class="section return"><dt>Returns</dt><dd>S2N_SUCCESS on success. S2N_FAILURE on failure </dd></dl>
 
 </div>
@@ -3760,8 +3793,8 @@ s2n-tls has never supported compression methods in any TLS version and therefore
         </tr>
       </table>
 </div><div class="memdoc">
-<p >The preferred method of associating a certificate chain and private key pair with an <code>s2n_config</code> object. This method may be called multiple times to support multiple key types(RSA, ECDSA) and multiple domains. On the server side, the certificate selected will be based on the incoming SNI value and the client's capabilities(supported ciphers).</p>
-<p >In the case of no certificate matching the client's SNI extension or if no SNI extension was sent by the client, the certificate from the <code>first</code> call to <code>s2n_config_add_cert_chain_and_key_to_store</code> will be selected.</p>
+<p >The preferred method of associating a certificate chain and private key pair with an <code>s2n_config</code> object. This method may be called multiple times to support multiple key types (RSA, RSA-PSS, ECDSA) and multiple domains. On the server side, the certificate selected will be based on the incoming SNI value and the client's capabilities (supported ciphers).</p>
+<p >In the case of no certificate matching the client's SNI extension or if no SNI extension was sent by the client, the certificate from the <code>first</code> call to <code><a class="el" href="s2n_8h.html#abfb875eff7e81b22378e4ae5b313169f">s2n_config_add_cert_chain_and_key_to_store()</a></code> will be selected. Use <code><a class="el" href="s2n_8h.html#a30d021a10ad7183c995d6d2a65926272">s2n_config_set_cert_chain_and_key_defaults()</a></code> to set different defaults.</p>
 <dl class="section warning"><dt>Warning</dt><dd>It is not recommended to free or modify the <code>cert_key_pair</code> as any subsequent changes will be reflected in the config.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3838,6 +3871,7 @@ s2n-tls has never supported compression methods in any TLS version and therefore
 </div><div class="memdoc">
 <p >Adds a PEM to the trust store. This will allocate memory, and load <code>pem</code> into the trust store.</p>
 <p >When configs are created with <code><a class="el" href="s2n_8h.html#aae4a525b68ba7bd181a27de9ea2fcd1a">s2n_config_new()</a></code>, the trust store is initialized with default system certificates. To completely override these certificates, call <code><a class="el" href="s2n_8h.html#af7e2759066521827269d56d4da063f7b">s2n_config_wipe_trust_store()</a></code> before calling this function.</p>
+<dl class="section note"><dt>Note</dt><dd>This API uses the s2n-tls PEM parsing implementation, which is more strict than typical libcrypto implementations such as OpenSSL. An error is returned if any unexpected data is encountered while parsing <code>pem</code>. This allows applications to be made aware of any malformed certificates rather than attempt to negotiate with a partial trust store. However, some PEMs may need to be loaded that are not under control of the application, such as system trust stores. In this case, <code><a class="el" href="s2n_8h.html#a85545629ce095ed44de580592eecf50e">s2n_config_set_verification_ca_location()</a></code> may be used, which performs more widely compatible and permissive parsing from the linked libcrypto.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config</td><td>The configuration object being updated </td></tr>
@@ -5867,7 +5901,8 @@ Safety</h1>
 </div><div class="memdoc">
 <p >Adds to the trust store from a CA file or directory containing trusted certificates.</p>
 <p >When configs are created with <code><a class="el" href="s2n_8h.html#aae4a525b68ba7bd181a27de9ea2fcd1a">s2n_config_new()</a></code>, the trust store is initialized with default system certificates. To completely override these certificates, call <code><a class="el" href="s2n_8h.html#af7e2759066521827269d56d4da063f7b">s2n_config_wipe_trust_store()</a></code> before calling this function.</p>
-<dl class="section note"><dt>Note</dt><dd>The trust store will be initialized with the common locations for the host operating system by default. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The trust store will be initialized with the common locations for the host operating system by default.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This API uses the PEM parsing implementation from the linked libcrypto. This implementation will typically make a best-effort attempt to parse all of the certificates in the provided file or directory. This permissive approach may silently ignore malformed certificates, leading to possible connection failures if a certificate was expected to exist in the trust store but was skipped while parsing. As such, this API should only be used on PEMs that are known to be well-formed and parsable with the linked libcrypto, such as the system trust store. For all other PEMs, <code><a class="el" href="s2n_8h.html#a1de5c0b7a1029ee248947835d4e170bc">s2n_config_add_pem_to_trust_store()</a></code> should be used instead, which parses more strictly.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">config</td><td>The configuration object being updated </td></tr>
@@ -6325,6 +6360,44 @@ Only a minimal amount of information about the original TLS connection is serial
 
 </div>
 </div>
+<a id="a762ffd38a013dba0c9266dd90b91183b" name="a762ffd38a013dba0c9266dd90b91183b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a762ffd38a013dba0c9266dd90b91183b">&#9670;&#160;</a></span>s2n_connection_get_certificate_match()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int s2n_connection_get_certificate_match </td>
+          <td>(</td>
+          <td class="paramtype">struct s2n_connection *&#160;</td>
+          <td class="paramname"><em>conn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="s2n_8h.html#a388f87d7049392968cf4fba3bdefa197">s2n_cert_sni_match</a> *&#160;</td>
+          <td class="paramname"><em>match_status</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >A function that provides insight into whether or not the server was able to send a certificate that partially or completely matched the client's SNI extension.</p>
+<dl class="section note"><dt>Note</dt><dd>This function can be used as a metric in a failed connection as long as the failure occurs after certificate selection.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">conn</td><td>A pointer to the connection </td></tr>
+    <tr><td class="paramname">cert_match</td><td>An enum indicating whether or not the server found a certificate that matched the client's SNI extension. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>S2N_SUCCESS on success. S2N_FAILURE on failure. </dd></dl>
+
+</div>
+</div>
 <a id="aed6c509e7ec18b2a9ddb47e3e595b565" name="aed6c509e7ec18b2a9ddb47e3e595b565"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aed6c509e7ec18b2a9ddb47e3e595b565">&#9670;&#160;</a></span>s2n_connection_get_cipher()</h2>
 
@@ -6604,6 +6677,7 @@ Only a minimal amount of information about the original TLS connection is serial
       </table>
 </div><div class="memdoc">
 <p >Function to get the human readable elliptic curve name for the connection.</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated:</a></b></dt><dd>Use <code>s2n_connection_get_key_exchange_group</code> instead</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">conn</td><td>A pointer to the s2n connection </td></tr>
@@ -6719,13 +6793,14 @@ Only a minimal amount of information about the original TLS connection is serial
       </table>
 </div><div class="memdoc">
 <p >Function to get the human readable KEM group name for the connection.</p>
+<dl class="section note"><dt>Note</dt><dd>PQ key exchange will not occur if the connection is &lt; TLS1.3 or the configured security policy has no KEM groups on it. It also will not occur if the peer does not support PQ key exchange. In these instances this function will return "NONE".</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">conn</td><td>A pointer to the s2n connection </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A human readable string for the KEM group. If the connection is &lt; TLS1.3 or there is no KEM group configured returns "NONE" </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A human readable string for the KEM group. Returns "NONE" if no PQ key exchange occurred. </dd></dl>
 
 </div>
 </div>
@@ -6745,6 +6820,7 @@ Only a minimal amount of information about the original TLS connection is serial
       </table>
 </div><div class="memdoc">
 <p >Function to get the human readable KEM name for the connection.</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated:</a></b></dt><dd>This function was previously used to retrieve the negotiated PQ group in TLS 1.2. PQ key exchange in TLS1.2 was experimental and is now deprecated. Use <a class="el" href="s2n_8h.html#a1c116afc860c9273c32126617881f4b5">s2n_connection_get_kem_group_name()</a> to retrieve the PQ TLS 1.3 Group name.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">conn</td><td>A pointer to the s2n connection </td></tr>
@@ -6752,6 +6828,44 @@ Only a minimal amount of information about the original TLS connection is serial
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A human readable string for the KEM group. If there is no KEM configured returns "NONE" </dd></dl>
+
+</div>
+</div>
+<a id="ad782d2e72055ddfc4ce8768c163f4c6b" name="ad782d2e72055ddfc4ce8768c163f4c6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad782d2e72055ddfc4ce8768c163f4c6b">&#9670;&#160;</a></span>s2n_connection_get_key_exchange_group()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int s2n_connection_get_key_exchange_group </td>
+          <td>(</td>
+          <td class="paramtype">struct s2n_connection *&#160;</td>
+          <td class="paramname"><em>conn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char **&#160;</td>
+          <td class="paramname"><em>group_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Function to get the human readable key exchange group name for the connection, for example: <code>secp521r1</code> or <code>SecP256r1MLKEM768</code>. If an EC curve or KEM was not negotiated, S2N_FAILURE will be returned.</p>
+<dl class="section note"><dt>Note</dt><dd>This function replaces <code>s2n_connection_get_curve</code> and <code>s2n_connection_get_kem_group_name</code>, returning the named group regardless if a hybrid PQ group was negotiated or not.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">conn</td><td>A pointer to the s2n connection </td></tr>
+    <tr><td class="paramname">group_name</td><td>A pointer that will be set to point to a const char* containing the group name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>S2N_SUCCESS on success, S2N_FAILURE otherwise. <code>group_name</code> will be set on success. </dd></dl>
 
 </div>
 </div>
@@ -7507,6 +7621,52 @@ Safety</h1>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The session ticket lifetime hint in seconds from the server or -1 when session ticket was not used for resumption. </dd></dl>
+
+</div>
+</div>
+<a id="af42c827e46b894c9cbf5ed309852526f" name="af42c827e46b894c9cbf5ed309852526f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af42c827e46b894c9cbf5ed309852526f">&#9670;&#160;</a></span>s2n_connection_get_signature_scheme()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="s2n_8h.html#af1c2b8586154a9094d6978137ef001ac">S2N_API</a> int s2n_connection_get_signature_scheme </td>
+          <td>(</td>
+          <td class="paramtype">struct s2n_connection *&#160;</td>
+          <td class="paramname"><em>conn</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char **&#160;</td>
+          <td class="paramname"><em>scheme_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Get the human readable signature scheme for the connection.</p>
+<p >This method will return:</p><ol type="1">
+<li>The IANA "description" for the negotiated signature scheme. For example, rsa_pss_rsae_sha384 or ecdsa_secp256r1_sha256.</li>
+<li>An unofficial description, if the server signature did not use an official IANA signature scheme. This description will take the form "legacy_&lt;signature_algorithm&gt;_&lt;hash_algorithm&gt;". For example, legacy_rsa_sha224 or legacy_ecdsa_sha256.</li>
+<li>"none", if the handshake did not include a server signature. This may happen if session resumption or RSA key exchange are used.</li>
+</ol>
+<p >If the connection has not yet performed a handshake, this method will error.</p>
+<p >A note on unofficial descriptions: If TLS1.2 or earlier is negotiated, an official IANA signature scheme may not be chosen. Before TLS1.3, a combination of "signature algorithm" and "hash algorithm" were used instead of signature schemes. Not all combinations were later assigned to official signature schemes.</p>
+<p >A note on ECDSA signature schemes: TLS1.3 and TLS1.2 ECDSA "signature schemes" share the same IANA value. However, this method assigns them different descriptions because the TLS1.3 versions (like ecdsa_secp256r1_sha256) imply specific curves, while the TLS1.2 versions (like legacy_ecdsa_sha256) do not.</p>
+<p >IANA signature schemes: <a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-signaturescheme">https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-signaturescheme</a> IANA signature algorithms: <a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-16">https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-16</a> IANA hash algorithms: <a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-18">https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-18</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">conn</td><td>A pointer to the s2n connection </td></tr>
+    <tr><td class="paramname">group_name</td><td>A pointer that will be set to the signature scheme name. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>S2N_SUCCESS on success, S2N_FAILURE otherwise. </dd></dl>
 
 </div>
 </div>
@@ -9170,8 +9330,8 @@ Reusing the same connection handle(s) is more performant than repeatedly calling
       </table>
 </div><div class="memdoc">
 <p >Determines whether s2n-tls is operating in FIPS mode.</p>
-<p >s2n-tls enters FIPS mode on initialization when the linked libcrypto has FIPS mode enabled. Some libcryptos, such as AWS-LC-FIPS, have FIPS mode enabled by default. With other libcryptos, such as OpenSSL, FIPS mode must be enabled before initialization by calling <code>FIPS_mode_set()</code>.</p>
-<p >s2n-tls MUST be linked to a FIPS libcrypto and MUST be in FIPS mode in order to comply with FIPS requirements. Applications desiring FIPS compliance should use this API to ensure that s2n-tls has been properly linked with a FIPS libcrypto and has successfully entered FIPS mode.</p>
+<p >s2n-tls enters FIPS mode on initialization when built with a version of AWS-LC that supports FIPS (<a href="https://github.com/aws/aws-lc/blob/main/crypto/fipsmodule/FIPS.md">https://github.com/aws/aws-lc/blob/main/crypto/fipsmodule/FIPS.md</a>). FIPS mode controls some internal configuration related to FIPS support, like which random number generator is used.</p>
+<p >FIPS mode does not enforce the use of FIPS-approved cryptography. Applications attempting to use only FIPS-approved cryptography should also ensure that s2n-tls is configured to use a security policy that only supports FIPS-approved cryptography.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">fips_mode</td><td>Set to the FIPS mode of s2n-tls. </td></tr>
