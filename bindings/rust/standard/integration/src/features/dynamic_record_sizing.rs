@@ -8,6 +8,7 @@ use tls_harness::{
     harness::TlsConfigBuilderPair,
     TlsConnPair,
 };
+use crate::capability_check::{required_capability, Capability};
 
 /// The byte threshold at which records switch from small to large
 const RESIZE_THRESHOLD: usize = 16_000;
@@ -166,6 +167,8 @@ fn dynamic_record_sizing() {
         pair.shutdown().unwrap();
     }
 
-    s2n_server_case();
-    s2n_client_case();
+    required_capability(&[Capability::Tls13], || {
+        s2n_server_case();
+        s2n_client_case();
+    });
 }
