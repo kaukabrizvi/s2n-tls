@@ -69,6 +69,7 @@ impl TestPairIO {
             let _content_type = buffer.read_u8()?;
             let _protocol = buffer.read_u16::<BigEndian>()?;
             let length = buffer.read_u16::<BigEndian>()?;
+            println!("{_content_type}, {_protocol}, {length}");
             record_lengths.push(length);
             buffer.consume(length as usize);
         }

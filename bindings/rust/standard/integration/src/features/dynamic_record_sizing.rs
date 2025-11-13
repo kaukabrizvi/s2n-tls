@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-use openssl::ssl::SslContextBuilder;
+use openssl::ssl::{SslContextBuilder, SslVersion};
 use std::{thread::sleep, time::Duration};
 use tls_harness::{
     cohort::{OpenSslConnection, S2NConnection},
@@ -80,8 +80,9 @@ fn dynamic_record_sizing() {
 
     fn s2n_server_case() {
         let mut pair: TlsConnPair<OpenSslConnection, S2NConnection> = {
-            let configs =
+            let mut configs =
                 TlsConfigBuilderPair::<SslContextBuilder, s2n_tls::config::Builder>::default();
+            configs.client.set_max_proto_version(Some(SslVersion::TLS1_2));
             configs.connection_pair()
         };
 
@@ -124,8 +125,9 @@ fn dynamic_record_sizing() {
 
     fn s2n_client_case() {
         let mut pair: TlsConnPair<S2NConnection, OpenSslConnection> = {
-            let configs =
+            let mut configs =
                 TlsConfigBuilderPair::<s2n_tls::config::Builder, SslContextBuilder>::default();
+            configs.server.set_max_proto_version(Some(SslVersion::TLS1_2));
             configs.connection_pair()
         };
 
@@ -138,13 +140,17 @@ fn dynamic_record_sizing() {
             )
             .unwrap();
 
+        pair.io.enable_recording();
         pair.handshake().unwrap();
 
         // Start recording AFTER handshake completion to only capture application data
-        pair.io.enable_recording();
-
+    
         // Phase 1: Initial ramp up - should start with small records, then switch to large records
-        pair.round_trip_assert(APP_DATA_SIZE).unwrap();
+        pair.round_trip_assert(APP_DATA_SIZE);
+        dbg!(pair.io.client_record_sizes());
+        dbg!(pair.io.server_record_sizes());
+        dbg!(pair.client.connection().actual_protocol_version());
+        assert!(false);
         let phase1_sizes = pair.io.client_record_sizes();
         validate_dynamic_sizing(&phase1_sizes, Phase::RampUp);
 
