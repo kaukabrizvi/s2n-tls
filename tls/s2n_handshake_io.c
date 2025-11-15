@@ -1494,6 +1494,19 @@ static int s2n_handshake_read_io(struct s2n_connection *conn)
             return S2N_SUCCESS;
         }
 
+        /* DEBUG: log each full handshake message we read */
+    {
+        uint32_t hs_len = s2n_stuffer_data_available(&conn->handshake.io);
+
+        fprintf(stderr,
+            "[HSDBG] active_message=%d, expected_type=%u, message_type=%u, hs_len=%u\n",
+            ACTIVE_MESSAGE(conn),
+            EXPECTED_MESSAGE_TYPE(conn),
+            message_type,
+            hs_len);
+    }
+
+
         if (conn->mode == S2N_CLIENT) {
             s2n_cert_auth_type client_cert_auth_type = { 0 };
             POSIX_GUARD(s2n_connection_get_client_auth_type(conn, &client_cert_auth_type));
@@ -1606,6 +1619,12 @@ int s2n_negotiate_impl(struct s2n_connection *conn, s2n_blocked_status *blocked)
     POSIX_ENSURE_REF(blocked);
 
     while (!s2n_handshake_is_complete(conn) && ACTIVE_MESSAGE(conn) != conn->handshake.end_of_messages) {
+        printf("[NEG] ---- negotiation loop start ----\n");
+        printf("[NEG] active_message: %d\n", ACTIVE_MESSAGE(conn));
+        printf("[NEG] handshake_complete: %d\n", s2n_handshake_is_complete(conn));
+        printf("[NEG] in_available(before IO): %u\n", s2n_stuffer_data_available(&conn->in));
+        printf("[NEG] header_available(before IO): %u\n", s2n_stuffer_data_available(&conn->header_in));
+        printf("[NEG] buffer_in_available(before IO): %u\n", s2n_stuffer_data_available(&conn->buffer_in));
         errno = 0;
         s2n_errno = S2N_ERR_OK;
 
@@ -1622,8 +1641,10 @@ int s2n_negotiate_impl(struct s2n_connection *conn, s2n_blocked_status *blocked)
 
         if (CONNECTION_IS_WRITER(conn)) {
             *blocked = S2N_BLOCKED_ON_WRITE;
+            printf("[NEG][WRITE] entering write state\n");
+            printf("[NEG][WRITE] writing handshake msg=%d\n", ACTIVE_MESSAGE(conn));
             const int write_result = s2n_handshake_write_io(conn);
-
+            printf("[NEG][WRITE] write_result=%d errno=%d s2n_errno=%d\n", write_result, errno, s2n_errno);
             if (write_result < S2N_SUCCESS) {
                 if (!S2N_ERROR_IS_BLOCKING(s2n_errno)) {
                     /* Non-retryable write error. The peer might have sent an alert. Try and read it. */
@@ -1654,7 +1675,11 @@ int s2n_negotiate_impl(struct s2n_connection *conn, s2n_blocked_status *blocked)
             }
         } else {
             *blocked = S2N_BLOCKED_ON_READ;
+            printf("[NEG][READ] entering read state\n");
+            printf("[NEG][READ] expecting to read handshake msg=%d\n", ACTIVE_MESSAGE(conn));
             const int read_result = s2n_handshake_read_io(conn);
+            printf("[NEG][READ] read_result=%d errno=%d s2n_errno=%d\n", read_result, errno, s2n_errno);
+            printf("[NEG][READ] in_available(after read): %u\n", s2n_stuffer_data_available(&conn->in));
 
             if (read_result < S2N_SUCCESS) {
                 /* One blocking condition is waiting on the session resumption cache. */

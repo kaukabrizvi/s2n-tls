@@ -173,6 +173,7 @@ impl TlsConnection for S2NConnection {
     }
 
     fn handshake_completed(&self) -> bool {
+        println!("{:?}", self.connection.handshake_type());
         let complete = self
             .connection
             .handshake_type()

@@ -143,32 +143,41 @@ fn dynamic_record_sizing() {
         pair.io.enable_recording();
         pair.handshake().unwrap();
 
-        // Start recording AFTER handshake completion to only capture application data
-    
-        // Phase 1: Initial ramp up - should start with small records, then switch to large records
-        pair.round_trip_assert(APP_DATA_SIZE);
-        dbg!(pair.io.client_record_sizes());
-        dbg!(pair.io.server_record_sizes());
-        dbg!(pair.client.connection().actual_protocol_version());
-        assert!(false);
+        println!("--- handshake records (client) ---");
+        let _ = pair.io.client_record_sizes();
+
+        println!("--- handshake records (server) ---");
+        let _ = pair.io.server_record_sizes();
+
+        pair.io.client_tx_transcript.borrow_mut().clear();
+        pair.io.server_tx_transcript.borrow_mut().clear();
+
+        // Phase 1: Initial ramp up
+        pair.round_trip_assert(APP_DATA_SIZE).unwrap();
+        println!("--- phase 1 records (client) ---");
         let phase1_sizes = pair.io.client_record_sizes();
+        println!("--- phase 1 records (server) ---");
+        let _ = pair.io.server_record_sizes();
         validate_dynamic_sizing(&phase1_sizes, Phase::RampUp);
 
         pair.io.client_tx_transcript.borrow_mut().clear();
 
-        // Phase 2: Steady state - there should not be any small records
+        // Phase 2: Steady state
         pair.round_trip_assert(APP_DATA_SIZE).unwrap();
+        println!("--- phase 2 records (client) ---");
         let phase2_sizes = pair.io.client_record_sizes();
         validate_dynamic_sizing(&phase2_sizes, Phase::SteadyState);
 
         pair.io.client_tx_transcript.borrow_mut().clear();
 
-        // Phase 3: Exceed timeout threshold by 1s to ensure ramp-up reset reliably triggers
+        // Phase 3: Post-timeout ramp up
         sleep(TIMEOUT_THRESHOLD + Duration::from_secs(1));
         pair.round_trip_assert(APP_DATA_SIZE).unwrap();
+        println!("--- phase 3 records (client) ---");
         let phase3_sizes = pair.io.client_record_sizes();
         validate_dynamic_sizing(&phase3_sizes, Phase::RampUp);
 
+        assert!(false);
         pair.shutdown().unwrap();
     }
 

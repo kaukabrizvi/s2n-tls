@@ -97,9 +97,39 @@ S2N_RESULT s2n_post_handshake_message_recv(struct s2n_connection *conn)
         RESULT_GUARD_POSIX(s2n_stuffer_copy(in, message, to_read));
     }
     RESULT_ENSURE(s2n_stuffer_data_available(message) >= TLS_HANDSHAKE_HEADER_LENGTH, S2N_ERR_IO_BLOCKED);
+    fprintf(stderr,
+    "[DEBUG] actual_protocol_version = 0x%04x (%u)\n",
+    conn->actual_protocol_version,
+    conn->actual_protocol_version);
+    fflush(stderr);
+    
+    fprintf(stderr,
+        "[DEBUG PH] post_handshake_recv: is_handshake_complete=%d, app_bytes=%llu, "
+        "msg_avail=%u, in_avail=%u\n",
+        is_handshake_complete(conn),
+        (unsigned long long) conn->active_application_bytes_consumed,
+        s2n_stuffer_data_available(&conn->post_handshake.in),
+        s2n_stuffer_data_available(&conn->in));
+
+    uint8_t *p = conn->post_handshake.in.blob.data;
+    fprintf(stderr,
+        "[DEBUG PH] raw header bytes: %02x %02x %02x %02x\n",
+        p[0], p[1], p[2], p[3]);
+
+    fprintf(stderr,
+        "[DEBUG PH] current_message_type=%d (APPLICATION_DATA=%d)\n",
+        s2n_conn_get_current_message_type(conn),
+        APPLICATION_DATA);
+
+    fflush(stderr);
 
     /* Parse the header */
     RESULT_GUARD(s2n_handshake_parse_header(message, &message_type, &message_len));
+
+    fprintf(stderr,
+            "[DEBUG] handshake header: type=%u, len=%u\n",
+            message_type, message_len);
+    fflush(stderr);
     RESULT_ENSURE(message_len == 0 || s2n_stuffer_data_available(in), S2N_ERR_IO_BLOCKED);
     RESULT_ENSURE(message_len <= S2N_MAXIMUM_HANDSHAKE_MESSAGE_LENGTH, S2N_ERR_BAD_MESSAGE);
 

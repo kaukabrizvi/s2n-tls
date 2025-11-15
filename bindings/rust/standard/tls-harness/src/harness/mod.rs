@@ -199,18 +199,35 @@ where
         // let mut progress = true;
 
         // Keep looping while handshake not complete or progress is still being made
-        while !self.handshake_completed() {
-            self.client.handshake()?;
-            self.server.handshake()?;
+        // let mut iterations = 0;
 
-        //     // Measure current TX lengths to detect progress
-        //     let client_len = self.io.client_tx_stream.borrow().len();
-        //     let server_len = self.io.server_tx_stream.borrow().len();
+        // while !self.handshake_completed() && iterations < 3 {
+        //     iterations += 1;
+        //     println!("[DEBUG] handshake iteration {}", iterations);
 
-        //     progress = client_len != prev_client_len || server_len != prev_server_len;
-        //     prev_client_len = client_len;
-        //     prev_server_len = server_len;
+        //     self.client.handshake()?;
+        //     self.server.handshake()?;
         // }
+
+        // println!(
+        //     "[DEBUG] handshake loop exited after {} iterations",
+        //     iterations
+        // );
+
+        // //     // Measure current TX lengths to detect progress
+        // //     let client_len = self.io.client_tx_stream.borrow().len();
+        // //     let server_len = self.io.server_tx_stream.borrow().len();
+
+        // //     progress = client_len != prev_client_len || server_len != prev_server_len;
+        // //     prev_client_len = client_len;
+        // //     prev_server_len = server_len;
+        // // }
+        // }
+
+        // Ok(())
+        for _ in 0..3 {
+        self.client.handshake()?;
+        self.server.handshake()?;
         }
 
         Ok(())
