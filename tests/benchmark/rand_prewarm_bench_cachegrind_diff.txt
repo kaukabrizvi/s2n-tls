@@ -1,8 +1,8 @@
 --------------------------------------------------------------------------------
 -- Metadata
 --------------------------------------------------------------------------------
-Invocation:       /usr/bin/cg_annotate build-bench/cachegrind-diff.out --auto=no
-Files compared:   build-bench/cachegrind-prewarm-353679.out; build-bench/cachegrind-prewarm-353710.out
+Invocation:       /usr/bin/cg_annotate build-bench/cachegrind-diff-v2.out --auto=no
+Files compared:   build-bench/cachegrind-prewarm-355494.out; build-bench/cachegrind-prewarm-355505.out
 Command:          ./build-bench/rand_prewarm_bench; ./build-bench/rand_prewarm_bench
 Events recorded:  Ir
 Events shown:     Ir
@@ -15,88 +15,88 @@ Annotation:       off
 --------------------------------------------------------------------------------
 Ir___________________ 
 
--421,570,139 (100.0%)  PROGRAM TOTALS
+-202,023,620 (100.0%)  PROGRAM TOTALS
 
 --------------------------------------------------------------------------------
 -- File:function summary
 --------------------------------------------------------------------------------
   Ir__________________________  file:function
 
-< -420,260,479 (99.7%,  99.7%)  ???:
-  -111,638,400 (26.5%)            rol64
-   -79,109,280 (18.8%)            jent_keccakp_chi
-   -66,790,560 (15.8%)            jent_keccakp_theta
-   -43,308,000 (10.3%)            jent_keccakp_rho
-   -41,879,592  (9.9%)            xoshiro128starstar
-   -24,637,440  (5.8%)            jent_keccakp_pi
-   -13,258,464  (3.1%)            jent_memaccess
-   -11,374,704  (2.7%)            uint32rotl
-    -7,089,680  (1.7%)            ptr_to_le32
-    -3,945,840  (0.9%)            jent_keccakp_1600
-    -3,079,680  (0.7%)            jent_keccakp_iota
-    -2,590,460  (0.6%)            ptr_to_le64
-    -2,438,080  (0.6%)            jent_sha3_fill_state
-    -1,424,582  (0.3%)            jent_sha3_update
-    -1,299,726  (0.3%)            jent_sha3_init
-    -1,022,040  (0.2%)            jent_get_nstime
-      -930,784  (0.2%)            le32_to_ptr
-      -749,496  (0.2%)            jent_get_nstime_internal
-      -687,024  (0.2%)            jent_lag_insert
-      -541,620  (0.1%)            jent_sha3_final
-      -533,064  (0.1%)            jent_hash_time
+< -201,563,124 (99.8%,  99.8%)  ???:
+   -53,550,240 (26.5%)            rol64
+   -37,946,808 (18.8%)            jent_keccakp_chi
+   -32,037,816 (15.9%)            jent_keccakp_theta
+   -20,773,800 (10.3%)            jent_keccakp_rho
+   -20,082,978  (9.9%)            xoshiro128starstar
+   -11,817,984  (5.8%)            jent_keccakp_pi
+    -6,357,976  (3.1%)            jent_memaccess
+    -5,454,636  (2.7%)            uint32rotl
+    -3,400,748  (1.7%)            ptr_to_le32
+    -1,892,724  (0.9%)            jent_keccakp_1600
+    -1,477,248  (0.7%)            jent_keccakp_iota
+    -1,242,581  (0.6%)            ptr_to_le64
+    -1,169,488  (0.6%)            jent_sha3_fill_state
+      -697,797  (0.3%)            jent_sha3_update
+      -623,214  (0.3%)            jent_sha3_init
+      -490,110  (0.2%)            jent_get_nstime
+      -446,600  (0.2%)            le32_to_ptr
+      -359,414  (0.2%)            jent_get_nstime_internal
+      -330,584  (0.2%)            jent_lag_insert
+      -259,875  (0.1%)            jent_sha3_final
+      -255,626  (0.1%)            jent_hash_time
 
-<     -839,209  (0.2%,  99.9%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms
+<     -253,763  (0.1%,  99.9%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:__memcpy_avx_unaligned_erms
 
-<     -465,146  (0.1%, 100.0%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:__memcpy_avx_unaligned_erms
+<     -205,897  (0.1%, 100.0%)  ./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S:__memset_avx2_unaligned_erms
 
 --------------------------------------------------------------------------------
 -- Function:file summary
 --------------------------------------------------------------------------------
-  Ir_________________________  function:file
+  Ir________________________  function:file
 
-> -111,638,400 (26.5%, 26.5%)  rol64:???
+> -53,550,240 (26.5%, 26.5%)  rol64:???
 
->  -79,109,280 (18.8%, 45.2%)  jent_keccakp_chi:???
+> -37,946,808 (18.8%, 45.3%)  jent_keccakp_chi:???
 
->  -66,790,560 (15.8%, 61.1%)  jent_keccakp_theta:???
+> -32,037,816 (15.9%, 61.1%)  jent_keccakp_theta:???
 
->  -43,308,000 (10.3%, 71.4%)  jent_keccakp_rho:???
+> -20,773,800 (10.3%, 71.4%)  jent_keccakp_rho:???
 
->  -41,879,592  (9.9%, 81.3%)  xoshiro128starstar:???
+> -20,082,978  (9.9%, 81.4%)  xoshiro128starstar:???
 
->  -24,637,440  (5.8%, 87.1%)  jent_keccakp_pi:???
+> -11,817,984  (5.8%, 87.2%)  jent_keccakp_pi:???
 
->  -13,258,464  (3.1%, 90.3%)  jent_memaccess:???
+>  -6,357,976  (3.1%, 90.4%)  jent_memaccess:???
 
->  -11,374,704  (2.7%, 93.0%)  uint32rotl:???
+>  -5,454,636  (2.7%, 93.1%)  uint32rotl:???
 
->   -7,089,680  (1.7%, 94.7%)  ptr_to_le32:???
+>  -3,400,748  (1.7%, 94.8%)  ptr_to_le32:???
 
->   -3,945,840  (0.9%, 95.6%)  jent_keccakp_1600:???
+>  -1,892,724  (0.9%, 95.7%)  jent_keccakp_1600:???
 
->   -3,079,680  (0.7%, 96.3%)  jent_keccakp_iota:???
+>  -1,477,248  (0.7%, 96.4%)  jent_keccakp_iota:???
 
->   -2,590,460  (0.6%, 96.9%)  ptr_to_le64:???
+>  -1,242,581  (0.6%, 97.0%)  ptr_to_le64:???
 
->   -2,438,080  (0.6%, 97.5%)  jent_sha3_fill_state:???
+>  -1,169,488  (0.6%, 97.6%)  jent_sha3_fill_state:???
 
->   -1,424,582  (0.3%, 97.9%)  jent_sha3_update:???
+>    -697,797  (0.3%, 98.0%)  jent_sha3_update:???
 
->   -1,299,726  (0.3%, 98.2%)  jent_sha3_init:???
+>    -623,214  (0.3%, 98.3%)  jent_sha3_init:???
 
->   -1,022,040  (0.2%, 98.4%)  jent_get_nstime:???
+>    -490,110  (0.2%, 98.5%)  jent_get_nstime:???
 
->     -930,784  (0.2%, 98.6%)  le32_to_ptr:???
+>    -446,600  (0.2%, 98.7%)  le32_to_ptr:???
 
->     -839,209  (0.2%, 98.8%)  __memset_avx2_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S
+>    -359,414  (0.2%, 98.9%)  jent_get_nstime_internal:???
 
->     -749,496  (0.2%, 99.0%)  jent_get_nstime_internal:???
+>    -330,584  (0.2%, 99.1%)  jent_lag_insert:???
 
->     -687,024  (0.2%, 99.2%)  jent_lag_insert:???
+>    -259,875  (0.1%, 99.2%)  jent_sha3_final:???
 
->     -541,620  (0.1%, 99.3%)  jent_sha3_final:???
+>    -255,626  (0.1%, 99.3%)  jent_hash_time:???
 
->     -533,064  (0.1%, 99.4%)  jent_hash_time:???
+>    -253,763  (0.1%, 99.5%)  __memcpy_avx_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
 
->     -465,146  (0.1%, 99.5%)  __memcpy_avx_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
+>    -205,897  (0.1%, 99.6%)  __memset_avx2_unaligned_erms:./string/../sysdeps/x86_64/multiarch/memset-vec-unaligned-erms.S
 

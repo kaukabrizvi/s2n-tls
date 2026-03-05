@@ -5,7 +5,8 @@
  * Uses cachegrind instruction counting instead of wall-clock time for
  * deterministic, reproducible measurements.
  *
- * The test forks twice:
+ * The test calls CRYPTO_pre_sandbox_init() (matching s2n_init), then
+ * forks twice:
  *   Child 1 (no pre-warm):  fork, then RAND_bytes under instrumentation.
  *   Child 2 (with pre-warm): register pthread_atfork handler that calls
  *                             RAND_bytes, fork, then RAND_bytes under
@@ -26,6 +27,7 @@
  *   cg_annotate cachegrind-prewarm-<child2_pid>.out > with-prewarm.txt
  */
 
+#include <openssl/crypto.h>
 #include <openssl/rand.h>
 #include <pthread.h>
 #include <stdint.h>
@@ -113,7 +115,11 @@ int main(void)
     /*
      * Instrumentation is off (--instr-at-start=no).
      * All parent-side work is uncounted.
+     *
+     * Call CRYPTO_pre_sandbox_init() before both trials to match
+     * the s2n_init() code path, which calls this before forking.
      */
+    CRYPTO_pre_sandbox_init();
 
     /* ---- Test 1: no pre-warm ---- */
     printf("Test 1: fork + RAND_bytes (no pre-warm)...\n");
