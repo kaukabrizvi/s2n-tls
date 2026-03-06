@@ -7,7 +7,7 @@ use s2n_codec::{
 use crate::static_lists::{Cipher, Group, Signature, Version};
 
 /// Defined in https://www.rfc-editor.org/rfc/rfc8446#section-4.1.2
-pub struct ClientHello<'a> {
+pub(crate) struct ClientHello<'a> {
     pub protocol_version: Version,
     pub random: [u8; 32],
     pub legacy_session_id: PrefixedBlob<'a, u8>,
@@ -39,7 +39,7 @@ impl<'a> DecoderValue<'a> for ClientHello<'a> {
 }
 
 /// Defined in https://www.rfc-editor.org/rfc/rfc8446#section-4.2.7
-pub struct SupportedGroups<'a> {
+pub(crate) struct SupportedGroups<'a> {
     pub named_group_list: PrefixedList<'a, u16, Group>,
 }
 
@@ -52,7 +52,7 @@ impl<'a> DecoderValue<'a> for SupportedGroups<'a> {
 }
 
 /// Defined in https://www.rfc-editor.org/rfc/rfc8446#section-4.2.1
-pub struct SupportedVersionsClientHello<'a> {
+pub(crate) struct SupportedVersionsClientHello<'a> {
     pub versions: PrefixedList<'a, u8, Version>,
 }
 
@@ -65,7 +65,7 @@ impl<'a> DecoderValue<'a> for SupportedVersionsClientHello<'a> {
 }
 
 /// Defined in https://www.rfc-editor.org/rfc/rfc8446#section-4.2.3
-pub struct SignatureSchemeList<'a> {
+pub(crate) struct SignatureSchemeList<'a> {
     pub supported_signature_algorithms: PrefixedList<'a, u16, Signature>,
 }
 
