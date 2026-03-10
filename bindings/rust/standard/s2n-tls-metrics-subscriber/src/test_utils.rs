@@ -11,7 +11,10 @@ use s2n_tls::{
     testing::{TestPair, build_config, config_builder},
 };
 
-use crate::{AggregatedMetricsSubscriber, emf_emitter::EmfEmitter, record::MetricRecord};
+use crate::{
+    AggregatedMetricsSubscriber, condensed::Attribution, emf_emitter::EmfEmitter,
+    record::MetricRecord,
+};
 
 // arbitrary numbered policies that won't change. We use two different policies
 // to get a variety of metrics.
@@ -19,6 +22,14 @@ pub(crate) static ARBITRARY_POLICY_1: LazyLock<Policy> =
     LazyLock::new(|| Policy::from_version("20240503").unwrap());
 pub(crate) static ARBITRARY_POLICY_2: LazyLock<Policy> =
     LazyLock::new(|| Policy::from_version("20190214").unwrap());
+
+pub(crate) static TEST_ATTRIBUTION: LazyLock<Attribution> = LazyLock::new(|| Attribution {
+    service: "Testing".to_owned(),
+    resource: "test-local-resource".to_owned(),
+    certificate: Some("idk-a-test-cert".to_owned()),
+    s2n_version: "test-version".to_owned(),
+    security_policy: "idk-test-policy".to_owned(),
+});
 
 pub struct TestEndpoint<T> {
     pub server_config: s2n_tls::config::Config,
@@ -38,7 +49,7 @@ impl<T> TestEndpoint<T> {
 impl TestEndpoint<Receiver<MetricRecord>> {
     pub fn new() -> Self {
         let (tx, rx) = mpsc::channel();
-        let subscriber = AggregatedMetricsSubscriber::new(tx);
+        let subscriber = AggregatedMetricsSubscriber::new(TEST_ATTRIBUTION.clone(), tx);
 
         let server_config = {
             let mut config = config_builder(&DEFAULT_TLS13).unwrap();
@@ -57,7 +68,7 @@ impl TestEndpoint<Receiver<MetricRecord>> {
 impl TestEndpoint<EmfEmitter> {
     pub fn new(resource: &str, policy: &Policy) -> Self {
         let (exporter, tx) = EmfEmitter::new("test_server".to_owned(), Some(resource.to_owned()));
-        let subscriber = AggregatedMetricsSubscriber::new(tx);
+        let subscriber = AggregatedMetricsSubscriber::new(TEST_ATTRIBUTION.clone(), tx);
 
         let server_config = {
             let mut config = config_builder(policy).unwrap();

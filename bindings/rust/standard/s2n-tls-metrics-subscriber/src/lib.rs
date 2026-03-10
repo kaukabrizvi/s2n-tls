@@ -2,11 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 mod emf_emitter;
+mod firehose_emitter;
 mod label;
 mod parsing;
 mod record;
 mod static_lists;
 mod subscriber;
+mod condensed;
+mod flat_map;
 #[cfg(test)]
 mod test_utils;
 

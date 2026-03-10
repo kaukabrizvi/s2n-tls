@@ -6,13 +6,13 @@ use std::{
     time::SystemTime,
 };
 
+use serde::{Deserialize, Serialize};
+use serde_big_array::BigArray;
 use crate::{
-    label::{metric_label, State},
-    parsing::ClientHelloSupportedParameters,
-    static_lists::{
+    condensed::Attribution, label::{State, metric_label}, parsing::ClientHelloSupportedParameters, static_lists::{
         self, CIPHERS_AVAILABLE_IN_S2N, GROUPS_AVAILABLE_IN_S2N,
         SIGNATURE_SCHEMES_AVAILABLE_IN_S2N, TlsParam, ToStaticString, VERSIONS_AVAILABLE_IN_S2N,
-    },
+    }
 };
 
 const GROUP_COUNT: usize = GROUPS_AVAILABLE_IN_S2N.len();
@@ -26,14 +26,15 @@ const PROTOCOL_COUNT: usize = VERSIONS_AVAILABLE_IN_S2N.len();
 /// interfaces.
 // This currently just holds a single struct. In the future we will
 // likely rely on an enum to handle different record types, e.g. SessionResumptionFailure.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MetricRecord {
+    attribution: Option<Attribution>,
     handshake: FrozenHandshakeRecord,
 }
 
 impl MetricRecord {
     pub(crate) fn new(handshake: FrozenHandshakeRecord) -> Self {
-        Self { handshake }
+        Self { attribution: None, handshake }
     }
 }
 
@@ -241,19 +242,21 @@ impl Drop for HandshakeRecordInProgress {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub(crate) struct FrozenHandshakeRecord {
     freeze_time: SystemTime,
 
     handshake_count: u64,
 
     negotiated_protocols: [u64; PROTOCOL_COUNT],
+    #[serde(with = "BigArray")]
     negotiated_ciphers: [u64; CIPHER_COUNT],
     negotiated_groups: [u64; GROUP_COUNT],
     negotiated_signatures: [u64; SIGNATURE_COUNT],
 
     sslv2_client_hello: u64,
     supported_protocols: [u64; PROTOCOL_COUNT],
+    #[serde(with = "BigArray")]
     supported_ciphers: [u64; CIPHER_COUNT],
     supported_groups: [u64; GROUP_COUNT],
     supported_signatures: [u64; SIGNATURE_COUNT],

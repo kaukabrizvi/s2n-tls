@@ -16,6 +16,30 @@ use std::{
     sync::{LazyLock, Mutex},
 };
 
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+/// Serialize/deserialize a 2-byte value as a hex string like "0x0303".
+/// Used for HashMap key types that need string representation in JSON.
+mod hex_id {
+    use super::*;
+
+    pub(super) fn serialize_bytes<S: Serializer>(bytes: &[u8; 2], s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_str(&format!("0x{:02x}{:02x}", bytes[0], bytes[1]))
+    }
+
+    pub(super) fn deserialize_bytes<'de, D: Deserializer<'de>>(d: D) -> Result<[u8; 2], D::Error> {
+        let s = String::deserialize(d)?;
+        let hex = s.strip_prefix("0x").ok_or_else(|| serde::de::Error::custom("expected 0x prefix"))?;
+        let val = u16::from_str_radix(hex, 16).map_err(serde::de::Error::custom)?;
+        Ok(val.to_be_bytes())
+    }
+
+    pub(super) fn deserialize_u16<'de, D: Deserializer<'de>>(d: D) -> Result<U16, D::Error> {
+        let bytes = deserialize_bytes(d)?;
+        Ok(U16::new(u16::from_be_bytes(bytes)))
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum TlsParam {
     /// E.g. TLS 1.2
@@ -131,6 +155,18 @@ unsafe fn static_memory_to_str(value: *const c_char) -> &'static str {
 #[repr(C)]
 pub(crate) struct Version(pub(crate) s2n_codec::zerocopy::U16);
 
+impl Serialize for Version {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        hex_id::serialize_bytes(&self.0.get().to_be_bytes(), s)
+    }
+}
+
+impl<'de> Deserialize<'de> for Version {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        hex_id::deserialize_u16(d).map(Self)
+    }
+}
+
 impl Version {
     const SSL_V3: Version = Version(U16::new(0x0300));
     const TLS_1_0: Version = Version(U16::new(0x0301));
@@ -161,6 +197,18 @@ impl<'a> DecoderValue<'a> for Version {
 #[repr(C)]
 pub(crate) struct Cipher(pub(crate) [u8; 2]);
 
+impl Serialize for Cipher {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        hex_id::serialize_bytes(&self.0, s)
+    }
+}
+
+impl<'de> Deserialize<'de> for Cipher {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        hex_id::deserialize_bytes(d).map(Self)
+    }
+}
+
 impl Cipher {
     pub(crate) const TLS_EMPTY_RENEGOTIATION_INFO_SCSV: Self = Cipher([0, 255]);
 
@@ -179,6 +227,18 @@ impl Cipher {
 #[repr(C)]
 pub(crate) struct Signature(pub(crate) s2n_codec::zerocopy::U16);
 
+impl Serialize for Signature {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        hex_id::serialize_bytes(&self.0.get().to_be_bytes(), s)
+    }
+}
+
+impl<'de> Deserialize<'de> for Signature {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        hex_id::deserialize_u16(d).map(Self)
+    }
+}
+
 impl Signature {
     pub fn known_description(&self) -> Option<&'static str> {
         SIGNATURE_SCHEMES_AVAILABLE_IN_S2N
@@ -191,6 +251,18 @@ impl Signature {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, FromBytes, Immutable, Unaligned)]
 #[repr(C)]
 pub(crate) struct Group(pub(crate) s2n_codec::zerocopy::U16);
+
+impl Serialize for Group {
+    fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        hex_id::serialize_bytes(&self.0.get().to_be_bytes(), s)
+    }
+}
+
+impl<'de> Deserialize<'de> for Group {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        hex_id::deserialize_u16(d).map(Self)
+    }
+}
 
 impl Group {
     /// e.g. "secp256r1"

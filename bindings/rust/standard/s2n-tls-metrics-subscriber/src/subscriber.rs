@@ -6,7 +6,7 @@ use std::sync::{
     mpsc::{self, Receiver, Sender},
 };
 
-use crate::record::{FrozenHandshakeRecord, HandshakeRecordInProgress, MetricRecord};
+use crate::{condensed::Attribution, record::{FrozenHandshakeRecord, HandshakeRecordInProgress, MetricRecord}};
 use arc_swap::ArcSwap;
 use s2n_tls::events::EventSubscriber;
 
@@ -36,6 +36,9 @@ pub struct AggregatedMetricsSubscriber<E> {
 /// then be read by the export pipeline.
 #[derive(Debug)]
 struct MetricSubscriberInner<E> {
+    /// This contains information about the item that is producing the metric records
+    /// Generally this will have a 1 to 1 correlation with an s2n-tls config
+    attribution: Attribution,
     current_record: ArcSwap<HandshakeRecordInProgress>,
     /// This handle is not directly used, but is used when constructing new
     /// HandshakeRecordInProgress items.
@@ -46,7 +49,7 @@ struct MetricSubscriberInner<E> {
 }
 
 impl<E: Exporter + Send + Sync> AggregatedMetricsSubscriber<E> {
-    pub fn new(exporter: E) -> Self {
+    pub fn new(attribution: Attribution, exporter: E) -> Self {
         let (tx, rx) = std::sync::mpsc::channel();
 
         let record = HandshakeRecordInProgress::new(tx.clone());
@@ -56,6 +59,7 @@ impl<E: Exporter + Send + Sync> AggregatedMetricsSubscriber<E> {
             exporter,
         };
         let inner = MetricSubscriberInner {
+            attribution,
             current_record: ArcSwap::new(Arc::new(record)),
             tx_handle: tx,
             export_pipeline: Mutex::new(export_pipe),
