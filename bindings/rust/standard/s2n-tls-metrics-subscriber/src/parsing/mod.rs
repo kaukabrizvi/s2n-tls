@@ -1,13 +1,13 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 //! This module holds the parsing logic that we need to pull interesting bits out
 //! of the client hello
 
 use std::ffi::c_uint;
 
 use s2n_codec::DecoderBuffer;
-use s2n_tls::{
-    client_hello::ClientHello as S2NClientHello,
-    error::Fallible,
-};
+use s2n_tls::{client_hello::ClientHello as S2NClientHello, error::Fallible};
 use s2n_tls_sys::{s2n_client_hello_get_extension_by_id, s2n_client_hello_get_extension_length};
 
 use crate::{
@@ -104,6 +104,8 @@ impl<'a> ClientHelloSupportedParameters<'a> {
     }
 }
 
+/// We generally discourage the use of direct extension retrieval so it isn't exposed
+/// in the s2n-tls crate.
 trait S2NClientHelloExtension {
     fn get_extension(&self, extension_id: u16) -> Result<Option<Vec<u8>>, s2n_tls::error::Error>;
 }
@@ -153,16 +155,16 @@ impl S2NClientHelloExtension for s2n_tls::client_hello::ClientHello {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::{collections::HashSet, ffi::CStr, hash::Hash};
+    use std::ffi::CStr;
 
-    use s2n_codec::{zerocopy::U16, DecoderBuffer};
+    use s2n_codec::{DecoderBuffer, zerocopy::U16};
     use s2n_tls::{
         security::Policy,
-        testing::{build_config, TestPair},
+        testing::{TestPair, build_config},
     };
 
     use crate::{
-        parsing::{messages::ClientHello, ClientHelloSupportedParameters},
+        parsing::{ClientHelloSupportedParameters, messages::ClientHello},
         test_utils::ARBITRARY_POLICY_1,
     };
     use s2n_tls::error::Error as S2NError;
@@ -184,8 +186,7 @@ mod tests {
                 .map(|sp| unsafe { &*sp.security_policy })
                 .unwrap();
 
-            let cipher: Vec<Cipher> =
-                sp.ciphers().iter().map(|c| Cipher(c.iana_value)).collect();
+            let cipher: Vec<Cipher> = sp.ciphers().iter().map(|c| Cipher(c.iana_value)).collect();
 
             let groups: Vec<Group> = sp
                 .curves()
@@ -217,7 +218,7 @@ mod tests {
     }
 
     #[test]
-    fn client_hello_parsing() -> Result<(), S2NError> {
+    fn client_hello_parsing_sanity_check() -> Result<(), S2NError> {
         let sp = server_connection(&ARBITRARY_POLICY_1);
         let client_hello = sp.client_hello()?;
         let client_hello_bytes = client_hello.raw_message()?;
@@ -231,13 +232,13 @@ mod tests {
         Ok(())
     }
 
-    /// iterate through s2n-tls security policy structs, and confirm that a client
-    /// hello from a client configured with that security policy has all of the
-    /// algorithms contained in the underlying security policy.
+    /// iterate through s2n-tls security policy structs and send a client hello
+    /// for each one. Then confirm that [`ClientHelloSupportedParameters`] detects
+    /// all of the parameters in the underlying security policy.
     #[test]
     fn expected_supported_parameters() {
         let mut tested_policies = 0;
-        
+
         for entry in s2n_tls_sys_internal::security_policy_table() {
             let policy_name = unsafe { CStr::from_ptr(entry.version) }.to_str().unwrap();
             let policy = Policy::from_version(policy_name).unwrap();
@@ -281,5 +282,40 @@ mod tests {
         // our cert, etc. So just assert that we tested on a decent number of security
         // policies
         assert!(tested_policies > 100);
+    }
+
+    /// the list of supported protocol versions is not directly contained in the
+    /// security policy so instead use a number of know security policies.
+    #[test]
+    fn expected_protocol_version() {
+        let test_cases = vec![
+            // only TLS 1.3 - we should correctly ignore the fake "TLS 1.2" value in
+            // the ClientHello `protocol_version` field.
+            ("AWS-CRT-SDK-TLSv1.3-2023", vec![Version::TLS_1_3]),
+            // TLS 1.3 -> TLS 1.0
+            (
+                "20190802",
+                vec![
+                    Version::TLS_1_3,
+                    Version::TLS_1_2,
+                    Version::TLS_1_1,
+                    Version::TLS_1_0,
+                ],
+            ),
+            // TLS 1.2 -> TLS 1.0 - we only report the one value because the
+            // supported_versions extension isn't present
+            ("20190214", vec![Version::TLS_1_2]),
+        ];
+
+        for (policy, expected_result) in test_cases {
+            let policy = Policy::from_version(policy).unwrap();
+            let connection = server_connection(&policy);
+            let client_hello = connection.client_hello().unwrap();
+            let supported_parameters = ClientHelloSupportedParameters::new(client_hello);
+            assert_eq!(
+                supported_parameters.supported_versions().unwrap(),
+                expected_result
+            );
+        }
     }
 }

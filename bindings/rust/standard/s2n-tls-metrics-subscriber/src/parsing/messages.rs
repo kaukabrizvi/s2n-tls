@@ -1,12 +1,15 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 
 use s2n_codec::{
-    decoder::{PrefixedBlob, PrefixedList},
     DecoderBuffer, DecoderValue,
+    decoder::{PrefixedBlob, PrefixedList},
 };
 
 use crate::static_lists::{Cipher, Group, Signature, Version};
 
 /// Defined in https://www.rfc-editor.org/rfc/rfc8446#section-4.1.2
+#[allow(dead_code)]
 pub(crate) struct ClientHello<'a> {
     pub protocol_version: Version,
     pub random: [u8; 32],

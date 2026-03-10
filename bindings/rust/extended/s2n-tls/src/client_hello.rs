@@ -23,7 +23,7 @@ pub struct ClientHello(s2n_client_hello);
 
 impl ClientHello {
     /// Corresponds to [s2n_client_hello_parse_message].
-    /// 
+    ///
     /// The bytes must include the message header.
     pub fn parse_client_hello(hello: &[u8]) -> Result<Box<Self>, crate::error::Error> {
         crate::init::init();
@@ -107,7 +107,7 @@ impl ClientHello {
 
     /// Corresponds to [s2n_client_hello_get_raw_message], but also
     /// calls [s2n_client_hello_get_raw_message_length].
-    /// 
+    ///
     /// The returned bytes do not include the message header.
     pub fn raw_message(&self) -> Result<Vec<u8>, Error> {
         let message_length =

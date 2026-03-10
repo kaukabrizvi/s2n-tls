@@ -177,10 +177,10 @@ impl Version {
     pub fn known_description(&self) -> Option<&'static str> {
         match *self {
             Self::SSL_V3 => Some("SSLv3"),
-            Self::TLS_1_0 => Some("TLSv1.0"),
-            Self::TLS_1_1 => Some("TLSv1.1"),
-            Self::TLS_1_2 => Some("TLSv1.2"),
-            Self::TLS_1_3 => Some("TLSv1.3"),
+            Self::TLS_1_0 => Some("TLSv1_0"),
+            Self::TLS_1_1 => Some("TLSv1_1"),
+            Self::TLS_1_2 => Some("TLSv1_2"),
+            Self::TLS_1_3 => Some("TLSv1_3"),
             _ => None,
         }
     }
