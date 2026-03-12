@@ -63,6 +63,66 @@ impl MetricRecord {
     pub fn to_json_value(&self) -> serde_json::Value {
         serde_json::to_value(self).expect("serialization should not fail")
     }
+
+    /// Serialize this metric record to protobuf bytes.
+    pub fn to_proto_bytes(&self) -> Vec<u8> {
+        use prost::Message;
+        let proto = self.to_proto();
+        proto.encode_to_vec()
+    }
+
+    /// Convert to the protobuf type.
+    fn to_proto(&self) -> crate::proto::MetricRecord {
+        use std::collections::HashMap;
+        use crate::static_lists::{
+            S2N_VERSIONS, CIPHERS_AVAILABLE_IN_S2N, GROUPS_AVAILABLE_IN_S2N,
+            SIGNATURE_SCHEMES_AVAILABLE_IN_S2N,
+        };
+        use crate::proto::ParameterCounts;
+
+        fn version_id(idx: usize) -> u32 { S2N_VERSIONS[idx].0.get() as u32 }
+        fn cipher_id(idx: usize) -> u32 { u16::from_be_bytes(CIPHERS_AVAILABLE_IN_S2N[idx].0) as u32 }
+        fn group_id(idx: usize) -> u32 { GROUPS_AVAILABLE_IN_S2N[idx].0.get() as u32 }
+        fn sig_id(idx: usize) -> u32 { SIGNATURE_SCHEMES_AVAILABLE_IN_S2N[idx].0.get() as u32 }
+
+        fn to_counts(arr: &[u64], id_fn: fn(usize) -> u32) -> Option<ParameterCounts> {
+            let values: HashMap<u32, u64> = arr.iter().enumerate()
+                .filter(|(_, v)| **v > 0)
+                .map(|(i, v)| (id_fn(i), *v))
+                .collect();
+            Some(ParameterCounts { values })
+        }
+
+        let attribution = self.attribution.as_ref().map(|a| crate::proto::Attribution {
+            service: a.service.clone(),
+            resource: a.resource.clone(),
+            certificate: a.certificate.clone(),
+            s2n_version: a.s2n_version.clone(),
+            security_policy: a.security_policy.clone(),
+        });
+
+        let hs = &self.handshake;
+        let handshake = Some(crate::proto::HandshakeRecord {
+            handshake_count: hs.handshake_count,
+            negotiated_protocols: to_counts(&hs.negotiated_protocols, version_id),
+            negotiated_ciphers: to_counts(&hs.negotiated_ciphers, cipher_id),
+            negotiated_groups: to_counts(&hs.negotiated_groups, group_id),
+            negotiated_signatures: to_counts(&hs.negotiated_signatures, sig_id),
+            sslv2_client_hello: hs.sslv2_client_hello,
+            supported_protocols: to_counts(&hs.supported_protocols, version_id),
+            supported_ciphers: to_counts(&hs.supported_ciphers, cipher_id),
+            supported_groups: to_counts(&hs.supported_groups, group_id),
+            supported_signatures: to_counts(&hs.supported_signatures, sig_id),
+            handshake_duration_us: hs.handshake_duration_us,
+            handshake_compute_us: hs.handshake_compute_us,
+        });
+
+        crate::proto::MetricRecord {
+            schema_version: 1,
+            attribution,
+            handshake,
+        }
+    }
 }
 
 impl metrique_writer::Entry for MetricRecord {

@@ -1,0 +1,40 @@
+syntax = "proto3";
+package s2n_tls_metrics;
+
+message Attribution {
+  string service = 1;
+  string resource = 2;
+  optional string certificate = 3;
+  string s2n_version = 4;
+  string security_policy = 5;
+}
+
+// Counts keyed by IANA code point (uint32 holds the u16 identifier).
+message ParameterCounts {
+  map<uint32, uint64> values = 1;
+}
+
+message HandshakeRecord {
+  uint64 handshake_count = 1;
+
+  ParameterCounts negotiated_protocols = 2;
+  ParameterCounts negotiated_ciphers = 3;
+  ParameterCounts negotiated_groups = 4;
+  ParameterCounts negotiated_signatures = 5;
+
+  uint64 sslv2_client_hello = 6;
+
+  ParameterCounts supported_protocols = 7;
+  ParameterCounts supported_ciphers = 8;
+  ParameterCounts supported_groups = 9;
+  ParameterCounts supported_signatures = 10;
+
+  uint64 handshake_duration_us = 11;
+  uint64 handshake_compute_us = 12;
+}
+
+message MetricRecord {
+  uint32 schema_version = 1;
+  Attribution attribution = 2;
+  HandshakeRecord handshake = 3;
+}

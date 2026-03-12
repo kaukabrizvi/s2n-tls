@@ -5,6 +5,7 @@ mod emf_emitter;
 mod firehose_emitter;
 mod label;
 mod parsing;
+pub mod proto;
 mod record;
 mod static_lists;
 mod subscriber;
