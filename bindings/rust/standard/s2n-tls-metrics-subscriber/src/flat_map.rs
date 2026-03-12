@@ -1,28 +1,49 @@
 // struct AtomicCounterMap<K, const N: usize> {
-//     counters: 
+//     counters:
 // }
 
-use std::{marker::PhantomData, ops::Index};
+use std::{collections::HashMap, hash::Hash, marker::PhantomData, ops::Index};
 
 use crate::static_lists::Cipher;
 
-struct FlatMap<K, const N: usize> {
+struct FlatCounter<K: FiniteDomain<N>, const N: usize> {
     counters: [usize; N],
     // We don't actually "store" the key, because it's implicitly encoded in the
     // indices by the CounterMap trait
     key: PhantomData<K>,
 }
 
-// trait CounterMap<K: Copy + PartialEq + Eq, const N: usize> {
-//     const KEYS: &'static [K; N];
+impl<K: FiniteDomain<N>, const N: usize> FlatCounter<K, N>
+where
+    K: PartialEq<K>,
+{
+    fn new() -> Self {
+        // This assertion means that as long as we have code coverage over all
+        // the maps we construct, then FlatCounter is a sufficient size
+        debug_assert!(N > K::DOMAIN.len());
+        let array = [0; N];
+        Self {
+            counters: array,
+            key: PhantomData,
+        }
+    }
 
-//     fn index(key: K) -> Option<usize> {
-//         Self::KEYS.iter().position(|element| *element == key)
-//     }
+    /// If `key` is not in [`FiniteDomain::DOMAIN`]
+    fn increment(&mut self, key: K) {
+        let index = K::DOMAIN.iter().position(|k| *k == key);
+    }
+}
 
-//     fn key(index: usize) -> Option<K> {
-//         Self::KEYS.get(index).copied()
-//     }
-// }
+trait FiniteDomain<const N: usize>: Sized + 'static {
+    const DOMAIN: [Self; N];
+}
 
 // impl CounterMap for FlatMap<Cipher, >
+
+pub fn to_map<T: Copy + Hash + Eq>(counts: &[u64], keys: &[T]) -> HashMap<T, u64> {
+    counts
+        .iter()
+        .enumerate()
+        .map(|(index, count)| (keys[index], *count))
+        .collect()
+}

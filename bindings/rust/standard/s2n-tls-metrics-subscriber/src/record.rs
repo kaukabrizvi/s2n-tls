@@ -2,16 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use std::{
-    sync::atomic::{AtomicU64, Ordering},
-    time::SystemTime,
+    collections::HashMap, sync::atomic::{AtomicU64, Ordering}, time::SystemTime
 };
 
+use s2n_tls_sys::s2n_tls_extension_type::SUPPORTED_VERSIONS;
 use serde::{Deserialize, Serialize};
 use serde_big_array::BigArray;
 use crate::{
-    condensed::Attribution, label::{State, metric_label}, parsing::ClientHelloSupportedParameters, static_lists::{
-        self, CIPHERS_AVAILABLE_IN_S2N, GROUPS_AVAILABLE_IN_S2N,
-        SIGNATURE_SCHEMES_AVAILABLE_IN_S2N, TlsParam, ToStaticString, VERSIONS_AVAILABLE_IN_S2N,
+    condensed::Attribution, flat_map::to_map, label::{State, metric_label}, parsing::ClientHelloSupportedParameters, static_lists::{
+        self, CIPHERS_AVAILABLE_IN_S2N, Cipher, GROUPS_AVAILABLE_IN_S2N, Group, S2N_VERSIONS, SIGNATURE_SCHEMES_AVAILABLE_IN_S2N, Signature, TlsParam, ToStaticString, VERSIONS_AVAILABLE_IN_S2N, Version
     }
 };
 
@@ -35,6 +34,34 @@ pub struct MetricRecord {
 impl MetricRecord {
     pub(crate) fn new(handshake: FrozenHandshakeRecord) -> Self {
         Self { attribution: None, handshake }
+    }
+
+    /// Set the attribution for this metric record.
+    pub fn set_attribution(&mut self, attribution: Attribution) {
+        self.attribution = Some(attribution);
+    }
+
+    /// Serialize this metric record to CBOR bytes.
+    pub fn to_cbor(&self) -> Vec<u8> {
+        let mut buf = Vec::new();
+        ciborium::into_writer(self, &mut buf)
+            .expect("CBOR serialization should not fail");
+        buf
+    }
+
+    /// Deserialize a metric record from CBOR bytes.
+    pub fn from_cbor(bytes: &[u8]) -> Result<Self, ciborium::de::Error<std::io::Error>> {
+        ciborium::from_reader(bytes)
+    }
+
+    /// Return the attribution, if set.
+    pub fn attribution(&self) -> Option<&Attribution> {
+        self.attribution.as_ref()
+    }
+
+    /// Serialize the record to a JSON Value for generic processing.
+    pub fn to_json_value(&self) -> serde_json::Value {
+        serde_json::to_value(self).expect("serialization should not fail")
     }
 }
 
@@ -162,7 +189,6 @@ impl HandshakeRecordInProgress {
             }
 
             if let Some(supported_sigs) = supported_parameter.supported_signatures()? {
-                println!("supported sigs: {supported_sigs:?}");
                 supported_sigs
                     .iter()
                     .filter_map(|signature| signature.known_description())
@@ -341,12 +367,67 @@ impl metrique_writer::Entry for FrozenHandshakeRecord {
     }
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct ParamCount {
+    #[serde(rename = "p")]
+    protocols: HashMap<Version, u64>,
+    #[serde(rename = "c")]
+    ciphers: HashMap<Cipher, u64>,
+    #[serde(rename = "g")]
+    group: HashMap<Group, u64>,
+    #[serde(rename = "s")]
+    signatures: HashMap<Signature, u64>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CondensedHandshakeRecord {
+    #[serde(rename = "hs")]
+    handshake_count: u64,
+    #[serde(rename = "n")]
+    negotiated: ParamCount,
+
+    #[serde(rename = "sslv2")]
+    sslv2_client_hello: u64,
+    #[serde(rename = "s")]
+    supported: ParamCount,
+
+    #[serde(rename = "hsd")]
+    handshake_duration_us: u64,
+    #[serde(rename = "hsc")]
+    handshake_compute_us: u64,
+}
+
+impl CondensedHandshakeRecord {
+    fn from_frozen_hs_record(record: &FrozenHandshakeRecord) -> Self {
+        let negotiated = ParamCount {
+            protocols: to_map(&record.negotiated_protocols, S2N_VERSIONS),
+            ciphers: to_map(&record.negotiated_ciphers, CIPHERS_AVAILABLE_IN_S2N),
+            group: to_map(&record.negotiated_groups, GROUPS_AVAILABLE_IN_S2N),
+            signatures: to_map(&record.negotiated_signatures, SIGNATURE_SCHEMES_AVAILABLE_IN_S2N),
+        };
+        let supported = ParamCount {
+            protocols: to_map(&record.supported_protocols, S2N_VERSIONS),
+            ciphers: to_map(&record.supported_ciphers, CIPHERS_AVAILABLE_IN_S2N),
+            group: to_map(&record.supported_groups, GROUPS_AVAILABLE_IN_S2N),
+            signatures: to_map(&record.supported_signatures, SIGNATURE_SCHEMES_AVAILABLE_IN_S2N),
+        };
+        Self {
+            handshake_count: record.handshake_count,
+            negotiated,
+            sslv2_client_hello: record.sslv2_client_hello,
+            supported,
+            handshake_duration_us: record.handshake_duration_us,
+            handshake_compute_us: record.handshake_compute_us,
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::sync::mpsc::Receiver;
 
     use super::*;
-    use crate::test_utils::{ARBITRARY_POLICY_1, TestEndpoint};
+    use crate::test_utils::{ARBITRARY_POLICY_1, ARBITRARY_POLICY_2, TestEndpoint};
 
     #[test]
     fn record_contents_negotiated_parameters() {
@@ -484,8 +565,6 @@ mod tests {
             }
         }
 
-        println!("sigs: {:?}", record.supported_signatures);
-
         for (index, count) in record.supported_signatures.iter().enumerate() {
             let param = TlsParam::SignatureScheme
                 .index_to_description(index)
@@ -542,5 +621,23 @@ mod tests {
 
         assert!(single_handshake.handshake_compute_us < multiple_handshakes.handshake_compute_us);
         assert!(single_handshake.handshake_duration_us < multiple_handshakes.handshake_duration_us);
+    }
+
+    #[test]
+    fn condensed_cbor() {
+        let endpoint = TestEndpoint::<Receiver<MetricRecord>>::new();
+        endpoint.client_handshake(&ARBITRARY_POLICY_1);
+        endpoint.client_handshake(&ARBITRARY_POLICY_2);
+        endpoint.subscriber.finish_record();
+
+        let record = endpoint.exporter.recv().unwrap();
+        let condensed = CondensedHandshakeRecord::from_frozen_hs_record(&record.handshake);
+
+        let mut cbor_buf = Vec::new();
+        ciborium::into_writer(&condensed, &mut cbor_buf).unwrap();
+        std::fs::write("resources/condensed_sample.cbor", &cbor_buf).unwrap();
+
+        let json_buf = serde_json::to_string(&condensed).unwrap();
+        std::fs::write("resources/condensed_sample.json", &json_buf).unwrap();
     }
 }

@@ -16,3 +16,4 @@ mod test_utils;
 pub use emf_emitter::EmfEmitter;
 pub use record::MetricRecord;
 pub use subscriber::AggregatedMetricsSubscriber;
+pub use condensed::Attribution;

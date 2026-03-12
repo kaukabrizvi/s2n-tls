@@ -19,24 +19,24 @@ use std::{
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 /// Serialize/deserialize a 2-byte value as a hex string like "0x0303".
-/// Used for HashMap key types that need string representation in JSON.
+/// Serialize/deserialize wrapper types as their inner u16 value.
 mod hex_id {
     use super::*;
 
+    pub(super) fn serialize_u16<S: Serializer>(val: u16, s: S) -> Result<S::Ok, S::Error> {
+        s.serialize_u16(val)
+    }
+
+    pub(super) fn deserialize_u16<'de, D: Deserializer<'de>>(d: D) -> Result<u16, D::Error> {
+        u16::deserialize(d)
+    }
+
     pub(super) fn serialize_bytes<S: Serializer>(bytes: &[u8; 2], s: S) -> Result<S::Ok, S::Error> {
-        s.serialize_str(&format!("0x{:02x}{:02x}", bytes[0], bytes[1]))
+        serialize_u16(u16::from_be_bytes(*bytes), s)
     }
 
     pub(super) fn deserialize_bytes<'de, D: Deserializer<'de>>(d: D) -> Result<[u8; 2], D::Error> {
-        let s = String::deserialize(d)?;
-        let hex = s.strip_prefix("0x").ok_or_else(|| serde::de::Error::custom("expected 0x prefix"))?;
-        let val = u16::from_str_radix(hex, 16).map_err(serde::de::Error::custom)?;
-        Ok(val.to_be_bytes())
-    }
-
-    pub(super) fn deserialize_u16<'de, D: Deserializer<'de>>(d: D) -> Result<U16, D::Error> {
-        let bytes = deserialize_bytes(d)?;
-        Ok(U16::new(u16::from_be_bytes(bytes)))
+        deserialize_u16(d).map(|v| v.to_be_bytes())
     }
 }
 
@@ -68,15 +68,9 @@ impl TlsParam {
     pub fn index_to_description(&self, index: usize) -> Option<&'static str> {
         match self {
             TlsParam::Version => VERSIONS_AVAILABLE_IN_S2N.get(index).copied(),
-            TlsParam::Cipher => CIPHERS_AVAILABLE_IN_S2N
-                .get(index)
-                .map(|name| name.iana_description),
-            TlsParam::Group => GROUPS_AVAILABLE_IN_S2N
-                .get(index)
-                .map(|name| name.iana_description),
-            TlsParam::SignatureScheme => SIGNATURE_SCHEMES_AVAILABLE_IN_S2N
-                .get(index)
-                .map(|name| name.description),
+            TlsParam::Cipher => CIPHER_NAMES.get(index).map(|(iana, _)| *iana),
+            TlsParam::Group => GROUP_NAMES.get(index).copied(),
+            TlsParam::SignatureScheme => SIGNATURE_NAMES.get(index).copied(),
         }
     }
 
@@ -85,15 +79,15 @@ impl TlsParam {
             TlsParam::Version => VERSIONS_AVAILABLE_IN_S2N
                 .iter()
                 .position(|version| *version == name),
-            TlsParam::Cipher => CIPHERS_AVAILABLE_IN_S2N
+            TlsParam::Cipher => CIPHER_NAMES
                 .iter()
-                .position(|cipher| cipher.iana_description == name),
-            TlsParam::Group => GROUPS_AVAILABLE_IN_S2N
+                .position(|(iana, _)| *iana == name),
+            TlsParam::Group => GROUP_NAMES
                 .iter()
-                .position(|group| group.iana_description == name),
-            TlsParam::SignatureScheme => SIGNATURE_SCHEMES_AVAILABLE_IN_S2N
+                .position(|desc| *desc == name),
+            TlsParam::SignatureScheme => SIGNATURE_NAMES
                 .iter()
-                .position(|sig| sig.description == name),
+                .position(|desc| *desc == name),
         }
     }
 }
@@ -112,9 +106,9 @@ impl Display for TlsParam {
 /// get the counter index from the openssl name. We prefer to work with IANA id's
 /// but s2n-tls returns the OpenSSL cipher name.
 pub fn cipher_ossl_name_to_index(name: &str) -> Option<usize> {
-    CIPHERS_AVAILABLE_IN_S2N
+    CIPHER_NAMES
         .iter()
-        .position(|current_cipher| *current_cipher.openssl_name == *name)
+        .position(|(_iana, openssl)| *openssl == name)
 }
 
 pub trait ToStaticString {
@@ -139,6 +133,14 @@ impl ToStaticString for s2n_tls::enums::Version {
 pub const VERSIONS_AVAILABLE_IN_S2N: &[&str] =
     &["SSLv3", "TLSv1_0", "TLSv1_1", "TLSv1_2", "TLSv1_3"];
 
+pub const S2N_VERSIONS: &[Version] = &[
+    Version::SSL_V3,
+    Version::TLS_1_0,
+    Version::TLS_1_1,
+    Version::TLS_1_2,
+    Version::TLS_1_3,
+];
+
 /// Convert a pointer to null terminated bytes into a static string
 ///
 /// Safety: the memory pointed to by value is static
@@ -157,22 +159,22 @@ pub(crate) struct Version(pub(crate) s2n_codec::zerocopy::U16);
 
 impl Serialize for Version {
     fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        hex_id::serialize_bytes(&self.0.get().to_be_bytes(), s)
+        hex_id::serialize_u16(self.0.get(), s)
     }
 }
 
 impl<'de> Deserialize<'de> for Version {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        hex_id::deserialize_u16(d).map(Self)
+        hex_id::deserialize_u16(d).map(|v| Self(U16::new(v)))
     }
 }
 
 impl Version {
-    const SSL_V3: Version = Version(U16::new(0x0300));
-    const TLS_1_0: Version = Version(U16::new(0x0301));
-    const TLS_1_1: Version = Version(U16::new(0x0302));
-    const TLS_1_2: Version = Version(U16::new(0x0303));
-    const TLS_1_3: Version = Version(U16::new(0x0304));
+    pub const SSL_V3: Version = Version(U16::new(0x0300));
+    pub const TLS_1_0: Version = Version(U16::new(0x0301));
+    pub const TLS_1_1: Version = Version(U16::new(0x0302));
+    pub const TLS_1_2: Version = Version(U16::new(0x0303));
+    pub const TLS_1_3: Version = Version(U16::new(0x0304));
 
     pub fn known_description(&self) -> Option<&'static str> {
         match *self {
@@ -218,8 +220,9 @@ impl Cipher {
     pub fn known_description(&self) -> Option<&'static str> {
         CIPHERS_AVAILABLE_IN_S2N
             .iter()
-            .find(|info| info.cipher == *self)
-            .map(|info| info.iana_description)
+            .position(|c| *c == *self)
+            .and_then(|i| CIPHER_NAMES.get(i))
+            .map(|(iana, _)| *iana)
     }
 }
 
@@ -229,13 +232,13 @@ pub(crate) struct Signature(pub(crate) s2n_codec::zerocopy::U16);
 
 impl Serialize for Signature {
     fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        hex_id::serialize_bytes(&self.0.get().to_be_bytes(), s)
+        hex_id::serialize_u16(self.0.get(), s)
     }
 }
 
 impl<'de> Deserialize<'de> for Signature {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        hex_id::deserialize_u16(d).map(Self)
+        hex_id::deserialize_u16(d).map(|v| Self(U16::new(v)))
     }
 }
 
@@ -243,8 +246,9 @@ impl Signature {
     pub fn known_description(&self) -> Option<&'static str> {
         SIGNATURE_SCHEMES_AVAILABLE_IN_S2N
             .iter()
-            .find(|info| info.signature == *self)
-            .map(|info| info.description)
+            .position(|s| *s == *self)
+            .and_then(|i| SIGNATURE_NAMES.get(i))
+            .copied()
     }
 }
 
@@ -254,13 +258,13 @@ pub(crate) struct Group(pub(crate) s2n_codec::zerocopy::U16);
 
 impl Serialize for Group {
     fn serialize<S: Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
-        hex_id::serialize_bytes(&self.0.get().to_be_bytes(), s)
+        hex_id::serialize_u16(self.0.get(), s)
     }
 }
 
 impl<'de> Deserialize<'de> for Group {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        hex_id::deserialize_u16(d).map(Self)
+        hex_id::deserialize_u16(d).map(|v| Self(U16::new(v)))
     }
 }
 
@@ -271,8 +275,9 @@ impl Group {
     pub fn known_description(&self) -> Option<&'static str> {
         GROUPS_AVAILABLE_IN_S2N
             .iter()
-            .find(|info| info.group == *self)
-            .map(|info| info.iana_description)
+            .position(|g| *g == *self)
+            .and_then(|i| GROUP_NAMES.get(i))
+            .copied()
     }
 }
 
@@ -284,26 +289,6 @@ pub struct CipherInformation {
 }
 
 impl CipherInformation {
-    const fn new(
-        iana_description: &'static str,
-        iana_value: [u8; 2],
-        openssl_name: &'static str,
-    ) -> Self {
-        Self {
-            openssl_name,
-            iana_description,
-            cipher: Cipher(iana_value),
-        }
-    }
-
-    fn unknown(iana_value: [u8; 2]) -> Self {
-        Self {
-            iana_description: "unknown",
-            cipher: Cipher(iana_value),
-            openssl_name: "unknown",
-        }
-    }
-
     #[cfg(test)]
     fn from_s2n_cipher_suite(s2n_cipher: &s2n_cipher_suite) -> Self {
         unsafe {
@@ -312,7 +297,11 @@ impl CipherInformation {
             let openssl_name = static_memory_to_str(s2n_cipher.name);
             let iana_description = static_memory_to_str(s2n_cipher.iana_name);
             let iana_value = s2n_cipher.iana_value;
-            Self::new(iana_description, iana_value, openssl_name)
+            Self{
+                iana_description, 
+                cipher:  Cipher(iana_value),
+                openssl_name
+            }
         }
     }
 }
@@ -323,46 +312,21 @@ pub(crate) struct GroupInformation {
     group: Group,
 }
 
+#[cfg(test)]
 impl GroupInformation {
-    const fn new(iana_description: &'static str, iana_value: u16) -> Self {
-        Self {
-            iana_description,
-            group: Group(U16::new(iana_value)),
-        }
-    }
-
-    fn unknown(iana_value: u16) -> Self {
-        Self {
-            iana_description: "unknown",
-            group: Group(U16::new(iana_value)),
-        }
-    }
-
-    fn from_iana_value(iana_value: u16) -> Self {
-        GROUPS_AVAILABLE_IN_S2N
-            .iter()
-            .find(|info| info.group.0.get() == iana_value)
-            .cloned()
-            .unwrap_or(Self::unknown(iana_value))
-    }
-
-    #[cfg(test)]
     fn from_s2n_kem_group(kem_group: &s2n_kem_group) -> Self {
         unsafe {
-            // SAFETY: the name field is a static, null-terminated string
-            let name = static_memory_to_str(kem_group.name);
+            let iana_description = static_memory_to_str(kem_group.name);
             let iana_id = kem_group.iana_id;
-            Self::new(name, iana_id)
+            Self { iana_description, group: Group(iana_id.into()) }
         }
     }
 
-    #[cfg(test)]
     fn from_s2n_ecc_curve(curve: &s2n_ecc_named_curve) -> Self {
         unsafe {
-            // SAFETY: the name field is a static, null-terminated string
-            let name = static_memory_to_str(curve.name);
+            let iana_description = static_memory_to_str(curve.name);
             let iana_id = curve.iana_id;
-            Self::new(name, iana_id)
+            Self { iana_description, group: Group(U16::new(iana_id)) }
         }
     }
 }
@@ -378,13 +342,6 @@ pub(crate) struct SignatureSchemeInformation {
 }
 
 impl SignatureSchemeInformation {
-    const fn new(iana_description: &'static str, iana_value: u16) -> Self {
-        Self {
-            description: iana_description,
-            signature: Signature(U16::new(iana_value)),
-        }
-    }
-
     pub fn description(&self) -> &'static str {
         self.description
     }
@@ -392,10 +349,9 @@ impl SignatureSchemeInformation {
     #[cfg(test)]
     fn from_s2n_signature_scheme(scheme: &s2n_signature_scheme) -> Self {
         unsafe {
-            // SAFETY: the name field is a static, null-terminated string
-            let name = static_memory_to_str(scheme.name);
+            let description = static_memory_to_str(scheme.name);
             let iana_value = scheme.iana_value;
-            Self::new(name, iana_value)
+            Self { description, signature: Signature(U16::new(iana_value)) }
         }
     }
 }
@@ -403,78 +359,152 @@ impl SignatureSchemeInformation {
 /// We are required to track OpenSSL naming because that is what the s2n-tls 
 /// connection API's return.
 #[rustfmt::skip]
-pub(crate) const CIPHERS_AVAILABLE_IN_S2N: &[CipherInformation] = &[
-    CipherInformation::new("TLS_AES_128_GCM_SHA256", [19, 1], "TLS_AES_128_GCM_SHA256" ),
-    CipherInformation::new("TLS_AES_256_GCM_SHA384", [19, 2], "TLS_AES_256_GCM_SHA384" ),
-    CipherInformation::new("TLS_CHACHA20_POLY1305_SHA256", [19, 3], "TLS_CHACHA20_POLY1305_SHA256" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA", [0, 22], "DHE-RSA-DES-CBC3-SHA" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_AES_128_CBC_SHA", [0, 51], "DHE-RSA-AES128-SHA" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_AES_128_CBC_SHA256", [0, 103], "DHE-RSA-AES128-SHA256" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_AES_128_GCM_SHA256", [0, 158], "DHE-RSA-AES128-GCM-SHA256" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_AES_256_CBC_SHA", [0, 57], "DHE-RSA-AES256-SHA" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_AES_256_CBC_SHA256", [0, 107], "DHE-RSA-AES256-SHA256" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_AES_256_GCM_SHA384", [0, 159], "DHE-RSA-AES256-GCM-SHA384" ),
-    CipherInformation::new("TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256", [204, 170], "DHE-RSA-CHACHA20-POLY1305" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA", [192, 9], "ECDHE-ECDSA-AES128-SHA" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", [192, 35], "ECDHE-ECDSA-AES128-SHA256" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", [192, 43], "ECDHE-ECDSA-AES128-GCM-SHA256" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA", [192, 10], "ECDHE-ECDSA-AES256-SHA" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384", [192, 36], "ECDHE-ECDSA-AES256-SHA384" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", [192, 44], "ECDHE-ECDSA-AES256-GCM-SHA384" ),
-    CipherInformation::new("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256", [204, 169], "ECDHE-ECDSA-CHACHA20-POLY1305" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA", [192, 18], "ECDHE-RSA-DES-CBC3-SHA" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", [192, 19], "ECDHE-RSA-AES128-SHA" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", [192, 39], "ECDHE-RSA-AES128-SHA256" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", [192, 47], "ECDHE-RSA-AES128-GCM-SHA256" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", [192, 20], "ECDHE-RSA-AES256-SHA" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384", [192, 40], "ECDHE-RSA-AES256-SHA384" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", [192, 48], "ECDHE-RSA-AES256-GCM-SHA384" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256", [204, 168], "ECDHE-RSA-CHACHA20-POLY1305" ),
-    CipherInformation::new("TLS_ECDHE_RSA_WITH_RC4_128_SHA", [192, 17], "ECDHE-RSA-RC4-SHA" ),
-    CipherInformation::new("TLS_NULL_WITH_NULL_NULL", [0, 0], "TLS_NULL_WITH_NULL_NULL" ),
-    CipherInformation::new("TLS_RSA_WITH_3DES_EDE_CBC_SHA", [0, 10], "DES-CBC3-SHA" ),
-    CipherInformation::new("TLS_RSA_WITH_AES_128_CBC_SHA", [0, 47], "AES128-SHA" ),
-    CipherInformation::new("TLS_RSA_WITH_AES_128_CBC_SHA256", [0, 60], "AES128-SHA256" ),
-    CipherInformation::new("TLS_RSA_WITH_AES_128_GCM_SHA256", [0, 156], "AES128-GCM-SHA256" ),
-    CipherInformation::new("TLS_RSA_WITH_AES_256_CBC_SHA", [0, 53], "AES256-SHA" ),
-    CipherInformation::new("TLS_RSA_WITH_AES_256_CBC_SHA256", [0, 61], "AES256-SHA256" ),
-    CipherInformation::new("TLS_RSA_WITH_AES_256_GCM_SHA384", [0, 157], "AES256-GCM-SHA384" ),
-    CipherInformation::new("TLS_RSA_WITH_RC4_128_MD5", [0, 4], "RC4-MD5" ),
-    CipherInformation::new("TLS_RSA_WITH_RC4_128_SHA", [0, 5], "RC4-SHA"),
+pub(crate) const CIPHER_NAMES: &[(&'static str, &'static str)] = &[
+    ("TLS_AES_128_GCM_SHA256", "TLS_AES_128_GCM_SHA256" ),
+    ("TLS_AES_256_GCM_SHA384", "TLS_AES_256_GCM_SHA384" ),
+    ("TLS_CHACHA20_POLY1305_SHA256", "TLS_CHACHA20_POLY1305_SHA256" ),
+    ("TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA", "DHE-RSA-DES-CBC3-SHA" ),
+    ("TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "DHE-RSA-AES128-SHA" ),
+    ("TLS_DHE_RSA_WITH_AES_128_CBC_SHA256", "DHE-RSA-AES128-SHA256" ),
+    ("TLS_DHE_RSA_WITH_AES_128_GCM_SHA256", "DHE-RSA-AES128-GCM-SHA256" ),
+    ("TLS_DHE_RSA_WITH_AES_256_CBC_SHA", "DHE-RSA-AES256-SHA" ),
+    ("TLS_DHE_RSA_WITH_AES_256_CBC_SHA256", "DHE-RSA-AES256-SHA256" ),
+    ("TLS_DHE_RSA_WITH_AES_256_GCM_SHA384", "DHE-RSA-AES256-GCM-SHA384" ),
+    ("TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256", "DHE-RSA-CHACHA20-POLY1305" ),
+    ("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA", "ECDHE-ECDSA-AES128-SHA" ),
+    ("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "ECDHE-ECDSA-AES128-SHA256" ),
+    ("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256", "ECDHE-ECDSA-AES128-GCM-SHA256" ),
+    ("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA", "ECDHE-ECDSA-AES256-SHA" ),
+    ("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384", "ECDHE-ECDSA-AES256-SHA384" ),
+    ("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384", "ECDHE-ECDSA-AES256-GCM-SHA384" ),
+    ("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256", "ECDHE-ECDSA-CHACHA20-POLY1305" ),
+    ("TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA", "ECDHE-RSA-DES-CBC3-SHA" ),
+    ("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "ECDHE-RSA-AES128-SHA" ),
+    ("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "ECDHE-RSA-AES128-SHA256" ),
+    ("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "ECDHE-RSA-AES128-GCM-SHA256" ),
+    ("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "ECDHE-RSA-AES256-SHA" ),
+    ("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384", "ECDHE-RSA-AES256-SHA384" ),
+    ("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", "ECDHE-RSA-AES256-GCM-SHA384" ),
+    ("TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256", "ECDHE-RSA-CHACHA20-POLY1305" ),
+    ("TLS_ECDHE_RSA_WITH_RC4_128_SHA", "ECDHE-RSA-RC4-SHA" ),
+    ("TLS_NULL_WITH_NULL_NULL", "TLS_NULL_WITH_NULL_NULL" ),
+    ("TLS_RSA_WITH_3DES_EDE_CBC_SHA", "DES-CBC3-SHA" ),
+    ("TLS_RSA_WITH_AES_128_CBC_SHA", "AES128-SHA" ),
+    ("TLS_RSA_WITH_AES_128_CBC_SHA256", "AES128-SHA256" ),
+    ("TLS_RSA_WITH_AES_128_GCM_SHA256", "AES128-GCM-SHA256" ),
+    ("TLS_RSA_WITH_AES_256_CBC_SHA", "AES256-SHA" ),
+    ("TLS_RSA_WITH_AES_256_CBC_SHA256", "AES256-SHA256" ),
+    ("TLS_RSA_WITH_AES_256_GCM_SHA384", "AES256-GCM-SHA384" ),
+    ("TLS_RSA_WITH_RC4_128_MD5", "RC4-MD5" ),
+    ("TLS_RSA_WITH_RC4_128_SHA", "RC4-SHA"),
 ];
 
-pub(crate) const GROUPS_AVAILABLE_IN_S2N: &[GroupInformation] = &[
-    GroupInformation::new("MLKEM1024", 514),
-    GroupInformation::new("SecP256r1MLKEM768", 4587),
-    GroupInformation::new("SecP384r1MLKEM1024", 4589),
-    GroupInformation::new("X25519MLKEM768", 4588),
-    GroupInformation::new("secp256r1", 23),
-    GroupInformation::new("secp384r1", 24),
-    GroupInformation::new("secp521r1", 25),
-    GroupInformation::new("x25519", 29),
+pub(crate) const CIPHERS_AVAILABLE_IN_S2N: &[Cipher] = &[
+    Cipher([19, 1]),
+    Cipher([19, 2]),
+    Cipher([19, 3]),
+    Cipher([0, 22]),
+    Cipher([0, 51]),
+    Cipher([0, 103]),
+    Cipher([0, 158]),
+    Cipher([0, 57]),
+    Cipher([0, 107]),
+    Cipher([0, 159]),
+    Cipher([204, 170]),
+    Cipher([192, 9]),
+    Cipher([192, 35]),
+    Cipher([192, 43]),
+    Cipher([192, 10]),
+    Cipher([192, 36]),
+    Cipher([192, 44]),
+    Cipher([204, 169]),
+    Cipher([192, 18]),
+    Cipher([192, 19]),
+    Cipher([192, 39]),
+    Cipher([192, 47]),
+    Cipher([192, 20]),
+    Cipher([192, 40]),
+    Cipher([192, 48]),
+    Cipher([204, 168]),
+    Cipher([192, 17]),
+    Cipher([0, 0]),
+    Cipher([0, 10]),
+    Cipher([0, 47]),
+    Cipher([0, 60]),
+    Cipher([0, 156]),
+    Cipher([0, 53]),
+    Cipher([0, 61]),
+    Cipher([0, 157]),
+    Cipher([0, 4]),
+    Cipher([0, 5]),
 ];
 
-pub(crate) const SIGNATURE_SCHEMES_AVAILABLE_IN_S2N: &[SignatureSchemeInformation] = &[
-    SignatureSchemeInformation::new("ecdsa_sha1", 515),
-    SignatureSchemeInformation::new("ecdsa_sha256", 1027),
-    SignatureSchemeInformation::new("ecdsa_sha384", 1283),
-    SignatureSchemeInformation::new("ecdsa_sha512", 1539),
-    SignatureSchemeInformation::new("legacy_ecdsa_sha224", 771),
-    SignatureSchemeInformation::new("legacy_rsa_md5_sha1", 65535),
-    SignatureSchemeInformation::new("legacy_rsa_sha224", 769),
-    SignatureSchemeInformation::new("mldsa44", 2308),
-    SignatureSchemeInformation::new("mldsa65", 2309),
-    SignatureSchemeInformation::new("mldsa87", 2310),
-    SignatureSchemeInformation::new("rsa_pkcs1_sha1", 513),
-    SignatureSchemeInformation::new("rsa_pkcs1_sha256", 1025),
-    SignatureSchemeInformation::new("rsa_pkcs1_sha384", 1281),
-    SignatureSchemeInformation::new("rsa_pkcs1_sha512", 1537),
-    SignatureSchemeInformation::new("rsa_pss_pss_sha256", 2057),
-    SignatureSchemeInformation::new("rsa_pss_pss_sha384", 2058),
-    SignatureSchemeInformation::new("rsa_pss_pss_sha512", 2059),
-    SignatureSchemeInformation::new("rsa_pss_rsae_sha256", 2052),
-    SignatureSchemeInformation::new("rsa_pss_rsae_sha384", 2053),
-    SignatureSchemeInformation::new("rsa_pss_rsae_sha512", 2054),
+pub(crate) const GROUPS_AVAILABLE_IN_S2N: &[Group] = &[
+    Group(U16::new(514)),
+    Group(U16::new(4587)),
+    Group(U16::new(4589)),
+    Group(U16::new(4588)),
+    Group(U16::new(23)),
+    Group(U16::new(24)),
+    Group(U16::new(25)),
+    Group(U16::new(29)),
+];
+
+pub(crate) const GROUP_NAMES: &[&str] = &[
+    "MLKEM1024",
+    "SecP256r1MLKEM768",
+    "SecP384r1MLKEM1024",
+    "X25519MLKEM768",
+    "secp256r1",
+    "secp384r1",
+    "secp521r1",
+    "x25519",
+];
+
+pub(crate) const SIGNATURE_SCHEMES_AVAILABLE_IN_S2N: &[Signature] = &[
+    Signature(U16::new(515)),
+    Signature(U16::new(1027)),
+    Signature(U16::new(1283)),
+    Signature(U16::new(1539)),
+    Signature(U16::new(771)),
+    Signature(U16::new(65535)),
+    Signature(U16::new(769)),
+    Signature(U16::new(2308)),
+    Signature(U16::new(2309)),
+    Signature(U16::new(2310)),
+    Signature(U16::new(513)),
+    Signature(U16::new(1025)),
+    Signature(U16::new(1281)),
+    Signature(U16::new(1537)),
+    Signature(U16::new(2057)),
+    Signature(U16::new(2058)),
+    Signature(U16::new(2059)),
+    Signature(U16::new(2052)),
+    Signature(U16::new(2053)),
+    Signature(U16::new(2054)),
+];
+
+pub(crate) const SIGNATURE_NAMES: &[&str] = &[
+    "ecdsa_sha1",
+    "ecdsa_sha256",
+    "ecdsa_sha384",
+    "ecdsa_sha512",
+    "legacy_ecdsa_sha224",
+    "legacy_rsa_md5_sha1",
+    "legacy_rsa_sha224",
+    "mldsa44",
+    "mldsa65",
+    "mldsa87",
+    "rsa_pkcs1_sha1",
+    "rsa_pkcs1_sha256",
+    "rsa_pkcs1_sha384",
+    "rsa_pkcs1_sha512",
+    "rsa_pss_pss_sha256",
+    "rsa_pss_pss_sha384",
+    "rsa_pss_pss_sha512",
+    "rsa_pss_rsae_sha256",
+    "rsa_pss_rsae_sha384",
+    "rsa_pss_rsae_sha512",
 ];
 
 #[cfg(test)]
@@ -547,53 +577,65 @@ mod tests {
     #[test]
     fn all_ciphers_in_static_list() {
         let ciphers = all_available_ciphers();
-        assert_eq!(&ciphers, CIPHERS_AVAILABLE_IN_S2N);
+        let expected_ciphers: Vec<Cipher> = ciphers.iter().map(|c| c.cipher).collect();
+        let expected_names: Vec<(&str, &str)> = ciphers
+            .iter()
+            .map(|c| (c.iana_description, c.openssl_name))
+            .collect();
+        assert_eq!(CIPHERS_AVAILABLE_IN_S2N, expected_ciphers.as_slice());
+        assert_eq!(CIPHER_NAMES, expected_names.as_slice());
     }
 
     #[test]
     fn all_groups_in_static_list() {
         let groups = all_available_groups();
-        assert_eq!(&groups, GROUPS_AVAILABLE_IN_S2N);
+        let expected_groups: Vec<Group> = groups.iter().map(|g| g.group).collect();
+        let expected_names: Vec<&str> = groups.iter().map(|g| g.iana_description).collect();
+        assert_eq!(GROUPS_AVAILABLE_IN_S2N, expected_groups.as_slice());
+        assert_eq!(GROUP_NAMES, expected_names.as_slice());
     }
 
     #[test]
     fn all_signature_schemes_in_static_list() {
         let schemes = all_available_signatures();
-        assert_eq!(&schemes, SIGNATURE_SCHEMES_AVAILABLE_IN_S2N);
+        let expected_sigs: Vec<Signature> = schemes.iter().map(|s| s.signature).collect();
+        let expected_names: Vec<&str> = schemes.iter().map(|s| s.description).collect();
+        assert_eq!(SIGNATURE_SCHEMES_AVAILABLE_IN_S2N, expected_sigs.as_slice());
+        assert_eq!(SIGNATURE_NAMES, expected_names.as_slice());
     }
 
     #[test]
     fn index_and_name_lookup() {
-        for (index, item) in CIPHERS_AVAILABLE_IN_S2N.iter().enumerate() {
+        for (index, (iana_desc, _)) in CIPHER_NAMES.iter().enumerate() {
             let returned_index = TlsParam::Cipher
-                .description_to_index(item.iana_description)
+                .description_to_index(iana_desc)
                 .unwrap();
             let returned_description = TlsParam::Cipher
                 .index_to_description(returned_index)
                 .unwrap();
-            assert_eq!(returned_description, item.iana_description);
+            assert_eq!(returned_description, *iana_desc);
             assert_eq!(returned_index, index);
         }
 
-        for (index, item) in GROUPS_AVAILABLE_IN_S2N.iter().enumerate() {
+        for (index, name) in GROUP_NAMES.iter().enumerate() {
             let returned_index = TlsParam::Group
-                .description_to_index(item.iana_description)
+                .description_to_index(name)
                 .unwrap();
             let returned_description = TlsParam::Group
                 .index_to_description(returned_index)
                 .unwrap();
-            assert_eq!(returned_description, item.iana_description);
+            assert_eq!(returned_description, *name);
             assert_eq!(returned_index, index);
         }
 
-        for (index, item) in SIGNATURE_SCHEMES_AVAILABLE_IN_S2N.iter().enumerate() {
+        for (index, name) in SIGNATURE_NAMES.iter().enumerate() {
             let returned_index = TlsParam::SignatureScheme
-                .description_to_index(item.description)
+                .description_to_index(name)
                 .unwrap();
             let returned_description = TlsParam::SignatureScheme
                 .index_to_description(returned_index)
                 .unwrap();
-            assert_eq!(returned_description, item.description);
+            assert_eq!(returned_description, *name);
             assert_eq!(returned_index, index);
         }
     }

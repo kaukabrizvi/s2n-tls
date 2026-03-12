@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::static_lists::{Cipher, Group, Signature, Version};
+use crate::{record::FrozenHandshakeRecord, static_lists::{Cipher, Group, Signature, Version}};
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct Attribution {
@@ -18,20 +18,3 @@ pub struct Attribution {
     pub security_policy: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CondensedHandshakeRecord {
-    handshake_count: u64,
-    negotiated_protocols: HashMap<Version, u64>,
-    negotiated_ciphers: HashMap<Cipher, u64>,
-    negotiated_group: HashMap<Group, u64>,
-    negotiated_signatures: HashMap<Signature, u64>,
-
-    sslv2_client_hello: u64,
-    supported_protocols: HashMap<Version, u64>,
-    supported_ciphers: HashMap<Cipher, u64>,
-    supported_group: HashMap<Group, u64>,
-    supported_signatures: HashMap<Signature, u64>,
-
-    handshake_duration_us: u64,
-    handshake_compute_us: u64,
-}
