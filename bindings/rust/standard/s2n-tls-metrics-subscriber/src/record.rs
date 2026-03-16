@@ -64,6 +64,27 @@ impl MetricRecord {
         serde_json::to_value(self).expect("serialization should not fail")
     }
 
+    /// Serialize the condensed form (IANA-keyed HashMaps) to CBOR bytes.
+    pub fn to_condensed_cbor(&self) -> Vec<u8> {
+        let condensed = CondensedMetricRecord {
+            attribution: self.attribution.clone(),
+            handshake: CondensedHandshakeRecord::from_frozen_hs_record(&self.handshake),
+        };
+        let mut buf = Vec::new();
+        ciborium::into_writer(&condensed, &mut buf)
+            .expect("CBOR serialization should not fail");
+        buf
+    }
+
+    /// Serialize the condensed form (IANA-keyed HashMaps) to JSON bytes.
+    pub fn to_condensed_json(&self) -> Vec<u8> {
+        let condensed = CondensedMetricRecord {
+            attribution: self.attribution.clone(),
+            handshake: CondensedHandshakeRecord::from_frozen_hs_record(&self.handshake),
+        };
+        serde_json::to_vec(&condensed).expect("JSON serialization should not fail")
+    }
+
     /// Serialize this metric record to protobuf bytes.
     pub fn to_proto_bytes(&self) -> Vec<u8> {
         use prost::Message;
@@ -437,6 +458,13 @@ struct ParamCount {
     group: HashMap<Group, u64>,
     #[serde(rename = "s")]
     signatures: HashMap<Signature, u64>,
+}
+
+/// Condensed metric record with attribution, suitable for wire serialization.
+#[derive(Debug, Serialize, Deserialize)]
+struct CondensedMetricRecord {
+    attribution: Option<Attribution>,
+    handshake: CondensedHandshakeRecord,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
