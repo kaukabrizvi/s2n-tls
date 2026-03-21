@@ -15,13 +15,13 @@ use crate::{
 /// once every hour or when shutdown is called.
 #[derive(Debug, Clone)]
 pub struct FirehoseEmitter {
-    handle: Arc<Handle>,
+    handle: Arc<AsyncHandle>,
 }
 
 impl FirehoseEmitter {
-    async fn initialize() -> Self {
+    pub async fn initialize() -> Self {
         let (emitter, tx) = BackgroundEmitter::initialize().await;
-        let handle = Handle {
+        let handle = AsyncHandle {
             background_exporter: emitter,
             record_buffer: tx,
         };
@@ -38,9 +38,10 @@ impl Exporter for FirehoseEmitter {
 }
 
 #[derive(Debug)]
-struct Handle {
+struct AsyncHandle {
     /// This is a tokio task responsible for periodically flushing the records to kinesis
     background_exporter: BackgroundEmitter,
+    
     record_buffer: tokio::sync::mpsc::Sender<MetricRecord>,
 }
 
@@ -62,6 +63,7 @@ impl BackgroundEmitter {
             .region(Region::new("us-west-2"))
             .load()
             .await;
+
         let client = Client::new(&shared_config);
         let (shutdown_send, mut shutdown_signal) = tokio::sync::watch::channel(false);
         let (record_tx, mut record_rx) = tokio::sync::mpsc::channel(Self::CHANNEL_CAPACITY);

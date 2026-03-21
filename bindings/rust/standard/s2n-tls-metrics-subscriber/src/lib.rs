@@ -15,6 +15,7 @@ mod flat_map;
 mod test_utils;
 
 pub use emf_emitter::EmfEmitter;
+pub use firehose_emitter::FirehoseEmitter;
 pub use record::MetricRecord;
-pub use subscriber::AggregatedMetricsSubscriber;
+pub use subscriber::{AggregatedMetricsSubscriber, Exporter};
 pub use condensed::Attribution;
