@@ -269,26 +269,3 @@ fn cbor_to_duckdb() {
     }
     assert_eq!(by_service.len(), 10);
 }
-
-#[test]
-fn cbor_vs_protobuf_size() {
-    let cbor_records = generate_cbor_records();
-
-    let mut total_cbor: usize = 0;
-    let mut total_proto: usize = 0;
-    let mut total_json: usize = 0;
-
-    for cbor in &cbor_records {
-        let record = MetricRecord::from_cbor(cbor).unwrap();
-
-        total_json += record.to_condensed_json().len();
-        total_cbor += record.to_condensed_cbor().len();
-        total_proto += record.to_proto_bytes().len();
-    }
-
-    let count = cbor_records.len();
-    eprintln!("\nwire format size comparison ({count} records, condensed):");
-    eprintln!("  JSON:     {total_json:>8} bytes ({:.0} bytes/record)", total_json as f64 / count as f64);
-    eprintln!("  CBOR:     {total_cbor:>8} bytes ({:.0} bytes/record)", total_cbor as f64 / count as f64);
-    eprintln!("  Protobuf: {total_proto:>8} bytes ({:.0} bytes/record)", total_proto as f64 / count as f64);
-}
