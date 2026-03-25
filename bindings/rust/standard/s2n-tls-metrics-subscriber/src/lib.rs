@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 mod emf_emitter;
-mod firehose_emitter;
 mod label;
 mod parsing;
 pub mod proto;
@@ -15,7 +14,6 @@ mod flat_map;
 mod test_utils;
 
 pub use emf_emitter::EmfEmitter;
-pub use firehose_emitter::FirehoseEmitter;
 pub use record::MetricRecord;
-pub use subscriber::{AggregatedMetricsSubscriber, Exporter};
+pub use subscriber::{AggregatedMetricsSubscriber, TelemetrySink};
 pub use condensed::Attribution;

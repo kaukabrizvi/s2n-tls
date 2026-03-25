@@ -14,7 +14,7 @@ pub struct Attribution {
     pub certificate: Option<String>,
     /// e.g. "1.3.21"
     pub s2n_version: String,
-    /// e.g. "20250901"z
+    /// e.g. "20250901"
     pub security_policy: String,
 }
 
