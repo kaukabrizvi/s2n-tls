@@ -214,6 +214,9 @@ struct s2n_config {
 
     s2n_async_pkey_validation_mode async_pkey_validation_mode;
 
+    /* MISALIGNMENT TEST — shifts subscriber fields by 64 bytes */
+    uint8_t _test_padding[64];
+
     void *subscriber;
     s2n_event_on_handshake_cb on_handshake_event;
 
