@@ -42,10 +42,106 @@ impl MetricRecord {
 }
 
 impl metrique_writer::Entry for MetricRecord {
+    /// Write the handshake record with `service` and `resource` attached as
+    /// dimensions to every metric value so they are queryable fields.
     fn write<'a>(&'a self, writer: &mut impl metrique_writer::EntryWriter<'a>) {
-        writer.value("service", &self.attribution.service);
-        writer.value("resource", &self.attribution.resource);
-        self.handshake.write(writer)
+        // We can't use `metrique_writer::entry::WithGlobalDimensions` here: its
+        // `Entry::write` requires the wrapper to live for the outer `'a` (tied
+        // to `&self`), and a local constructed here cannot.
+        let dims: [(&'a str, &'a str); 2] = [
+            ("resource", self.attribution.resource.as_str()),
+            ("service", self.attribution.service.as_str()),
+        ];
+        let mut wrapped = DimensionedEntryWriter {
+            inner: writer,
+            dims: &dims,
+        };
+        self.handshake.write(&mut wrapped);
+    }
+}
+
+/// `EntryWriter` wrapper that attaches a fixed set of dimensions to every
+/// metric value written through it.
+struct DimensionedEntryWriter<'d, W> {
+    inner: W,
+    dims: &'d [(&'d str, &'d str)],
+}
+
+impl<'a, W: metrique_writer::EntryWriter<'a>> metrique_writer::EntryWriter<'a>
+    for DimensionedEntryWriter<'_, W>
+{
+    fn timestamp(&mut self, timestamp: std::time::SystemTime) {
+        self.inner.timestamp(timestamp);
+    }
+
+    fn value(
+        &mut self,
+        name: impl Into<std::borrow::Cow<'a, str>>,
+        value: &(impl metrique_writer::Value + ?Sized),
+    ) {
+        self.inner.value(
+            name,
+            &DimensionedValue {
+                value,
+                dims: self.dims,
+            },
+        );
+    }
+
+    fn config(&mut self, config: &'a dyn metrique_writer::EntryConfig) {
+        self.inner.config(config);
+    }
+}
+
+struct DimensionedValue<'d, 'v, V: ?Sized> {
+    value: &'v V,
+    dims: &'d [(&'d str, &'d str)],
+}
+
+impl<V: metrique_writer::Value + ?Sized> metrique_writer::Value for DimensionedValue<'_, '_, V> {
+    fn write(&self, writer: impl metrique_writer::ValueWriter) {
+        self.value.write(DimensionedValueWriter {
+            inner: writer,
+            dims: self.dims,
+        });
+    }
+}
+
+struct DimensionedValueWriter<'d, W> {
+    inner: W,
+    dims: &'d [(&'d str, &'d str)],
+}
+
+impl<W: metrique_writer::ValueWriter> metrique_writer::ValueWriter
+    for DimensionedValueWriter<'_, W>
+{
+    fn string(self, value: &str) {
+        self.inner.string(value);
+    }
+
+    fn metric<'a>(
+        self,
+        distribution: impl IntoIterator<Item = metrique_writer::Observation>,
+        unit: metrique_writer::Unit,
+        dimensions: impl IntoIterator<Item = (&'a str, &'a str)>,
+        flags: metrique_writer::MetricFlags<'_>,
+    ) {
+        self.inner.metric(
+            distribution,
+            unit,
+            // reborrow to align lifetimes between caller dims and self.dims
+            // false positive: https://github.com/rust-lang/rust-clippy/issues/9280
+            #[allow(clippy::map_identity)]
+            dimensions
+                .into_iter()
+                .map(|(k, v)| (k, v))
+                .chain(self.dims.iter().map(|(c, i)| (*c, *i))),
+            flags,
+        );
+    }
+
+    fn error(self, error: metrique_writer::ValidationError) {
+        self.inner.error(error);
     }
 }
 
@@ -659,5 +755,103 @@ mod tests {
         assert_eq!(record.compatibility_cnsa2, 0);
         assert_eq!(record.handshake_duration_us, 0);
         assert_eq!(record.handshake_compute_us, 0);
+    }
+
+    /// Verifies that `service` and `resource` are emitted as dimensions on
+    /// every metric written by `MetricRecord::write`, and not as string
+    /// properties.
+    #[test]
+    fn attribution_emitted_as_dimensions() {
+        use metrique_writer::{
+            Entry, EntryConfig, EntryWriter, MetricFlags, Observation, Unit, ValidationError,
+            Value, ValueWriter,
+        };
+        use std::borrow::Cow;
+        use std::time::SystemTime;
+
+        use crate::Attribution;
+
+        #[derive(Default)]
+        struct Capture {
+            metrics: Vec<(String, Vec<(String, String)>)>,
+            properties: Vec<(String, String)>,
+        }
+
+        impl<'a> EntryWriter<'a> for Capture {
+            fn timestamp(&mut self, _: SystemTime) {}
+
+            fn value(&mut self, name: impl Into<Cow<'a, str>>, value: &(impl Value + ?Sized)) {
+                let name = name.into().into_owned();
+                value.write(CaptureValueWriter {
+                    name,
+                    capture: self,
+                });
+            }
+
+            fn config(&mut self, _: &'a dyn EntryConfig) {}
+        }
+
+        struct CaptureValueWriter<'c> {
+            name: String,
+            capture: &'c mut Capture,
+        }
+
+        impl ValueWriter for CaptureValueWriter<'_> {
+            fn string(self, value: &str) {
+                self.capture.properties.push((self.name, value.to_owned()));
+            }
+
+            fn metric<'a>(
+                self,
+                _: impl IntoIterator<Item = Observation>,
+                _: Unit,
+                dimensions: impl IntoIterator<Item = (&'a str, &'a str)>,
+                _: MetricFlags<'_>,
+            ) {
+                let dims = dimensions
+                    .into_iter()
+                    .map(|(k, v)| (k.to_owned(), v.to_owned()))
+                    .collect();
+                self.capture.metrics.push((self.name, dims));
+            }
+
+            fn error(self, _: ValidationError) {}
+        }
+
+        let handshake = FrozenHandshakeRecord {
+            handshake_count: 1,
+            ..Default::default()
+        };
+        let record = MetricRecord::new(
+            handshake,
+            Attribution {
+                service: "svc".to_owned(),
+                resource: "res".to_owned(),
+            },
+        );
+
+        let mut capture = Capture::default();
+        record.write(&mut capture);
+
+        assert!(!capture.metrics.is_empty(), "expected at least one metric");
+        for (name, dims) in &capture.metrics {
+            assert!(
+                dims.contains(&("service".to_owned(), "svc".to_owned())),
+                "metric {name} missing service dim, got {dims:?}",
+            );
+            assert!(
+                dims.contains(&("resource".to_owned(), "res".to_owned())),
+                "metric {name} missing resource dim, got {dims:?}",
+            );
+        }
+
+        assert!(
+            !capture
+                .properties
+                .iter()
+                .any(|(k, _)| k == "service" || k == "resource"),
+            "service/resource leaked as string properties: {:?}",
+            capture.properties,
+        );
     }
 }
