@@ -147,7 +147,14 @@ static int s2n_prf_sslv3(struct s2n_connection *conn, struct s2n_blob *secret, s
     uint8_t *output = out->data;
     uint8_t iteration = 1;
 
+    /* Wipe the intermediate digests before returning. They are derived from
+     * `secret` (the input PRF secret) and feed into PRF output bytes.
+     */
+    DEFER_CLEANUP(struct s2n_blob md5_digest_blob = { 0 }, s2n_free_or_wipe);
+    DEFER_CLEANUP(struct s2n_blob sha_digest_blob = { 0 }, s2n_free_or_wipe);
     uint8_t md5_digest[MD5_DIGEST_LENGTH] = { 0 }, sha_digest[SHA_DIGEST_LENGTH] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&md5_digest_blob, md5_digest, sizeof(md5_digest)));
+    POSIX_GUARD(s2n_blob_init(&sha_digest_blob, sha_digest, sizeof(sha_digest)));
 
     uint8_t A = 'A';
     while (outputlen) {
@@ -486,11 +493,11 @@ int s2n_prf_calculate_master_secret(struct s2n_connection *conn, struct s2n_blob
     POSIX_GUARD(s2n_blob_init(&client_key_blob, client_key_message.blob.data, client_key_message_size));
 
     uint8_t data[S2N_MAX_DIGEST_LEN] = { 0 };
-    struct s2n_blob digest = { 0 };
+    DEFER_CLEANUP(struct s2n_blob digest = { 0 }, s2n_free_or_wipe);
     POSIX_GUARD(s2n_blob_init(&digest, data, sizeof(data)));
     if (conn->actual_protocol_version < S2N_TLS12) {
         uint8_t sha1_data[S2N_MAX_DIGEST_LEN] = { 0 };
-        struct s2n_blob sha1_digest = { 0 };
+        DEFER_CLEANUP(struct s2n_blob sha1_digest = { 0 }, s2n_free_or_wipe);
         POSIX_GUARD(s2n_blob_init(&sha1_digest, sha1_data, sizeof(sha1_data)));
         POSIX_GUARD_RESULT(s2n_prf_get_digest_for_ems(conn, &client_key_blob, S2N_HASH_MD5, &digest));
         POSIX_GUARD_RESULT(s2n_prf_get_digest_for_ems(conn, &client_key_blob, S2N_HASH_SHA1, &sha1_digest));
@@ -621,8 +628,15 @@ int s2n_prf_client_finished(struct s2n_connection *conn)
     POSIX_ENSURE_REF(conn->handshake.hashes);
 
     struct s2n_blob master_secret, md5, sha;
-    uint8_t md5_digest[MD5_DIGEST_LENGTH];
-    uint8_t sha_digest[SHA384_DIGEST_LENGTH];
+    /* Wipe the handshake transcript digests on all return paths since they
+     * are inputs to the PRF that produces the verify_data.
+     */
+    DEFER_CLEANUP(struct s2n_blob md5_digest_blob = { 0 }, s2n_free_or_wipe);
+    DEFER_CLEANUP(struct s2n_blob sha_digest_blob = { 0 }, s2n_free_or_wipe);
+    uint8_t md5_digest[MD5_DIGEST_LENGTH] = { 0 };
+    uint8_t sha_digest[SHA384_DIGEST_LENGTH] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&md5_digest_blob, md5_digest, sizeof(md5_digest)));
+    POSIX_GUARD(s2n_blob_init(&sha_digest_blob, sha_digest, sizeof(sha_digest)));
     uint8_t client_finished_label[] = "client finished";
     struct s2n_blob client_finished = { 0 };
     struct s2n_blob label = { 0 };
@@ -679,8 +693,15 @@ int s2n_prf_server_finished(struct s2n_connection *conn)
     POSIX_ENSURE_REF(conn->handshake.hashes);
 
     struct s2n_blob master_secret, md5, sha;
-    uint8_t md5_digest[MD5_DIGEST_LENGTH];
-    uint8_t sha_digest[SHA384_DIGEST_LENGTH];
+    /* Wipe the handshake transcript digests on all return paths since they
+     * are inputs to the PRF that produces the verify_data.
+     */
+    DEFER_CLEANUP(struct s2n_blob md5_digest_blob = { 0 }, s2n_free_or_wipe);
+    DEFER_CLEANUP(struct s2n_blob sha_digest_blob = { 0 }, s2n_free_or_wipe);
+    uint8_t md5_digest[MD5_DIGEST_LENGTH] = { 0 };
+    uint8_t sha_digest[SHA384_DIGEST_LENGTH] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&md5_digest_blob, md5_digest, sizeof(md5_digest)));
+    POSIX_GUARD(s2n_blob_init(&sha_digest_blob, sha_digest, sizeof(sha_digest)));
     uint8_t server_finished_label[] = "server finished";
     struct s2n_blob server_finished = { 0 };
     struct s2n_blob label = { 0 };

@@ -62,9 +62,14 @@ int s2n_verify_cbc(struct s2n_connection *conn, struct s2n_hmac_state *hmac, str
     POSIX_GUARD(s2n_hmac_update(hmac, decrypted->data, payload_length));
     int currently_in_hash_block = hmac->currently_in_hash_block;
 
-    /* Check the MAC */
-    uint8_t check_digest[S2N_MAX_DIGEST_LEN];
+    /* Check the MAC.
+     * Wipe `check_digest` on all return paths since it holds an HMAC value
+     * derived from the connection's MAC key.
+     */
+    DEFER_CLEANUP(struct s2n_blob check_digest_blob = { 0 }, s2n_free_or_wipe);
+    uint8_t check_digest[S2N_MAX_DIGEST_LEN] = { 0 };
     POSIX_ENSURE_LTE(mac_digest_size, sizeof(check_digest));
+    POSIX_GUARD(s2n_blob_init(&check_digest_blob, check_digest, sizeof(check_digest)));
     POSIX_GUARD(s2n_hmac_digest_two_compression_rounds(hmac, check_digest, mac_digest_size));
 
     int mismatches = s2n_constant_time_equals(decrypted->data + payload_length, check_digest, mac_digest_size) ^ 1;

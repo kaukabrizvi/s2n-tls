@@ -25,3 +25,14 @@ void *s2n_ensure_memmove_trace(void *to, const void *from, size_t size)
     PTR_ENSURE_REF(result);
     return result;
 }
+void *s2n_secure_memset(void *ptr, int value, size_t size)
+{
+    if (ptr == NULL || size == 0) {
+        return ptr;
+    }
+
+    /* Calling memset through a volatile fn-pointer hides the target from the
+     * compiler so it cannot prove the call is dead and elide it. */
+    static void *(*const volatile memset_volatile)(void *, int, size_t) = memset;
+    return memset_volatile(ptr, value, size);
+}

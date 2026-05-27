@@ -23,6 +23,7 @@
 #include "tls/s2n_async_pkey.h"
 #include "tls/s2n_connection.h"
 #include "tls/s2n_tls13_handshake.h"
+#include "utils/s2n_mem.h"
 #include "utils/s2n_safety.h"
 
 /**
@@ -113,7 +114,12 @@ int s2n_tls13_generate_unsigned_cert_verify_content(struct s2n_connection *conn,
     s2n_tls13_connection_keys(tls13_ctx, conn);
 
     uint8_t hash_digest_length = tls13_ctx.size;
-    uint8_t digest_out[S2N_MAX_DIGEST_LEN];
+    /* Wipe `digest_out` on all return paths since it holds the transcript hash
+     * that is signed (or verified) as part of CertificateVerify.
+     */
+    DEFER_CLEANUP(struct s2n_blob digest_blob = { 0 }, s2n_free_or_wipe);
+    uint8_t digest_out[S2N_MAX_DIGEST_LEN] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&digest_blob, digest_out, sizeof(digest_out)));
 
     /* Get current handshake hash */
     POSIX_ENSURE_REF(conn->handshake.hashes);

@@ -19,6 +19,7 @@
 #include "tls/s2n_key_log.h"
 #include "tls/s2n_tls13_handshake.h"
 #include "utils/s2n_bitmap.h"
+#include "utils/s2n_mem.h"
 
 #define S2N_MAX_HASHLEN SHA384_DIGEST_LENGTH
 
@@ -744,7 +745,7 @@ int s2n_connection_tls_exporter(struct s2n_connection *conn,
     POSIX_GUARD(s2n_blob_init(&label, label_bytes, label_length));
 
     uint8_t derived_secret_bytes[S2N_MAX_DIGEST_LEN] = { 0 };
-    struct s2n_blob derived_secret = { 0 };
+    DEFER_CLEANUP(struct s2n_blob derived_secret = { 0 }, s2n_free_or_wipe);
     POSIX_ENSURE_LTE(s2n_get_hash_len(CONN_HMAC_ALG(conn)), S2N_MAX_DIGEST_LEN);
     POSIX_GUARD(s2n_blob_init(&derived_secret,
             derived_secret_bytes, s2n_get_hash_len(CONN_HMAC_ALG(conn))));
@@ -760,7 +761,7 @@ int s2n_connection_tls_exporter(struct s2n_connection *conn,
     s2n_hash_algorithm hash_alg = { 0 };
     POSIX_GUARD(s2n_hmac_hash_alg(hmac_alg, &hash_alg));
     uint8_t digest_bytes[S2N_MAX_DIGEST_LEN] = { 0 };
-    struct s2n_blob digest = { 0 };
+    DEFER_CLEANUP(struct s2n_blob digest = { 0 }, s2n_free_or_wipe);
     POSIX_ENSURE_LTE(s2n_get_hash_len(CONN_HMAC_ALG(conn)), S2N_MAX_DIGEST_LEN);
     POSIX_GUARD(s2n_blob_init(&digest, digest_bytes, s2n_get_hash_len(CONN_HMAC_ALG(conn))));
 

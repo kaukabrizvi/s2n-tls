@@ -24,6 +24,7 @@
 #include "crypto/s2n_rsa_pss.h"
 #include "error/s2n_errno.h"
 #include "tls/s2n_signature_algorithms.h"
+#include "utils/s2n_mem.h"
 #include "utils/s2n_random.h"
 #include "utils/s2n_safety.h"
 
@@ -170,7 +171,12 @@ static int s2n_pkey_evp_digest_then_sign(EVP_PKEY_CTX *pctx,
     POSIX_GUARD(s2n_hash_digest_size(hash_state->alg, &digest_length));
     POSIX_ENSURE_LTE(digest_length, S2N_MAX_DIGEST_LEN);
 
+    /* Wipe the message digest before returning so it does not linger on
+     * the stack after the signing operation completes.
+     */
+    DEFER_CLEANUP(struct s2n_blob digest_blob = { 0 }, s2n_free_or_wipe);
     uint8_t digest_out[S2N_MAX_DIGEST_LEN] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&digest_blob, digest_out, sizeof(digest_out)));
     POSIX_GUARD(s2n_hash_digest(hash_state, digest_out, digest_length));
 
     size_t signature_size = signature->size;
@@ -245,7 +251,12 @@ static int s2n_pkey_evp_digest_then_verify(EVP_PKEY_CTX *pctx,
     POSIX_GUARD(s2n_hash_digest_size(hash_state->alg, &digest_length));
     POSIX_ENSURE_LTE(digest_length, S2N_MAX_DIGEST_LEN);
 
+    /* Wipe the message digest before returning so it does not linger on
+     * the stack after the verify operation completes.
+     */
+    DEFER_CLEANUP(struct s2n_blob digest_blob = { 0 }, s2n_free_or_wipe);
     uint8_t digest_out[S2N_MAX_DIGEST_LEN] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&digest_blob, digest_out, sizeof(digest_out)));
     POSIX_GUARD(s2n_hash_digest(hash_state, digest_out, digest_length));
 
     POSIX_GUARD_OSSL(EVP_PKEY_verify(pctx, signature->data, signature->size,
@@ -334,8 +345,11 @@ int s2n_pkey_evp_decrypt(const struct s2n_pkey *key, struct s2n_blob *in, struct
     uint32_t expected_size = 0;
     POSIX_GUARD_RESULT(s2n_pkey_size(key, &expected_size));
 
-    /* RSA decryption requires more output memory than the size of the final decrypted message */
-    struct s2n_blob buffer = { 0 };
+    /* RSA decryption requires more output memory than the size of the final decrypted message.
+     * Wipe `buffer_bytes` on all return paths since it holds the (potentially
+     * still-padded) RSA-decrypted pre-master secret.
+     */
+    DEFER_CLEANUP(struct s2n_blob buffer = { 0 }, s2n_free_or_wipe);
     uint8_t buffer_bytes[4096] = { 0 };
     POSIX_GUARD(s2n_blob_init(&buffer, buffer_bytes, sizeof(buffer_bytes)));
     POSIX_ENSURE(out->size <= buffer.size, S2N_ERR_NOMEM);

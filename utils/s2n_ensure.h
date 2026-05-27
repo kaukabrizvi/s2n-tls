@@ -69,14 +69,14 @@
         }                                                            \
     } while (0)
 
-#define __S2N_ENSURE_SAFE_MEMSET(d, c, n, guard) \
-    do {                                         \
-        __typeof(n) __tmp_n = (n);               \
-        if (s2n_likely(__tmp_n)) {               \
-            __typeof(d) __tmp_d = (d);           \
-            guard(__tmp_d);                      \
-            memset(__tmp_d, (c), __tmp_n);       \
-        }                                        \
+#define __S2N_ENSURE_SAFE_MEMSET(d, c, n, guard)      \
+    do {                                              \
+        __typeof(n) __tmp_n = (n);                    \
+        if (s2n_likely(__tmp_n)) {                    \
+            __typeof(d) __tmp_d = (d);                \
+            guard(__tmp_d);                           \
+            s2n_secure_memset(__tmp_d, (c), __tmp_n); \
+        }                                             \
     } while (0)
 
 #if defined(S2N_DIAGNOSTICS_PUSH_SUPPORTED) && defined(S2N_DIAGNOSTICS_POP_SUPPORTED)
@@ -91,6 +91,25 @@
 #endif
 
 void *s2n_ensure_memmove_trace(void *to, const void *from, size_t size);
+
+/**
+ * DSE-proof memset.
+ *
+ * Indirects through a `static const volatile` function pointer to libc
+ * `memset`. The volatile load forces the indirect call, and the call lands
+ * on the optimized libc `memset` so there is no measurable performance
+ * difference compared to a direct memset. Because the compiler cannot prove
+ * what the volatile-loaded pointer dispatches to, it cannot eliminate the
+ * call as a dead store. This is the same idiom used by reference
+ * implementations of `explicit_bzero`.
+ *
+ * Use this instead of `memset` whenever the destination buffer holds
+ * sensitive material (keys, IVs, intermediate cryptographic values) that
+ * must be guaranteed to be cleared before the storage goes out of scope.
+ *
+ * Safe to call with ptr == NULL or size == 0 (no-op).
+ */
+void *s2n_secure_memset(void *ptr, int value, size_t size);
 
 /**
  * These macros should not be used in validate functions.

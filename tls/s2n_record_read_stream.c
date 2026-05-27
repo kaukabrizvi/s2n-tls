@@ -23,6 +23,7 @@
 #include "tls/s2n_crypto.h"
 #include "tls/s2n_record_read.h"
 #include "utils/s2n_blob.h"
+#include "utils/s2n_mem.h"
 #include "utils/s2n_safety.h"
 
 int s2n_record_parse_stream(
@@ -68,11 +69,16 @@ int s2n_record_parse_stream(
     struct s2n_blob seq = { .data = sequence_number, .size = S2N_TLS_SEQUENCE_NUM_LEN };
     POSIX_GUARD(s2n_increment_sequence_number(&seq));
 
-    /* MAC check for streaming ciphers - no padding */
+    /* MAC check for streaming ciphers - no padding.
+     * Wipe `check_digest` on all return paths since it holds an HMAC value
+     * derived from the connection's MAC key.
+     */
     POSIX_GUARD(s2n_hmac_update(mac, en.data, payload_length));
 
-    uint8_t check_digest[S2N_MAX_DIGEST_LEN];
+    DEFER_CLEANUP(struct s2n_blob check_digest_blob = { 0 }, s2n_free_or_wipe);
+    uint8_t check_digest[S2N_MAX_DIGEST_LEN] = { 0 };
     POSIX_ENSURE_LTE(mac_digest_size, sizeof(check_digest));
+    POSIX_GUARD(s2n_blob_init(&check_digest_blob, check_digest, sizeof(check_digest)));
     POSIX_GUARD(s2n_hmac_digest(mac, check_digest, mac_digest_size));
 
     if (s2n_hmac_digest_verify(en.data + payload_length, check_digest, mac_digest_size) < 0) {

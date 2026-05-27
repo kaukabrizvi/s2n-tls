@@ -18,6 +18,7 @@
 #include "tls/s2n_tls.h"
 #include "tls/s2n_tls13_handshake.h"
 #include "utils/s2n_blob.h"
+#include "utils/s2n_mem.h"
 
 /* Length of the synthetic message header */
 #define MESSAGE_HASH_HEADER_LENGTH 4
@@ -107,9 +108,15 @@ int s2n_server_hello_retry_recreate_transcript(struct s2n_connection *conn)
     msghdr[0] = TLS_MESSAGE_HASH;
     msghdr[MESSAGE_HASH_HEADER_LENGTH - 1] = hash_digest_length;
 
-    /* Grab the current transcript hash to use as the ClientHello1 value. */
+    /* Grab the current transcript hash to use as the ClientHello1 value.
+     * Wipe the digest buffer on all return paths since it captures the
+     * handshake transcript that is fed into the key schedule.
+     */
     struct s2n_hash_state *client_hello1_hash = &hashes->hash_workspace;
+    DEFER_CLEANUP(struct s2n_blob client_hello1_digest_blob = { 0 }, s2n_free_or_wipe);
     uint8_t client_hello1_digest_out[S2N_MAX_DIGEST_LEN] = { 0 };
+    POSIX_GUARD(s2n_blob_init(&client_hello1_digest_blob,
+            client_hello1_digest_out, sizeof(client_hello1_digest_out)));
     POSIX_GUARD_RESULT(s2n_handshake_copy_hash_state(conn, keys.hash_algorithm, client_hello1_hash));
     POSIX_GUARD(s2n_hash_digest(client_hello1_hash, client_hello1_digest_out, hash_digest_length));
 
