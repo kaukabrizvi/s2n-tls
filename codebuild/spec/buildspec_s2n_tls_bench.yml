@@ -42,6 +42,47 @@ phases:
     commands:
       - cd bindings/rust/standard/benchmarks
       - cargo criterion --message-format json > criterion_output.log
+      # NEW: locate the handshake bench binary
+      - HB=$(ls -t $CODEBUILD_SRC_DIR/bindings/rust/standard/target/release/deps/handshake-* | grep -v '\.d$' | grep -v '\.rmeta$' | head -1)
+      - echo "handshake bench binary:$HB"
+      - mkdir -p $CODEBUILD_SRC_DIR/diag
+
+      # 1. CPU + kernel + rustc + linker fingerprint
+      - cat /proc/cpuinfo | grep -m1 -E "model name|cpu family|model|stepping|microcode" > $CODEBUILD_SRC_DIR/diag/cpu.txt
+      - lscpu >> $CODEBUILD_SRC_DIR/diag/cpu.txt
+      - uname -a > $CODEBUILD_SRC_DIR/diag/kernel.txt
+      - rustc --version --verbose > $CODEBUILD_SRC_DIR/diag/rustc.txt
+      - readelf -p .comment "$HB" > $CODEBUILD_SRC_DIR/diag/elf_comment.txt  # linker identity
+
+      # 2. Section layout (LOAD segments, .text alignment)
+      - readelf -Sl "$HB" > $CODEBUILD_SRC_DIR/diag/sections.txt
+
+      # 3. Full symbol layout (sorted by address) — the key file for linker-layout diff
+      - nm -n "$HB" > $CODEBUILD_SRC_DIR/diag/symbols_by_addr.txt
+      - wc -l $CODEBUILD_SRC_DIR/diag/symbols_by_addr.txt
+
+      # 4. Just the hot symbols we care about, with their addresses and sizes
+      - nm --size-sort --print-size --demangle "$HB" | grep -E "s2n_tls::connection::Connection|s2n_negotiate|s2n_handshake|_ZN.*s2n_tls.*poll_negotiate|EC_POINT|ec_GFp|BN_" > $CODEBUILD_SRC_DIR/diag/hot_symbols.txt
+
+      # 5. Disassemble poll_negotiate and s2n_negotiate — check prologue/epilogue and alignment
+      - objdump -d --demangle "$HB" | awk '/<s2n_tls::connection::Connection.*poll_negotiate.*>:/{p=1} p{print} p && /^$/{p=0}' > $CODEBUILD_SRC_DIR/diag/asm_poll_negotiate.txt
+      - objdump -d --demangle "$HB" | awk '/<s2n_negotiate>:/{p=1} p{print} p && /^$/{p=0}' > $CODEBUILD_SRC_DIR/diag/asm_s2n_negotiate.txt
+
+      # 6. Distance between hot Rust wrapper and C library entry point
+      #    (this is the KEY measurement — if rust-lld puts them far apart, it hurts i-cache/BTB locality)
+      - POLL_ADDR=$(nm --demangle "$HB" | grep "s2n_tls::connection::Connection.*poll_negotiate" | head -1 | awk '{print "0x"$1}')
+      - NEGO_ADDR=$(nm "$HB" | grep " T s2n_negotiate$" | head -1 | awk '{print "0x"$1}')
+      - echo "poll_negotiate addr = $POLL_ADDR" >> $CODEBUILD_SRC_DIR/diag/hot_symbols.txt
+      - echo "s2n_negotiate addr  = $NEGO_ADDR" >> $CODEBUILD_SRC_DIR/diag/hot_symbols.txt
+      - python3 -c "print(f'distance = {abs($POLL_ADDR - $NEGO_ADDR):#x} bytes = {abs($POLL_ADDR - $NEGO_ADDR)/1024/1024:.2f} MiB')" >> $CODEBUILD_SRC_DIR/diag/hot_symbols.txt
+
+      # 7. Try perf stat on the handshake bench binary (may fail if PMU is not exposed in container)
+      - apt-get install -y linux-tools-common linux-tools-generic || true
+      - perf stat -e cycles,instructions,branches,branch-misses,cache-references,cache-misses,L1-icache-load-misses,iTLB-load-misses,dTLB-load-misses -o $CODEBUILD_SRC_DIR/diag/perf_stat.txt -- "$HB" --bench "handshake-secp256r1/s2n-tls" --sample-size 20 --measurement-time 3 || echo "perf unavailable" > $CODEBUILD_SRC_DIR/diag/perf_stat.txt
+
+      # 8. Dump all diagnostic files inline to the log so we don't need artifact-upload permissions
+      - for f in $CODEBUILD_SRC_DIR/diag/*.txt; do echo "=== $f ==="; cat "$f"; echo ""; done
+
       - cd $CODEBUILD_SRC_DIR
 
   post_build:
