@@ -1,0 +1,75 @@
+#
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Standalone scheduled cache-warmer for the two S3 nix binary caches.
+#
+# The buckets have a 30-day `expire-old-nix-paths` lifecycle rule. Per-PR
+# unit/integ jobs push their own devShell closures on post_build, but that
+# only refreshes S3 when pre_build succeeds — once any needed path expires,
+# pre_build starts failing (SIGPIPE during the fetch/build storm on
+# ephemeral CodeBuild containers) and post_build never runs, so nothing
+# rehydrates the bucket. This job runs independently on a schedule to
+# realize every devShell closure the flake defines and push each one to
+# the matching bucket.
+#
+# Kept fully independent of other batches (no depend-on wiring) so it does
+# not add latency to any PR pipeline.
+---
+version: 0.2
+env:
+  shell: bash
+  variables:
+    NIXDEV_ARGS: --max-jobs auto
+    CACHE_PKGS_COMMON: >-
+      .#cache-default
+      .#cache-openssl102
+      .#cache-openssl111
+      .#cache-libressl
+      .#cache-awslc
+      .#cache-awslcfips2022
+      .#cache-awslcfips2024
+      .#cache-rust_openssl102
+      .#cache-rust_openssl111
+      .#cache-rust_openssl30
+      .#cache-rust_awslc
+      .#cache-rust_awslcfips2024
+
+batch:
+  build-graph:
+    - identifier: nixCacheWarm_x86_64
+      env:
+        compute-type: BUILD_GENERAL1_LARGE
+        image: public.ecr.aws/l1b2r3y5/nix-aws-codebuild:latest
+        privileged-mode: true
+        variables:
+          NIX_CACHE_BUCKET: s3://s2n-tls-nixcachebucket-x86-64?region=us-west-2
+
+    - identifier: nixCacheWarm_aarch64
+      env:
+        compute-type: BUILD_GENERAL1_LARGE
+        image: public.ecr.aws/l1b2r3y5/nix-aws-codebuild-aarch64:next
+        privileged-mode: true
+        type: ARM_CONTAINER
+        variables:
+          NIX_CACHE_BUCKET: s3://s2n-tls-nixcachebucket-aarch64?region=us-west-2
+
+phases:
+  install:
+    commands:
+      - |
+        mkdir -p ~/.config/nix
+        echo "extra-substituters = $NIX_CACHE_BUCKET" >> ~/.config/nix/nix.conf
+        echo "extra-trusted-substituters = $NIX_CACHE_BUCKET" >> ~/.config/nix/nix.conf
+        echo "require-sigs = false" >> ~/.config/nix/nix.conf
+  build:
+    commands:
+      - |
+        set -e
+        nix build $NIXDEV_ARGS $CACHE_PKGS_COMMON
+  post_build:
+    commands:
+      - |
+        set -e
+        echo "Pushing devShell closures to $NIX_CACHE_BUCKET..."
+        nix copy --to $NIX_CACHE_BUCKET $CACHE_PKGS_COMMON
