@@ -234,16 +234,16 @@ static S2N_RESULT s2n_verify_host_information_san_entry(struct s2n_connection *c
 
     if (current_name->type == GEN_DNS || current_name->type == GEN_URI) {
         *san_found = true;
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-        const char *name = (const char *) ASN1_STRING_data(current_name->d.ia5);
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA)
         const unsigned char *name = ASN1_STRING_get0_data(current_name->d.ia5);
+#else
+        const unsigned char *name = (const unsigned char *) ASN1_STRING_data(current_name->d.ia5);
 #endif
         RESULT_ENSURE_REF(name);
         int name_len = ASN1_STRING_length(current_name->d.ia5);
         RESULT_ENSURE_GT(name_len, 0);
 
-        RESULT_ENSURE(conn->verify_host_fn((const char *)name, name_len, conn->data_for_verify_host), S2N_ERR_CERT_INVALID_HOSTNAME);
+        RESULT_ENSURE(conn->verify_host_fn((const char *) name, name_len, conn->data_for_verify_host), S2N_ERR_CERT_INVALID_HOSTNAME);
 
         return S2N_RESULT_OK;
     }
@@ -252,12 +252,12 @@ static S2N_RESULT s2n_verify_host_information_san_entry(struct s2n_connection *c
         *san_found = true;
 
         /* try to validate an IP address if it's in the subject alt name. */
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-        const unsigned char *ip_addr = current_name->d.iPAddress->data;
-        int ip_addr_len = current_name->d.iPAddress->length;
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA)
         const unsigned char *ip_addr = ASN1_STRING_get0_data(current_name->d.iPAddress);
         int ip_addr_len = ASN1_STRING_length(current_name->d.iPAddress);
+#else
+        const unsigned char *ip_addr = current_name->d.iPAddress->data;
+        int ip_addr_len = current_name->d.iPAddress->length;
 #endif
         RESULT_ENSURE_REF(ip_addr);
         RESULT_ENSURE_GT(ip_addr_len, 0);
@@ -324,12 +324,12 @@ static S2N_RESULT s2n_verify_host_information_common_name(struct s2n_connection 
     RESULT_ENSURE_REF(conn->config);
     RESULT_ENSURE_REF(public_cert);
     RESULT_ENSURE_REF(cn_found);
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-    ASN1_STRING *common_name;
-    X509_NAME *subject_name;
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS)
     const ASN1_STRING *common_name;
     const X509_NAME *subject_name;
+#else
+    ASN1_STRING *common_name;
+    X509_NAME *subject_name;
 #endif
     subject_name = X509_get_subject_name(public_cert);
     RESULT_ENSURE(subject_name, S2N_ERR_CERT_UNTRUSTED);
@@ -366,10 +366,10 @@ static S2N_RESULT s2n_verify_host_information_common_name(struct s2n_connection 
     uint32_t len = (uint32_t) cn_len;
     RESULT_ENSURE_LTE(len, s2n_array_len(peer_cn) - 1);
 
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-    RESULT_CHECKED_MEMCPY(peer_cn, ASN1_STRING_data(common_name), len);
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA)
     RESULT_CHECKED_MEMCPY(peer_cn, ASN1_STRING_get0_data(common_name), len);
+#else
+    RESULT_CHECKED_MEMCPY(peer_cn, ASN1_STRING_data(common_name), len);
 #endif
 
     /* According to https://www.rfc-editor.org/rfc/rfc6125#section-6.4.4,

@@ -125,7 +125,11 @@ int main(int argc, char *argv[])
         EXPECT_NOT_NULL(crl->crl);
 
         /* Make sure an OpenSSL operation succeeds on the internal X509_CRL */
+#if defined(S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS)
+        const X509_NAME *crl_name = X509_CRL_get_issuer(crl->crl);
+#else
         X509_NAME *crl_name = X509_CRL_get_issuer(crl->crl);
+#endif
         POSIX_ENSURE_REF(crl_name);
     };
 

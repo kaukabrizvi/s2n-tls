@@ -233,12 +233,12 @@ int s2n_cert_chain_and_key_load_sans(struct s2n_cert_chain_and_key *chain_and_ke
 
         if (san_name->type == GEN_DNS) {
             /* Decoding isn't necessary here since a DNS SAN name is ASCII(type V_ASN1_IA5STRING) */
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-            unsigned char *san_str = san_name->d.dNSName->data;
-            const size_t san_str_len = san_name->d.dNSName->length;
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA)
             const unsigned char *san_str = ASN1_STRING_get0_data(san_name->d.dNSName);
             const size_t san_str_len = ASN1_STRING_length(san_name->d.dNSName);
+#else
+            unsigned char *san_str = san_name->d.dNSName->data;
+            const size_t san_str_len = san_name->d.dNSName->length;
 #endif
             struct s2n_blob *san_blob = NULL;
             POSIX_GUARD_RESULT(s2n_array_pushback(chain_and_key->san_names, (void **) &san_blob));
@@ -276,14 +276,14 @@ int s2n_cert_chain_and_key_load_cns(struct s2n_cert_chain_and_key *chain_and_key
     POSIX_ENSURE_REF(chain_and_key->cn_names);
     POSIX_ENSURE_REF(x509_cert);
 
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-    X509_NAME_ENTRY *name_entry;
-    ASN1_STRING *asn1_str;
-    X509_NAME *subject;
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS)
     const X509_NAME_ENTRY *name_entry;
     const ASN1_STRING *asn1_str;
     const X509_NAME *subject;
+#else
+    X509_NAME_ENTRY *name_entry;
+    ASN1_STRING *asn1_str;
+    X509_NAME *subject;
 #endif
     subject = X509_get_subject_name(x509_cert);
     if (!subject) {
@@ -746,10 +746,10 @@ static int s2n_utf8_string_from_extension_data(const uint8_t *extension_data, ui
          * modified in any way.
          * Ref: https://docs.openssl.org/master/man3/ASN1_STRING_length/
          */
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-        unsigned char *internal_data = ASN1_STRING_data(asn1_str);
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA)
         const unsigned char *internal_data = ASN1_STRING_get0_data(asn1_str);
+#else
+        unsigned char *internal_data = ASN1_STRING_data(asn1_str);
 #endif
         POSIX_ENSURE_REF(internal_data);
         POSIX_CHECKED_MEMCPY(out_data, internal_data, len);
@@ -813,14 +813,14 @@ static int s2n_parse_x509_extension(struct s2n_cert *cert, const uint8_t *oid,
     POSIX_ENSURE_REF(asn1_obj_in);
 
     for (size_t loc = 0; loc < ext_count; loc++) {
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-        ASN1_OCTET_STRING *asn1_str = NULL;
-        X509_EXTENSION *x509_ext;
-        ASN1_OBJECT *asn1_obj;
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS)
         const ASN1_OCTET_STRING *asn1_str = NULL;
         const X509_EXTENSION *x509_ext;
         const ASN1_OBJECT *asn1_obj;
+#else
+        ASN1_OCTET_STRING *asn1_str = NULL;
+        X509_EXTENSION *x509_ext;
+        ASN1_OBJECT *asn1_obj;
 #endif
         bool match_found = false;
 
@@ -866,10 +866,10 @@ static int s2n_parse_x509_extension(struct s2n_cert *cert, const uint8_t *oid,
                  * modified in any way.
                  * Ref: https://docs.openssl.org/master/man3/ASN1_STRING_length/
                  */
-#if OPENSSL_VERSION_NUMBER < 0x40000000L
-                unsigned char *internal_data = ASN1_STRING_data(asn1_str);
-#else
+#if defined(S2N_LIBCRYPTO_SUPPORTS_ASN1_STRING_GET0_DATA)
                 const unsigned char *internal_data = ASN1_STRING_get0_data(asn1_str);
+#else
+                unsigned char *internal_data = ASN1_STRING_data(asn1_str);
 #endif
                 POSIX_ENSURE_REF(internal_data);
                 POSIX_CHECKED_MEMCPY(ext_value, internal_data, len);

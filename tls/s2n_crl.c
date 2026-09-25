@@ -81,7 +81,11 @@ int s2n_crl_get_issuer_hash(struct s2n_crl *crl, uint64_t *hash)
     POSIX_ENSURE_REF(crl->crl);
     POSIX_ENSURE_REF(hash);
 
+#if defined(S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS)
+    const X509_NAME *crl_name = X509_CRL_get_issuer(crl->crl);
+#else
     X509_NAME *crl_name = X509_CRL_get_issuer(crl->crl);
+#endif
     POSIX_ENSURE_REF(crl_name);
 
     unsigned long temp_hash = X509_NAME_hash(crl_name);

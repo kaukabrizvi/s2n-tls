@@ -55,7 +55,11 @@ static S2N_RESULT s2n_cert_authorities_set_from_trust_store(struct s2n_config *c
             continue;
         }
 
+    #if defined(S2N_LIBCRYPTO_SUPPORTS_CONST_X509_GETTERS)
+        const X509_NAME *name = X509_get_subject_name(cert);
+    #else
         X509_NAME *name = X509_get_subject_name(cert);
+    #endif
         RESULT_ENSURE(name, S2N_ERR_INTERNAL_LIBCRYPTO_ERROR);
 
         const uint8_t *name_bytes = NULL;
