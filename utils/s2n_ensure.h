@@ -69,14 +69,17 @@
         }                                                            \
     } while (0)
 
-#define __S2N_ENSURE_SAFE_MEMSET(d, c, n, guard) \
-    do {                                         \
-        __typeof(n) __tmp_n = (n);               \
-        if (s2n_likely(__tmp_n)) {               \
-            __typeof(d) __tmp_d = (d);           \
-            guard(__tmp_d);                      \
-            memset(__tmp_d, (c), __tmp_n);       \
-        }                                        \
+#define __S2N_ENSURE_SAFE_MEMSET(d, c, n, guard)                            \
+    do {                                                                    \
+        __typeof(n) __tmp_n = (n);                                          \
+        if (s2n_likely(__tmp_n)) {                                          \
+            __typeof(d) __tmp_d = (d);                                      \
+            guard(__tmp_d);                                                 \
+            memset(__tmp_d, (c), __tmp_n);                                  \
+            /* The empty asm tells the compiler the memory may be read */   \
+            /* afterwards, so it cannot drop the memset as a dead store. */ \
+            __asm__ __volatile__("" : : "r"(__tmp_d) : "memory");           \
+        }                                                                   \
     } while (0)
 
 #if defined(S2N_DIAGNOSTICS_PUSH_SUPPORTED) && defined(S2N_DIAGNOSTICS_POP_SUPPORTED)
